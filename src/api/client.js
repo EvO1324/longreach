@@ -493,6 +493,12 @@ export const importer = {
   run: (type, rows, dryRun = true) => post(`/import/${type}`, { rows, dryRun }),
 };
 
+// Plugins (Admin › Plugins)
+export const plugins = {
+  list: ()              => get('/plugins'),
+  set:  (id, enabled)   => request('PUT', `/plugins/${id}`, { enabled }),
+};
+
 // Connections (Admin › Connections)
 export const connections = {
   get:         ()           => get('/admin/connections'),

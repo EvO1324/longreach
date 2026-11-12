@@ -30,6 +30,7 @@ import { isDeveloper } from './components/DeveloperBadge';
 
 import brand from './brand';
 import { features } from './brand';
+import { plugins as pluginsApi } from './api/client';
 
 // A page switched off in va.config.json features goes to the dashboard
 const on = (feature, element) => (features[feature] === false ? <Navigate to="/dashboard" replace /> : element);
@@ -83,6 +84,18 @@ function App() {
   });
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [, setPluginsLoaded] = useState(0);
+
+  // which plugins are on (Admin › Plugins); the page redraws once it's known
+  useEffect(() => {
+    const refresh = () => pluginsApi.list().then(d => {
+      (d.plugins || []).forEach(p => { features[p.id] = p.enabled; });
+      setPluginsLoaded(n => n + 1);
+    }).catch(() => {});
+    refresh();
+    window.addEventListener('plugins-changed', refresh);
+    return () => window.removeEventListener('plugins-changed', refresh);
+  }, []);
 
   useEffect(() => {
     if (darkMode) document.body.classList.add('dark-mode');

@@ -55,7 +55,9 @@ loadCommands(path.join(__dirname, 'bot/commands'));
 // Register slash commands
 async function registerCommands() {
   const rest = new REST({ version: '10' }).setToken(DISCORD_BOT_TOKEN);
-  const commandData = [...commands.values()].map(c => c.data.toJSON());
+  // commands of switched-off plugins (Admin › Plugins) aren't registered
+  const { commandOff } = require('./config/plugins');
+  const commandData = [...commands.values()].filter(c => !commandOff(c.data.name)).map(c => c.data.toJSON());
   try {
     if (!DISCORD_GUILD_ID) {
       // no server set: global commands (can take up to an hour to show)
@@ -125,7 +127,7 @@ client.once('ready', async () => {
 // Interaction handler (slash commands)
 client.on('interactionCreate', async (interaction) => {
   if (interaction.isChatInputCommand()) {
-    const command = commands.get(interaction.commandName);
+    const command = require('./config/plugins').commandOff(interaction.commandName) ? null : commands.get(interaction.commandName);
     if (!command) return;
 
     try {

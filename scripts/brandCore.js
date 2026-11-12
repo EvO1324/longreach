@@ -323,7 +323,48 @@ received a copy of the licence with this program (LICENSE.md). If not, see
     return { config: config, colors: colors, errors: errors, warnings: warnings };
   }
 
+  // Plugins: optional parts of the crew centre that admins switch on and off in
+  // Admin › Plugins. The id is also the key in va.config.json "features", which
+  // sets the starting state. A new plugin ships switched off (on: false) so an
+  // update never turns something on by surprise. See PLUGINS.md.
+  //   api:      API paths that answer 404 while it's off (apiAllow: except these)
+  //   commands: Discord slash commands that are only registered while it's on
+  var PLUGINS = [
+    { id: 'career', name: 'Career mode', on: true,
+      description: 'Pilots pick a hub and work through a structured career, unlocking routes as they go.',
+      api: ['/api/career'], commands: ['career'] },
+    { id: 'liveMode', name: 'Live Mode', on: true,
+      description: 'A shared fleet for Infinite Flight Live Mode. Pilots book aircraft, and landings are filed as PIREPs automatically.',
+      api: ['/api/if-live'], apiAllow: ['/api/if-live/auth-start', '/api/if-live/callback', '/api/if-live/disconnect'],
+      commands: ['liveboard', 'livebookings', 'liveflights', 'liveleaderboard', 'livestats'] },
+    { id: 'routesOfTheWeek', name: 'Routes of the Week', on: true,
+      description: 'Staff feature routes each week, with bonus multipliers. Posted to Discord every Monday.',
+      api: ['/api/rotw'], commands: ['rotw'] },
+    { id: 'events', name: 'Events', on: true,
+      description: 'Group flights and events with sign-ups, gates and automatic attendance.',
+      api: ['/api/events'], commands: [] },
+    { id: 'challenges', name: 'Challenges', on: true,
+      description: 'Goals pilots work towards, like a set of routes or hours, with badges for finishing.',
+      api: ['/api/challenges'], commands: [] },
+    { id: 'atc', name: 'ATC sessions', on: true,
+      description: 'Pilots log IFATC sessions alongside their flights, and the dashboard shows who is controlling.',
+      api: [], commands: ['atc'] },
+  ];
+
+  // Which plugins are on: saved choices first, then va.config.json features,
+  // then each plugin's own default
+  function pluginState(saved, features) {
+    var out = {};
+    PLUGINS.forEach(function (p) {
+      if (saved && typeof saved[p.id] === 'boolean') out[p.id] = saved[p.id];
+      else if (features && typeof features[p.id] === 'boolean') out[p.id] = features[p.id];
+      else out[p.id] = p.on !== false;
+    });
+    return out;
+  }
+
   return {
+    PLUGINS: PLUGINS, pluginState: pluginState,
     DEFAULTS: DEFAULTS, NEUTRALS: NEUTRALS,
     normalizeHex: normalizeHex, hexToRgb: hexToRgb, mix: mix, contrast: contrast,
     deriveColors: deriveColors, cssFor: cssFor,

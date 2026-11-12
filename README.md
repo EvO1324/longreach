@@ -67,7 +67,7 @@ va.config.json  your VA's settings (made by npm run setup)
 
 ## Releasing (maintainers)
 
-Push your changes, then on GitHub go to **Releases › Draft a new release**, make a new tag like `v1.2.0` on `main`, write what changed and publish. Every crew centre sees it in Admin › Updates and can update with one click (see DEPLOYING.md › Updating). The tag is the version, so there's nothing to bump by hand.
+Push your changes, then on GitHub go to **Releases › Draft a new release**, make a new tag like `v1.2.0` on `main`, write what changed and publish. Every crew centre sees it in Admin › Updates and can update with one click (see DEPLOYING.md › Updating). The tag is the version, so there's nothing to bump by hand. To ship an optional feature VAs can switch on and off, see **[PLUGINS.md](PLUGINS.md)**.
 
 ## Tests
 

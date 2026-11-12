@@ -101,6 +101,7 @@ async function load({ timeoutMs = 8000 } = {}) {
     const pb = await getAdminClient();
     const { values, version } = await readStored(pb);
     for (const [k, v] of Object.entries(values)) process.env[k] = v;
+    await require('./plugins').load(pb);
     loadedVersion = version;
     return Object.keys(values).length;
   })();
@@ -111,6 +112,14 @@ async function load({ timeoutMs = 8000 } = {}) {
   } catch (err) {
     console.warn(`[config] Couldn't read saved settings (${err.message}); using .env only`);
   }
+}
+
+// Tells the bot (and any other process) that something it reads at start-up changed
+async function bumpVersion(pb) {
+  const r = await pb.collection('settings').getFirstListItem(`key = "${VERSION_KEY}"`, { requestKey: null }).catch(() => null);
+  const value = String(Date.now());
+  if (r) await pb.collection('settings').update(r.id, { value });
+  else await pb.collection('settings').create({ key: VERSION_KEY, value });
 }
 
 // The bot runs in its own process: when the settings change it exits and pm2
@@ -130,4 +139,4 @@ function restartOnChange({ everyMs = 60 * 1000 } = {}) {
   }, everyMs).unref();
 }
 
-module.exports = { restartOnChange, PREFIX, GROUPS, FIELDS, KEYS, VERSION_KEY, readStored, load, loadedVersion: () => loadedVersion };
+module.exports = { restartOnChange, bumpVersion, PREFIX, GROUPS, FIELDS, KEYS, VERSION_KEY, readStored, load, loadedVersion: () => loadedVersion };

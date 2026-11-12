@@ -53,11 +53,13 @@ const STAT_LABELS = Object.fromEntries((brandCore.DASHBOARD_STATS || []).map(x =
 const DASH = brand.dashboard || {};
 const DASH_STATS = (DASH.stats || ['flights', 'hours', 'lastFlight', 'streak']).filter(k => STAT_CARDS[k]);
 const SECTION_FEATURE = Object.fromEntries((brandCore.DASHBOARD_SECTIONS || []).map(x => [x.key, x.feature]));
-const DASH_SECTIONS = (DASH.sections || ['rank', 'activeAtc', 'routesOfTheWeek', 'recentFlights'])
+// plugins can be switched on and off while the site is open, so this is worked out each render
+const dashSections = () => (DASH.sections || ['rank', 'activeAtc', 'routesOfTheWeek', 'recentFlights'])
   .filter(k => !SECTION_FEATURE[k] || features[SECTION_FEATURE[k]] !== false);
 const greetingFor = user => String(DASH.greeting || 'Welcome back, {name}').replace('{name}', user.first_name || 'Captain');
 
 function Dashboard({ user }) {
+  const DASH_SECTIONS = dashSections();
   const [recentFlights, setRecentFlights] = useState([]);
   const [lastFlight, setLastFlight] = useState(null);
   const [streak, setStreak] = useState(0);

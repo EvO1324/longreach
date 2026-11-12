@@ -148,6 +148,11 @@ app.use((req, res, next) => {
 });
 
 // Routes
+// a switched-off plugin's API answers 404 (Admin › Plugins)
+const plugins = require('./config/plugins');
+app.use('/api', plugins.guard);
+app.use('/api/plugins', require('./routes/plugins'));
+
 app.use('/api/auth', authRoutes);
 app.use('/api/flights', flightRoutes);
 app.use('/api/pilots', pilotRoutes);
@@ -429,20 +434,22 @@ if (process.env.DISABLE_JOBS === 'true') {
   // Start daily activity check job
   scheduleActivityCheck();
   // Start ROTW Monday auto-poster
-  scheduleRotwPoster();
+  if (plugins.isOn('routesOfTheWeek')) scheduleRotwPoster();
   scheduleRecruitmentReminder();
   schedulePbRestart();
   scheduleLeaderboardPost();
   scheduleStaleExamCleanup();
-  scheduleChallengeReminder();
-  scheduleIfLiveBidExpiry();
-  scheduleIfLiveTimeWarning();
-  scheduleIfLiveNoShow();
-  scheduleIfLiveAutoPirep();
-  scheduleIfLiveAircraftStatus();
+  if (plugins.isOn('challenges')) scheduleChallengeReminder();
+  if (plugins.isOn('liveMode')) {
+    scheduleIfLiveBidExpiry();
+    scheduleIfLiveTimeWarning();
+    scheduleIfLiveNoShow();
+    scheduleIfLiveAutoPirep();
+    scheduleIfLiveAircraftStatus();
+  }
   scheduleIfRoleBadgeSync();
   scheduleStatsAudit();
-  scheduleEventLanding();
+  if (plugins.isOn('events')) scheduleEventLanding();
 }
 
 app.listen(PORT, () => {

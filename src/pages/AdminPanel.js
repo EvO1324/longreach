@@ -7,6 +7,7 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 <https://polyformproject.org/licenses/noncommercial/1.0.0>.
 */
 
+import { features } from '../brand';
 import React from 'react';
 import { useSearchParams, Navigate } from 'react-router-dom';
 import { usePermissions } from '../hooks/usePermissions';
@@ -35,6 +36,7 @@ import LeaveManager       from './admin/LeaveManager';
 import SiteSettings        from './admin/SiteSettings';
 import UpdatesManager      from './admin/UpdatesManager';
 import Connections         from './admin/Connections';
+import Plugins             from './admin/Plugins';
 import AuditLog            from './admin/AuditLog';
 import ImportTool          from './admin/ImportTool';
 import VAHealth            from './admin/VAHealth';
@@ -94,18 +96,18 @@ const CATEGORIES = [
       { id: 'audit',     label: 'Audit Log',         perm: 'audit.view' },
       { id: 'import',    label: 'Import',            perm: null, adminOnly: true },
       { id: 'health',    label: 'VA Health',          perm: null, adminOnly: true },
-      { id: 'if-live',   label: 'IF Live',            perm: null, adminOnly: true },
+      { id: 'if-live',   label: 'IF Live',            perm: null, adminOnly: true, feature: 'liveMode' },
     ],
   },
   {
     id: 'network', label: 'Network', Icon: Globe,
     tabs: [
       { id: 'routes',     label: 'Routes',         perm: null, adminOnly: true },
-      { id: 'featured',   label: 'Featured Routes', perm: null, adminOnly: true },
+      { id: 'featured',   label: 'Featured Routes', perm: null, adminOnly: true, feature: 'routesOfTheWeek' },
       { id: 'fleet',      label: 'Fleet',           perm: null, adminOnly: true },
       { id: 'airlines',   label: 'Airlines',        perm: null, adminOnly: true },
-      { id: 'events',     label: 'Events',          perm: 'events.manage' },
-      { id: 'challenges', label: 'Challenges',      perm: null, adminOnly: true },
+      { id: 'events',     label: 'Events',          perm: 'events.manage', feature: 'events' },
+      { id: 'challenges', label: 'Challenges',      perm: null, adminOnly: true, feature: 'challenges' },
     ],
   },
   {
@@ -123,6 +125,7 @@ const CATEGORIES = [
       { id: 'multipliers',  label: 'Multipliers',  perm: null, adminOnly: true },
       { id: 'assets',       label: 'Assets',       perm: null, adminOnly: true },
       { id: 'site',         label: 'Site settings',     perm: null, adminOnly: true },
+      { id: 'plugins',      label: 'Plugins',           perm: null, adminOnly: true },
       { id: 'connections',  label: 'Connections',       perm: null, adminOnly: true },
       { id: 'updates',      label: 'Updates',           perm: null, adminOnly: true },
     ],
@@ -134,7 +137,7 @@ const ALL_TAB_IDS = CATEGORIES.flatMap(c => c.tabs.map(t => t.id));
 // Sidebar category header
 function CategoryGroup({ category, activeTab, onTabSelect, isAdmin, can }) {
   const visibleTabs = category.tabs.filter(t =>
-    t.adminOnly ? isAdmin : (isAdmin || can(t.perm))
+    (!t.feature || features[t.feature] !== false) && (t.adminOnly ? isAdmin : (isAdmin || can(t.perm)))
   );
   if (!visibleTabs.length) return null;
 
@@ -290,6 +293,7 @@ function AdminPanel({ user }) {
           {activeTab === 'multipliers'  && <MultipliersManager />}
           {activeTab === 'assets'       && <AssetsManager />}
           {activeTab === 'site'         && <SiteSettings />}
+          {activeTab === 'plugins'      && <Plugins />}
           {activeTab === 'connections'  && <Connections />}
           {activeTab === 'updates'      && <UpdatesManager />}
           {activeTab === 'import'       && <ImportTool />}

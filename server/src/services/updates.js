@@ -44,7 +44,7 @@ async function releases() {
   const res = await gh(`/repos/${UPSTREAM}/releases?per_page=30`, { token: process.env.CREWCENTRE_UPSTREAM_TOKEN });
   if (!res.ok) throw new Error(`Couldn't reach ${UPSTREAM} on GitHub (${res.status})`);
   const list = (await res.json())
-    .filter(r => !r.draft && !r.prerelease && /^v?\d+\.\d+/.test(r.tag_name))
+    .filter(r => !r.draft && !r.prerelease && /^v?\d+\.\d+/i.test(r.tag_name))
     .map(r => ({ version: r.tag_name, name: r.name || r.tag_name, notes: r.body || '', date: r.published_at, url: r.html_url }));
   cache = { at: Date.now(), releases: list };
   return list;

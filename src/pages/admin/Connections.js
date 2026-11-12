@@ -12,7 +12,6 @@ import { connections as api } from '../../api/client';
 import { showToast } from '../../components/Toast';
 
 const control = { width: '100%', padding: '0.5rem 0.65rem', borderRadius: 8, border: '1px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-primary)', fontSize: '0.9rem', fontFamily: 'inherit', boxSizing: 'border-box' };
-const row = { display: 'grid', gridTemplateColumns: 'minmax(160px, 1fr) minmax(200px, 1.4fr)', gap: '0.5rem 1.25rem', alignItems: 'center', padding: '0.8rem 0', borderTop: '1px solid var(--border-color)' };
 const small = { fontSize: '0.78rem', color: 'var(--text-secondary)' };
 const linkBtn = { background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: 'var(--text-secondary)', fontSize: '0.8rem', fontFamily: 'inherit', textDecoration: 'underline' };
 
@@ -136,37 +135,46 @@ function Connections() {
 
   if (!data) return <div style={small}>Loading…</div>;
 
+  const byId = Object.fromEntries(data.groups.map(g => [g.id, g]));
+  const card = (g, wide) => g && (
+    <section key={g.id} className="card" style={{ margin: 0, gridColumn: wide ? '1 / -1' : undefined, minWidth: 0 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+        <h3 style={{ margin: 0, fontSize: '1rem' }}>{g.title}</h3>
+        {(g.id === 'roles' || g.id === 'channels') && options && !options.ok && <span style={small}>{options.error}</span>}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 230px), 1fr))', gap: '1.1rem 1.25rem' }}>
+        {g.fields.map(f => (
+          <div key={f.key} style={{ minWidth: 0 }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>{f.label}</div>
+            {f.hint && <div style={{ ...small, fontSize: '0.74rem', margin: '0.1rem 0 0.4rem', lineHeight: 1.35 }}>{f.hint}</div>}
+            {f.secret
+              ? <Secret field={f} draft={secrets[f.key] === null ? undefined : secrets[f.key]} removing={secrets[f.key] === null} onChange={v => setSecrets(s => ({ ...s, [f.key]: v }))} />
+              : (f.kind === 'role' || f.kind === 'channel')
+                ? <Picker field={f} value={form[f.key] || ''} options={options?.ok ? options : null} onChange={v => setForm(s => ({ ...s, [f.key]: v }))} />
+                : <input value={form[f.key] || ''} onChange={e => setForm(s => ({ ...s, [f.key]: e.target.value }))} style={control} spellCheck={false} />}
+            {f.secret && secrets[f.key] === null && <div style={{ ...small, marginTop: '0.25rem', color: '#c62828' }}>Will be removed when you save</div>}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+
   return (
-    <div style={{ maxWidth: 760, paddingBottom: changed ? '5rem' : 0 }}>
-      <p style={{ margin: '0 0 1.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.55 }}>
+    <div style={{ paddingBottom: changed ? '5rem' : 0 }}>
+      <p style={{ margin: '0 0 1.25rem', color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.55, maxWidth: 760 }}>
         The Discord roles, channels and webhooks the crew centre uses, and a few other settings from setup. What you save here replaces the value from setup.
         The bot token, database and Infinite Flight API key stay in the server settings.
       </p>
 
       {notice && <div className="card" style={{ marginBottom: '1rem', fontSize: '0.88rem' }}>{notice}</div>}
 
-      {data.groups.map(g => (
-        <div key={g.id} className="card" style={{ marginBottom: '1rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem', marginBottom: '0.4rem' }}>
-            <h3 style={{ margin: 0, fontSize: '1rem' }}>{g.title}</h3>
-            {(g.id === 'roles' || g.id === 'channels') && options && !options.ok && <span style={small}>{options.error}</span>}
-          </div>
-          {g.fields.map(f => (
-            <div key={f.key} style={row}>
-              <div>
-                <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>{f.label}</div>
-                {f.hint && <div style={{ ...small, marginTop: '0.15rem' }}>{f.hint}</div>}
-              </div>
-              {f.secret
-                ? <Secret field={f} draft={secrets[f.key] === null ? undefined : secrets[f.key]} removing={secrets[f.key] === null} onChange={v => setSecrets(s => ({ ...s, [f.key]: v }))} />
-                : (f.kind === 'role' || f.kind === 'channel')
-                  ? <Picker field={f} value={form[f.key] || ''} options={options?.ok ? options : null} onChange={v => setForm(s => ({ ...s, [f.key]: v }))} />
-                  : <input value={form[f.key] || ''} onChange={e => setForm(s => ({ ...s, [f.key]: e.target.value }))} style={control} spellCheck={false} />}
-              {f.secret && secrets[f.key] === null && <div style={{ ...small, gridColumn: '2', color: '#c62828' }}>Will be removed when you save</div>}
-            </div>
-          ))}
-        </div>
-      ))}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))', gap: '1rem', alignItems: 'start' }}>
+        {card(byId.server)}
+        {card(byId.other)}
+        {card(byId.roles, true)}
+        {card(byId.channels)}
+        {card(byId.webhooks)}
+      </div>
 
       {changed > 0 && (
         <div style={{ position: 'sticky', bottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem', borderRadius: 12, background: 'var(--bg-card)', border: '1px solid var(--border-color)', boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}>

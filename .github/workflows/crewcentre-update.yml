@@ -58,7 +58,7 @@ jobs:
         run: |
           node -e '
             const fs = require("fs");
-            const v = process.env.VERSION.replace(/^v/, "");
+            const v = process.env.VERSION.replace(/^v/i, "");
             for (const f of ["package.json", "server/package.json", "package-lock.json", "server/package-lock.json"]) {
               if (!fs.existsSync(f)) continue;
               const p = JSON.parse(fs.readFileSync(f, "utf8"));
@@ -66,7 +66,7 @@ jobs:
               if (p.packages && p.packages[""]) p.packages[""].version = v;
               fs.writeFileSync(f, JSON.stringify(p, null, 2) + "\n");
             }'
-          git commit -am "Crew centre version ${VERSION#v}" || true
+          git commit -am "Crew centre version ${VERSION#[vV]}" || true
           git push
 
       - name: Apply the brand
