@@ -1,0 +1,35 @@
+# fly.toml: the API, Discord bot and (optionally) PocketBase on Fly.io. See DEPLOYING.md.
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'my-crewcentre-api'  # your Fly app's name (fly launch picks one)
+primary_region = 'syd'  # the Fly region nearest your pilots
+
+[build]
+
+[deploy]
+  strategy = 'rolling'
+
+[env]
+  NODE_ENV = 'production'
+  PORT = '3001'
+
+[http_service]
+  internal_port = 3001
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type = 'connections'
+    hard_limit = 200
+    soft_limit = 150
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 512
+  

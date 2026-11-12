@@ -1,0 +1,12 @@
+{
+  "name": "Longreach",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm",
+  "postCreateCommand": "npm install && cd server && npm install && curl -L https://fly.io/install.sh | sh",
+  "remoteEnv": { "PATH": "${containerEnv:PATH}:/home/node/.fly/bin" },
+  "forwardPorts": [4848, 3000, 3001],
+  "portsAttributes": {
+    "4848": { "label": "Setup", "onAutoForward": "openBrowser" },
+    "3000": { "label": "Site" },
+    "3001": { "label": "API" }
+  }
+}

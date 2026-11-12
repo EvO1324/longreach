@@ -1,0 +1,78 @@
+/*
+Longreach, a crew centre for virtual airlines on Infinite Flight.
+Copyright (C) 2026 Alex Evans
+
+Licensed under the PolyForm Noncommercial License 1.0.0. You should have
+received a copy of the licence with this program (LICENSE.md). If not, see
+<https://polyformproject.org/licenses/noncommercial/1.0.0>.
+*/
+
+/* Base */
+/* The font comes from va.config.json (src/brand/brand.css) */
+
+* { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; }
+
+body {
+  font-family: var(--brand-font);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+.App {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-secondary);
+  transition: background-color 0.3s ease;
+}
+
+.main-content-inner {
+  flex: 1;
+  padding: 2rem 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .main-content-inner {
+    padding: 1.25rem 1rem;
+    padding-top: calc(56px + env(safe-area-inset-top) + 1.25rem);
+  }
+}
+
+/* Keep legacy .main-container working if referenced elsewhere */
+.main-container {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  background-color: var(--bg-secondary);
+  transition: background-color 0.3s ease;
+}
+
+/* Prevent iOS Safari from zooming in on input focus (requires font-size >= 16px) */
+@media screen and (-webkit-min-device-pixel-ratio: 0) and (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+.auth-card {
+  will-change: opacity, transform;
+}

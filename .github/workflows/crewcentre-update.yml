@@ -1,0 +1,64 @@
+# Longreach, a crew centre for virtual airlines on Infinite Flight.
+# Copyright (C) 2026 Alex Evans
+# Licensed under the PolyForm Noncommercial License 1.0.0 (LICENSE.md).
+#
+# Updates this crew centre to a release, deploys the API to Fly.io (needs the
+# FLY_API_TOKEN secret) and pushes, which makes Vercel rebuild the site.
+# Started from Admin › Updates, or by hand under Actions.
+name: Crew centre update
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release to update to, e.g. v1.2.0
+        required: true
+      upstream:
+        description: Repository the updates come from
+        required: true
+        default: EvO1324/longreach
+
+permissions:
+  contents: write
+
+concurrency: crewcentre-update
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      # only needed while the crew centre's repository is private
+      UPSTREAM_TOKEN: ${{ secrets.CREWCENTRE_UPSTREAM_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Merge ${{ inputs.version }}
+        run: |
+          git config user.name "crew centre updates"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$UPSTREAM_TOKEN" ]; then
+            git remote add upstream "https://x-access-token:${UPSTREAM_TOKEN}@github.com/${{ inputs.upstream }}.git"
+          else
+            git remote add upstream "https://github.com/${{ inputs.upstream }}.git"
+          fi
+          git fetch --no-tags upstream "refs/tags/${{ inputs.version }}:refs/tags/${{ inputs.version }}"
+          git merge --no-edit "${{ inputs.version }}" -m "Update the crew centre to ${{ inputs.version }}"
+          git push
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Apply the brand
+        run: node scripts/brand.js
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+        if: env.FLY_API_TOKEN != ''
+
+      - name: Deploy the API to Fly.io
+        if: env.FLY_API_TOKEN != ''
+        working-directory: server
+        run: flyctl deploy --remote-only

@@ -1,0 +1,4608 @@
+[
+ {
+  "id": "_pb_users_auth_",
+  "name": "users",
+  "type": "auth",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "sfxjyvax",
+    "name": "first_name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "8onc0okk",
+    "name": "last_name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "users_avatar",
+    "name": "avatar",
+    "type": "file",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "mimeTypes": [
+      "image/jpeg",
+      "image/png",
+      "image/svg+xml",
+      "image/gif",
+      "image/webp"
+     ],
+     "thumbs": null,
+     "maxSelect": 1,
+     "maxSize": 5242880,
+     "protected": false
+    }
+   },
+   {
+    "system": false,
+    "id": "jhrfj7sa",
+    "name": "callsign",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "m5rmy9et",
+    "name": "role",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "fevskcx4",
+    "name": "staff_role",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "domxqazw",
+    "name": "status",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "6lkulws5",
+    "name": "rank",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "s3wfbl00cqnhvn6",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "gtw8c4vv",
+    "name": "total_hours",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "postvj2f",
+    "name": "total_flights",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "2eufo2o8",
+    "name": "atc_hours",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "3juz59r1",
+    "name": "ifc_username",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "sq0wb4ei",
+    "name": "if_user_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "nbbffufe",
+    "name": "if_verified",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "oax8h3wk",
+    "name": "live_access",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "xnfqrny5",
+    "name": "discord_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ffmodfpq",
+    "name": "discord_username",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "zqdncelg",
+    "name": "discord_invite_url",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "xvlpflib",
+    "name": "discord_invite_sent_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "w0qbjnb3",
+    "name": "suspended_roles",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ystmtnjq",
+    "name": "recruitment_status",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ahqtxhn5",
+    "name": "exam_token",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "jtiarur0",
+    "name": "exam_token_created",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "zhlehisx",
+    "name": "exam_question_ids",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "qyujv7ai",
+    "name": "exam_attempts",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "uhtcpakb",
+    "name": "exam_score",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "c5fht7vm",
+    "name": "exam_passed",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "ivjdrrjn",
+    "name": "exam_transcript",
+    "type": "json",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSize": 2000000
+    }
+   },
+   {
+    "system": false,
+    "id": "cbe7bwg7",
+    "name": "tos_accepted_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ceqg5yxd",
+    "name": "onboarding_complete",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "wiunh20j",
+    "name": "must_change_password",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "f7lzvt8u",
+    "name": "career_active",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "mqz9yqgn",
+    "name": "career_hub",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "1g9odwjf",
+    "name": "career_aircraft",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "v80vp05e",
+    "name": "career_current_icao",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "vvepvb3f",
+    "name": "career_started_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "juucodpa",
+    "name": "career_total_flights",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "hi5mkqer",
+    "name": "career_total_hours",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "z2mueqsp",
+    "name": "career_last_ferry_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "qlnbqtlj",
+    "name": "activity_warned_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "qbqejlki",
+    "name": "has_imported_history",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "t9meuulc",
+    "name": "push_subscription",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "s4vmv3x6",
+    "name": "admin_notes",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [
+   "CREATE INDEX `idx_users_callsign` ON `users` (`callsign`)",
+   "CREATE INDEX `idx_users_status` ON `users` (`status`)",
+   "CREATE INDEX `idx_users_discord_id` ON `users` (`discord_id`)",
+   "CREATE INDEX `idx_users_if_user_id` ON `users` (`if_user_id`)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {
+   "allowEmailAuth": true,
+   "allowOAuth2Auth": false,
+   "allowUsernameAuth": false,
+   "exceptEmailDomains": null,
+   "manageRule": null,
+   "minPasswordLength": 8,
+   "onlyEmailDomains": null,
+   "onlyVerified": false,
+   "requireEmail": false
+  }
+ },
+ {
+  "id": "ny8983nwejp36gq",
+  "name": "roles",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "tnjte0pd",
+    "name": "name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "vtbhxicg",
+    "name": "permissions",
+    "type": "json",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSize": 2000000
+    }
+   },
+   {
+    "system": false,
+    "id": "ntjquqpt",
+    "name": "color",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "s3wfbl00cqnhvn6",
+  "name": "ranks",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "8zokplf1",
+    "name": "name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "qb86orn4",
+    "name": "hours_required",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "9nldwiw4",
+    "name": "order_position",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "vpm0bhwx",
+    "name": "aircraft_restrictions",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "zwbhjehy",
+    "name": "discord_role_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "fbfcfobx",
+    "name": "pirep_multiplier",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "vhid0mvh",
+    "name": "badge_url",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "xjh0uubl",
+    "name": "allows_manual_pirep",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "3rdljatzxd0lca8",
+  "name": "badges",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "hmifecb3",
+    "name": "name",
+    "type": "text",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "80myicfb",
+    "name": "description",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "qtqlphaz",
+    "name": "type",
+    "type": "select",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSelect": 1,
+     "values": [
+      "hours",
+      "if_role",
+      "event"
+     ]
+    }
+   },
+   {
+    "system": false,
+    "id": "gexlhllv",
+    "name": "hours_required",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": 0,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "spxdxors",
+    "name": "if_role_id",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": true
+    }
+   },
+   {
+    "system": false,
+    "id": "ppovp3fa",
+    "name": "image_url",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "163a9aiqpz270na",
+  "name": "pilot_badges",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "au9g7iwq",
+    "name": "user",
+    "type": "relation",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": true,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "kqfsq1qh",
+    "name": "badge",
+    "type": "relation",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "3rdljatzxd0lca8",
+     "cascadeDelete": true,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "fnl1y01y",
+    "name": "earned_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "a9b4wsx5",
+    "name": "seen",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   }
+  ],
+  "indexes": [
+   "CREATE UNIQUE INDEX `idx_pilot_badges_user_badge` ON `pilot_badges` (\n  `user`,\n  `badge`\n)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "izcx781xgw0cmah",
+  "name": "leave_requests",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "w6wvks9c",
+    "name": "user",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "h3o7bwhp",
+    "name": "start_date",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ozbqedf5",
+    "name": "end_date",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "xma4bqsf",
+    "name": "reason",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "efupqnwn",
+    "name": "status",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "hxlomz2l",
+    "name": "admin_note",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "iyxssixv",
+    "name": "reviewed_by",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "w3nwjsii",
+    "name": "reviewed_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "x99s6i46ph8sbxo",
+  "name": "password_reset_tokens",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "l4gaoe1i",
+    "name": "user",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "dyvik0r3",
+    "name": "token",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "sidwgrga",
+    "name": "expires_at",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "kzjzculm",
+    "name": "used",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "azywc9ne81y8vhf",
+  "name": "flights",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "jcitqjnl",
+    "name": "user",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "e6rllms8",
+    "name": "status",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "gql0zagq",
+    "name": "date",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "jg798ygp",
+    "name": "flight_number",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "lg20znql",
+    "name": "departure_icao",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "tcvcgyaf",
+    "name": "arrival_icao",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "twhviere",
+    "name": "aircraft",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "flreg001",
+    "name": "registration",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": 20,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "az2q3zxx",
+    "name": "flight_time",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "eaw4r5a0",
+    "name": "distance_nm",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "zwi9wrwt",
+    "name": "fuel_used_kg",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "vxy3c0oz",
+    "name": "landing_stats",
+    "type": "json",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSize": 2000000
+    }
+   },
+   {
+    "system": false,
+    "id": "xwwti4hx",
+    "name": "notes",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "mwpcxu26",
+    "name": "multiplier_code",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "cila5w0z",
+    "name": "multiplier_name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "wtyswdld",
+    "name": "multiplier_value",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "kliudisu",
+    "name": "auto_approved",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "9vqz7v9l",
+    "name": "auto_approve_result",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "56rgq6nv",
+    "name": "rejection_note",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "1dzqjxaj",
+    "name": "rejection_note_read",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "flevent01",
+    "name": "event",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "anx92clkofs5fck",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "i6zx3ege",
+    "name": "challenge_leg_id",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "lxwdit562jd5jpp",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "j9ekualf",
+    "name": "is_career",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "b0jgkta1",
+    "name": "is_ferry",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "ovbbac2h",
+    "name": "is_live",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "ha1bmd88",
+    "name": "is_atc",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   }
+  ],
+  "indexes": [
+   "CREATE INDEX `idx_flights_user_status` ON `flights` (`user`, `status`)",
+   "CREATE INDEX `idx_flights_status_date` ON `flights` (`status`, `date`)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "crbj1y661vns659",
+  "name": "routes",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "svnrw6mm",
+    "name": "flight_number",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "sqorxcwd",
+    "name": "departure_icao",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "wvigkadm",
+    "name": "arrival_icao",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ois233gz",
+    "name": "aircraft",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "f9yxrzkq",
+    "name": "distance_nm",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "w9tyag5s",
+    "name": "duration",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "tfoqxwha",
+    "name": "active",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "cua6m6lb6s4i362",
+  "name": "fleet",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "co7whb4k",
+    "name": "name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "uah0hujb",
+    "name": "aircraft_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "pzxk7zx0",
+    "name": "livery_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "zttxolam",
+    "name": "livery_name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ag7n2okm",
+    "name": "image_url",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "csafav54",
+    "name": "icao_code",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "bjbyaxze8c9o5fx",
+  "name": "airlines",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "becctcau",
+    "name": "code",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "kn1rdesb",
+    "name": "name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "eaj9om7c",
+    "name": "logo_url",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "4xj5srvdcuxzam1",
+  "name": "multipliers",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "r6ocsqdh",
+    "name": "name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "dm4ip9wb",
+    "name": "code",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "zla2z8ya",
+    "name": "value",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "7xfotv7r",
+    "name": "description",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "k96gb4fv",
+    "name": "active",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "lxxgpgnl",
+    "name": "promo_code",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "83ykxzph",
+    "name": "promo_route",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "crbj1y661vns659",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "ssw1vru1d0noi72",
+  "name": "promo_uses",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "d98pesmc",
+    "name": "user",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "t61yqwmb",
+    "name": "multiplier",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "4xj5srvdcuxzam1",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "7zroggfe",
+    "name": "used_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "gftflght",
+    "name": "flight",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "azywc9ne81y8vhf",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   }
+  ],
+  "indexes": [
+   "CREATE UNIQUE INDEX `idx_promo_uses_user_multiplier` ON `promo_uses` (\n  `user`,\n  `multiplier`\n)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "84ao2jkn65lc1dn",
+  "name": "route_requests",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "ec8mg7he",
+    "name": "flight_number",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ivxsuccx",
+    "name": "departure_icao",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "0njtqwqm",
+    "name": "arrival_icao",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "prvhlf6x",
+    "name": "aircraft",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "tlbxlkkr",
+    "name": "notes",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "uyllrilj",
+    "name": "submitted_by",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "whhpgeqo",
+    "name": "status",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "70wi6975glrkrrg",
+  "name": "staff_applications",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "ybzmlixd",
+    "name": "name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "dmn7jfxw",
+    "name": "ifc_username",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "6qqoo6hu",
+    "name": "discord_username",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "51uwutzz",
+    "name": "position_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "wn277bti",
+    "name": "reason",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "fr5m0wcg",
+    "name": "status",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "yf6wwnw2",
+    "name": "linked_user_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "3mod88y8mgvk9od",
+  "name": "staff_positions",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "emjjkxv0",
+    "name": "title",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ateaodpb",
+    "name": "description",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "8cf6weer",
+    "name": "open",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "ffhb2aiyifqcqkc",
+  "name": "watchlist",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "fxlcajsm",
+    "name": "ifc_username",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "pqnil9gf",
+    "name": "status",
+    "type": "select",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSelect": 1,
+     "values": [
+      "watchlist",
+      "blacklist"
+     ]
+    }
+   },
+   {
+    "system": false,
+    "id": "aikcnb9c",
+    "name": "reason",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "i5l5do9d",
+    "name": "added_by",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "5cnd1fwquhmsaom",
+  "name": "exam_topics",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "mmfm1p2j",
+    "name": "name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "2mws5r2y",
+    "name": "questions_per_exam",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "rdvlueoo",
+    "name": "sort_order",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "szwuhaft",
+    "name": "active",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "11god1o2g2p6pvz",
+  "name": "exam_questions",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "ak13katl",
+    "name": "topic",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "5cnd1fwquhmsaom",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "r02nrz7c",
+    "name": "question",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "5lxicxo6",
+    "name": "options",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "1a6zfmzp",
+    "name": "answer",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "ccjvyscm",
+    "name": "explanation",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "s0qyehmz",
+    "name": "active",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "6tnriybx0cadc6p",
+  "name": "exam_question_attempts",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "xzu2l8oe",
+    "name": "question",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "11god1o2g2p6pvz",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "dj4ar7lz",
+    "name": "user",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "stnezk4o",
+    "name": "is_correct",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "kdekvmqm",
+    "name": "exam_token",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "anx92clkofs5fck",
+  "name": "events",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "evtitle01",
+    "name": "title",
+    "type": "text",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": 120,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "evbody001",
+    "name": "body",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": 10000,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "evimage01",
+    "name": "header_image",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": 500,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "evstart01",
+    "name": "start_at",
+    "type": "date",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "evend0001",
+    "name": "end_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "evflight1",
+    "name": "flight_number",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": 12,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "evdep0001",
+    "name": "departure_icao",
+    "type": "text",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": 4,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "evarr0001",
+    "name": "arrival_icao",
+    "type": "text",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": 4,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "evaircft1",
+    "name": "aircraft",
+    "type": "text",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": 120,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "evgates01",
+    "name": "gates",
+    "type": "json",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSize": 20000
+    }
+   },
+   {
+    "system": false,
+    "id": "evmult001",
+    "name": "multiplier",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": 1,
+     "max": 5,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "evstatus1",
+    "name": "status",
+    "type": "select",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSelect": 1,
+     "values": [
+      "draft",
+      "published",
+      "cancelled"
+     ]
+    }
+   },
+   {
+    "system": false,
+    "id": "evdiscmsg",
+    "name": "discord_message_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": 40,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "evcreatby",
+    "name": "created_by",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "evroute01",
+    "name": "route",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "crbj1y661vns659",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   }
+  ],
+  "indexes": [
+   "CREATE INDEX `idx_events_status_start` ON `events` (\n  `status`,\n  `start_at`\n)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "9ujvcwea58y6hlr",
+  "name": "event_registrations",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "erevent01",
+    "name": "event",
+    "type": "relation",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "anx92clkofs5fck",
+     "cascadeDelete": true,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "eruser001",
+    "name": "user",
+    "type": "relation",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": true,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "ergate001",
+    "name": "gate",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": 20,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "erlanded1",
+    "name": "landed_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   }
+  ],
+  "indexes": [
+   "CREATE UNIQUE INDEX `idx_event_reg_event_user` ON `event_registrations` (\n  `event`,\n  `user`\n)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "rl001hotbsp44x4",
+  "name": "challenges",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "lbjhse2y",
+    "name": "name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "4isqlump",
+    "name": "description",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "dnlysg6f",
+    "name": "start_date",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "xpbqxydx",
+    "name": "end_date",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "nafzvxld",
+    "name": "status",
+    "type": "select",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSelect": 1,
+     "values": [
+      "draft",
+      "active",
+      "closed"
+     ]
+    }
+   },
+   {
+    "system": false,
+    "id": "rdi6s99c",
+    "name": "rewards",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "kq0oooet",
+    "name": "reminded_at",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "lxwdit562jd5jpp",
+  "name": "challenge_legs",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "2vzx22kn",
+    "name": "challenge",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "rl001hotbsp44x4",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "nwvtzhwm",
+    "name": "order",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "tytag7tw",
+    "name": "departure_icao",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "inmhxbhb",
+    "name": "arrival_icao",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "bkwbhkwo",
+    "name": "multiplier",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "xlapulch",
+    "name": "aircraft_restriction",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "eiffohmr",
+    "name": "notes",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "x5nsylhx",
+    "name": "livery_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "jzcky5o8",
+    "name": "livery_name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "oapc9pfg",
+    "name": "route_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "5uwaqmkw",
+    "name": "flight_number",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "jb5bi3vixeknsno",
+  "name": "challenge_entries",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "bwwdylvu",
+    "name": "challenge",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "rl001hotbsp44x4",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "ffegeh8z",
+    "name": "user",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "uinwgo7l",
+    "name": "enrolled_at",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "gulp1rrm",
+    "name": "current_leg_index",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "jycxf4hn",
+    "name": "status",
+    "type": "select",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSelect": 1,
+     "values": [
+      "enrolled",
+      "active",
+      "completed",
+      "abandoned"
+     ]
+    }
+   },
+   {
+    "system": false,
+    "id": "fxanp7bp",
+    "name": "completed_at",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "rpki2dse",
+    "name": "total_flight_time",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "ix4lvgu5958qqxj",
+  "name": "challenge_leg_completions",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "ob2wleeb",
+    "name": "entry",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "jb5bi3vixeknsno",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "9ix7ehh2",
+    "name": "leg",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "lxwdit562jd5jpp",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "ea1vp0ny",
+    "name": "flight",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "azywc9ne81y8vhf",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "vwdhj7q0",
+    "name": "completed_at",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "a3drqted",
+    "name": "flight_time",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "sw6yowzb",
+    "name": "hours_credited",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "x9ac7y9qat8wiuz",
+  "name": "rotw_weeks",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "qgggibzc",
+    "name": "week_start",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ymlxviry",
+    "name": "posted",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "qzvd9cmf",
+    "name": "posted_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "bymc0k0d3kvhaff",
+  "name": "rotw_slots",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "5se05amt",
+    "name": "week",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "x9ac7y9qat8wiuz",
+     "cascadeDelete": true,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "jnznlg8q",
+    "name": "day",
+    "type": "select",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSelect": 1,
+     "values": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+     ]
+    }
+   },
+   {
+    "system": false,
+    "id": "fsic8eoo",
+    "name": "route",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "crbj1y661vns659",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "k9wns0ou",
+    "name": "multiplier",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "4xj5srvdcuxzam1",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "c8ezjzpr",
+    "name": "bidirectional",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "ht04z2av",
+    "name": "sort_order",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": true
+    }
+   },
+   {
+    "system": false,
+    "id": "lsrcij27",
+    "name": "return_route",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "crbj1y661vns659",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "nuofaxm6",
+    "name": "return_multiplier",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "4xj5srvdcuxzam1",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "jas4d2e31m755jl",
+  "name": "if_live_tokens",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "vcc3qsyi",
+    "name": "user",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "brqvxgdv",
+    "name": "access_token",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "6pdx8t1e",
+    "name": "refresh_token",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "qfduc9ni",
+    "name": "expires_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "4qk382te",
+    "name": "if_username",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "cwtmkatp",
+    "name": "primary_org_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "qjlcpvclbgqwvtq",
+  "name": "if_live_bids",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "bilcwpbf",
+    "name": "pilot",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "l8y1yobm",
+    "name": "organization_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "avy8kgfj",
+    "name": "aircraft_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "appkkmrz",
+    "name": "aircraft_registration",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "zgmrrngi",
+    "name": "legs",
+    "type": "json",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSize": 2000000
+    }
+   },
+   {
+    "system": false,
+    "id": "rv8orquz",
+    "name": "status",
+    "type": "select",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSelect": 1,
+     "values": [
+      "pending",
+      "active",
+      "cancelled",
+      "completed",
+      "denied",
+      "expired"
+     ]
+    }
+   },
+   {
+    "system": false,
+    "id": "oc3uj5zt",
+    "name": "review_note",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "qr4q4iw8",
+    "name": "aircraft_type_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "46tqdvhh",
+    "name": "livery_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [
+   "CREATE INDEX `idx_if_live_bids_pilot` ON `if_live_bids` (`pilot`)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "80f2ctibk4o1p2w",
+  "name": "if_live_fleet_images",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "p75uuwku",
+    "name": "aircraft_type_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "fco80ej3",
+    "name": "image_url",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "n7b7rd9ldhbhffi",
+  "name": "va_stats",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "8yfnhtzi",
+    "name": "total_flights",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "dp1tsgwi",
+    "name": "total_hours",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "s2fqxe4l",
+    "name": "total_distance_nm",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "6vqxs3iq",
+    "name": "total_approved_pireps",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "yj3lpme4",
+    "name": "total_auto_approved",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "uijcyqm3",
+    "name": "total_multiplied_flights",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "4vusvhkp",
+    "name": "total_multiplied_hours",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "x2fouf93uyn0ii5",
+  "name": "daily_stats",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "5l2rnly9",
+    "name": "date",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "b93in8uv",
+    "name": "flights_count",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "e3gthpli",
+    "name": "hours",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "ayizdvyf",
+    "name": "auto_approved_count",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "yfyrygsp",
+    "name": "multiplied_count",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "ghpxkxmo",
+    "name": "rejected_count",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "qiurhn7a",
+    "name": "route_counts",
+    "type": "json",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSize": 2000000
+    }
+   },
+   {
+    "system": false,
+    "id": "axu5ecqu",
+    "name": "aircraft_counts",
+    "type": "json",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSize": 2000000
+    }
+   },
+   {
+    "system": false,
+    "id": "h8sg45so",
+    "name": "pilot_counts",
+    "type": "json",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSize": 2000000
+    }
+   },
+   {
+    "system": false,
+    "id": "zdelknik",
+    "name": "multiplied_hours",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   }
+  ],
+  "indexes": [
+   "CREATE INDEX `idx_daily_stats_date` ON `daily_stats` (`date`)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "0l1qs2avkszh64o",
+  "name": "news",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "20lfdgoi",
+    "name": "title",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "d8jebbw5",
+    "name": "body",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "78zehsi5",
+    "name": "image_url",
+    "type": "url",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "exceptDomains": null,
+     "onlyDomains": null
+    }
+   },
+   {
+    "system": false,
+    "id": "jmtuuwps",
+    "name": "active",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "x1zkxfxt",
+    "name": "posted_by",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "djzl2phu8fvdezz",
+  "name": "notams",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "ltlbhcak",
+    "name": "title",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "otckuif6",
+    "name": "body",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "kfygxxmn",
+    "name": "type",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "utpwgtjw",
+    "name": "expires_at",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "kbm6vapk",
+    "name": "active",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "vm7aslr9lp81xks",
+  "name": "docs",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "aarojzzh",
+    "name": "doc_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "oi5uquog",
+    "name": "label",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "huktf8la",
+    "name": "title",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "xekaggec",
+    "name": "icon_name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "qhsygwfr",
+    "name": "admin_only",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "u6nzklji",
+    "name": "sort_order",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": false
+    }
+   },
+   {
+    "system": false,
+    "id": "duxo8ysw",
+    "name": "sections",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "1bhr6wlgmiyqiff",
+  "name": "changelog",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "t3dhzg7q",
+    "name": "version",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "lohxvf2h",
+    "name": "title",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "inkrx7ux",
+    "name": "date",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "n7hxgzla",
+    "name": "entries",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "qntxrfvvajsimb5",
+  "name": "settings",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "iutdpa8j",
+    "name": "key",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "dilkhne1",
+    "name": "value",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "a5hp3ez1hvbe2g3",
+  "name": "audit_logs",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "heoenagd",
+    "name": "action",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "6om5dsr8",
+    "name": "actor_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "znp5zwdj",
+    "name": "actor_name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "yzq2kood",
+    "name": "target_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "tnpmon5w",
+    "name": "target_name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "7zjyjbxu",
+    "name": "details",
+    "type": "json",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSize": 2000000
+    }
+   }
+  ],
+  "indexes": [],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ }
+]

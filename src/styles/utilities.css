@@ -1,0 +1,146 @@
+/*
+Longreach, a crew centre for virtual airlines on Infinite Flight.
+Copyright (C) 2026 Alex Evans
+
+Licensed under the PolyForm Noncommercial License 1.0.0. You should have
+received a copy of the licence with this program (LICENSE.md). If not, see
+<https://polyformproject.org/licenses/noncommercial/1.0.0>.
+*/
+
+/* Page header */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header h2 {
+  font-size: 1.875rem;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  margin-bottom: 0.25rem;
+  line-height: 1.2;
+}
+
+.page-header p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* Toast */
+@keyframes slideIn {
+  from { transform: translateX(400px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .main-container { padding: 2rem 1rem; }
+  .stats-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  .hamburger           { display: flex; }
+  .nav-links-desktop   { display: none; }
+  .nav-user-desktop    { display: none; }
+  .nav-user-mobile     { display: flex !important; }
+  .theme-toggle        { display: none; }
+  .mobile-menu         { display: block; }
+  .mobile-menu-overlay { display: block; }
+
+  .nav-container  { padding: 0 1rem; }
+  .main-container { padding: 1.5rem 1rem; }
+
+  .hero-section    { padding: 40px 20px; min-height: 200px; }
+  .hero-section h1 { font-size: 1.75rem; }
+
+  /* Stats: 2 compact cards per row */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .stat-card {
+    padding: 1rem 1.1rem;
+  }
+
+  .stat-card h4 {
+    font-size: 0.62rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-card .stat-value {
+    font-size: 1.6rem;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    word-break: break-word;
+  }
+
+  .card { padding: 1.25rem; }
+
+  table th, table td { padding: 0.75rem 0.5rem; font-size: 0.875rem; }
+
+  .page-header h2 { font-size: 1.5rem; font-weight: 800; }
+}
+
+@media (max-width: 480px) {
+  .main-container { padding: 1rem 0.75rem; }
+
+  .hero-section    { padding: 30px 15px; min-height: 150px; }
+  .hero-section h1 { font-size: 1.4rem; }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+  }
+
+  .stat-card {
+    padding: 0.875rem 1rem;
+  }
+
+  .stat-card h4 {
+    font-size: 0.6rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .stat-card .stat-value {
+    font-size: 1.35rem;
+    letter-spacing: -0.3px;
+    line-height: 1.15;
+    word-break: break-word;
+  }
+
+  .nav-logo h1 { font-size: 1.2rem; }
+}
+
+/* Responsive table helpers */
+.desktop-only { display: block; }
+.mobile-only  { display: none; }
+
+@media (max-width: 768px) {
+  .desktop-only { display: none !important; }
+  .mobile-only  { display: block !important; }
+}
+
+/* Scrollable table wrapper for mobile */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .table-scroll table {
+    min-width: 560px;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .admin-grid-wide {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -1,0 +1,379 @@
+{
+  "title": "Entry Exam",
+  "version": 1,
+  "pass_mark": 70,
+  "questions": [
+    {
+      "id": 1,
+      "question": "When should your beacon light be on?",
+      "options": [
+        "Prior to any movement and until the engines are shut down",
+        "Only during taxi",
+        "Only on the runway",
+        "As soon as you spawn in"
+      ],
+      "answer": 0,
+      "explanation": "The beacon light indicates that engines are running or about to start."
+    },
+    {
+      "id": 2,
+      "question": "When are strobe lights typically turned on in Infinite Flight?",
+      "options": [
+        "When entering a runway for takeoff",
+        "At the gate",
+        "During the entire flight including taxi",
+        "Only above 10,000 feet"
+      ],
+      "answer": 0,
+      "explanation": "Strobes are for visibility and should be on whenever you are on an active runway."
+    },
+    {
+      "id": 3,
+      "question": "What is the speed limit below 10,000 feet in most airspaces?",
+      "options": [
+        "200 knots",
+        "250 knots",
+        "300 knots",
+        "Mach 0.80"
+      ],
+      "answer": 1,
+      "explanation": "To ensure safety and traffic separation, 250kts is the standard speed limit below 10,000ft."
+    },
+    {
+      "id": 5,
+      "question": "Which surface on the wing is primarily used to turn the aircraft?",
+      "options": [
+        "Flaps",
+        "Ailerons",
+        "Slats",
+        "Vertical Stabilizer"
+      ],
+      "answer": 1,
+      "explanation": "Ailerons control the roll of the aircraft."
+    },
+    {
+      "id": 6,
+      "question": "What is the primary purpose of flaps?",
+      "options": [
+        "To increase speed",
+        "To decrease lift",
+        "To increase lift and drag at lower speeds",
+        "To steer the plane on the ground"
+      ],
+      "answer": 2,
+      "explanation": "Flaps allow the aircraft to fly slower while still maintaining enough lift to stay airborne."
+    },
+    {
+      "id": 7,
+      "question": "On the ground, what is the maximum taxi speed in Infinite Flight?",
+      "options": [
+        "10 knots",
+        "34 knots",
+        "30 knots",
+        "20-25 knots"
+      ],
+      "answer": 1,
+      "explanation": "Taxiing too fast (over 35kts) can result in a violation on Expert Server; 20-25kts is recommended."
+    },
+    {
+      "id": 8,
+      "question": "What does the ICAO airport code KJFK refer to?",
+      "options": [
+        "New York JFK",
+        "Kansas City",
+        "Jackson Hole",
+        "Jacksonville"
+      ],
+      "answer": 0,
+      "explanation": "KJFK is John F. Kennedy International Airport in New York; the K prefix covers the contiguous United States."
+    },
+    {
+      "id": 9,
+      "question": "If an ATC tells you to 'Line Up and Wait', what should you do?",
+      "options": [
+        "Take off immediately",
+        "Taxi onto the runway and stop",
+        "Stay behind the hold short line",
+        "Taxi to the gate"
+      ],
+      "answer": 1,
+      "explanation": "This means enter the runway and wait for further takeoff clearance."
+    },
+    {
+      "id": 10,
+      "question": "What is 'Final' in a standard traffic pattern?",
+      "options": [
+        "The first leg after takeoff",
+        "The leg parallel to the runway",
+        "The last leg of the approach aligned with the runway",
+        "Parking at the gate"
+      ],
+      "answer": 2,
+      "explanation": "Final is the straight-in portion of the landing approach."
+    },
+    {
+      "id": 11,
+      "question": "What does 'Heavy' mean when added to a callsign (e.g., Speedbird 12 Heavy)?",
+      "options": [
+        "The plane is carrying a lot of fuel",
+        "The aircraft has a high maximum takeoff weight",
+        "The pilot is new to the game",
+        "The plane is flying a long distance"
+      ],
+      "answer": 1,
+      "explanation": "Large aircraft are designated as 'Heavy' due to the wake turbulence they create."
+    },
+    {
+      "id": 12,
+      "question": "When should landing gear be retracted after takeoff?",
+      "options": [
+        "As soon as the wheels leave the ground",
+        "When a positive rate of climb is established",
+        "Above 5,000 feet",
+        "After turning off the landing lights"
+      ],
+      "answer": 1,
+      "explanation": "Positive rate ensures you aren't going to sink back onto the runway."
+    },
+    {
+      "id": 13,
+      "question": "What color are the lights on the left wingtip?",
+      "options": [
+        "Green",
+        "White",
+        "Red",
+        "Blue"
+      ],
+      "answer": 2,
+      "explanation": "Left is Red, Right is Green."
+    },
+    {
+      "id": 14,
+      "question": "What is an airline's 'hub'?",
+      "options": [
+        "Its head office",
+        "An airport it bases flights and connections around",
+        "Its largest aircraft type",
+        "Its maintenance hangar"
+      ],
+      "answer": 1,
+      "explanation": "A hub is an airport an airline concentrates its flights at, so passengers can connect between routes."
+    },
+    {
+      "id": 15,
+      "question": "What is the purpose of the 'Spoilers' during landing?",
+      "options": [
+        "To make the plane fly faster",
+        "To reduce lift and increase drag to help the plane slow down",
+        "To help the plane climb",
+        "They have no use during landing"
+      ],
+      "answer": 1,
+      "explanation": "Spoilers 'spoil' the lift and act as airbrakes."
+    },
+    {
+      "id": 16,
+      "question": "What is the 'Transition Altitude'?",
+      "options": [
+        "The altitude at which pilots switch from local pressure (QNH) to standard pressure (1013 hPa / 29.92 inHg)",
+        "The highest altitude an aircraft can fly",
+        "The altitude where the autopilot must be engaged",
+        "The altitude where the landing gear is raised"
+      ],
+      "answer": 0,
+      "explanation": "Climbing through the transition altitude, pilots set standard pressure and refer to flight levels; it varies by country."
+    },
+    {
+      "id": 17,
+      "question": "What is the 'Glideslope'?",
+      "options": [
+        "The speed of the aircraft",
+        "The vertical path for a precision landing",
+        "The horizontal path to the runway",
+        "The angle of the wings"
+      ],
+      "answer": 1,
+      "explanation": "The glideslope provides vertical guidance during an ILS approach."
+    },
+    {
+      "id": 18,
+      "question": "What should you do if you receive a 'Check Help Pages' message from ATC?",
+      "options": [
+        "Ignore it",
+        "Continue what you are doing",
+        "Review the rules/tutorials as you likely made a mistake",
+        "Report the controller"
+      ],
+      "answer": 2,
+      "explanation": "This is a polite warning from ATC that you aren't following procedures correctly."
+    },
+    {
+      "id": 19,
+      "question": "Which of these aircraft is known as the 'Queen of the Skies'?",
+      "options": [
+        "Boeing 737",
+        "Airbus A330",
+        "Boeing 747",
+        "Boeing 787"
+      ],
+      "answer": 2,
+      "explanation": "The Boeing 747 earned the nickname 'Queen of the Skies'."
+    },
+    {
+      "id": 20,
+      "question": "What does 'V1' stand for?",
+      "options": [
+        "Takeoff safety speed",
+        "The speed at which you must continue takeoff",
+        "Landing speed",
+        "The speed to retract flaps"
+      ],
+      "answer": 1,
+      "explanation": "V1 is the 'decision speed' after which you cannot safely abort the takeoff."
+    },
+    {
+      "id": 21,
+      "question": "At what altitude should you usually turn off your Landing Lights when climbing?",
+      "options": [
+        "5,000 ft",
+        "10,000 ft",
+        "Cruise altitude",
+        "Never"
+      ],
+      "answer": 1,
+      "explanation": "Landing lights are typically turned off passing 10,000ft."
+    },
+    {
+      "id": 22,
+      "question": "What is the rudder primarily used for?",
+      "options": [
+        "Yaw (moving the nose left and right)",
+        "Pitch (moving the nose up and down)",
+        "Roll (tilting the wings)",
+        "Increasing speed"
+      ],
+      "answer": 0,
+      "explanation": "The rudder controls yaw, mostly used during takeoff, landing, and crosswinds."
+    },
+    {
+      "id": 23,
+      "question": "When following another aircraft, what is the main danger of flying too close behind them?",
+      "options": [
+        "Running out of fuel",
+        "Wake Turbulence",
+        "Going too fast",
+        "Losing radio connection"
+      ],
+      "answer": 1,
+      "explanation": "Wake turbulence can flip or destabilize a trailing aircraft."
+    },
+    {
+      "id": 25,
+      "question": "In Infinite Flight, what does a 'Magenta' line on your map represent?",
+      "options": [
+        "A mountain",
+        "Your active flight plan path",
+        "Another airplane",
+        "A restricted zone"
+      ],
+      "answer": 1,
+      "explanation": "The magenta line represents your programmed GPS path."
+    },
+    {
+      "id": 26,
+      "question": "What is the standard 'Unicom/CTAF' frequency used for?",
+      "options": [
+        "Talking to friends",
+        "Announcing intentions at airports without active ATC",
+        "Listening to music",
+        "Emergency calls only"
+      ],
+      "answer": 1,
+      "explanation": "Unicom/CTAF is for pilot-to-pilot coordination at uncontrolled airports."
+    },
+    {
+      "id": 27,
+      "question": "What is the 'Red' area on the airspeed tape?",
+      "options": [
+        "Safe flying speed",
+        "Overspeed or stall warning zone",
+        "The speed for landing",
+        "Fuel efficient speed"
+      ],
+      "answer": 1,
+      "explanation": "Red indicates speeds that are dangerously fast or too slow to maintain flight."
+    },
+    {
+      "id": 29,
+      "question": "What is the 'APU' used for?",
+      "options": [
+        "Extra power during takeoff",
+        "Providing power and air while engines are off",
+        "Landing the plane automatically",
+        "Communicating with ATC"
+      ],
+      "answer": 1,
+      "explanation": "The Auxiliary Power Unit provides electricity and air conditioning on the ground."
+    },
+    {
+      "id": 30,
+      "question": "What does the 'LNAV' button do in Infinite Flight?",
+      "options": [
+        "Controls your altitude",
+        "Automatically follows your GPS flight plan",
+        "Lands the plane for you",
+        "Controls your airspeed"
+      ],
+      "answer": 1,
+      "explanation": "Lateral Navigation (LNAV) follows the horizontal path of your flight plan."
+    },
+    {
+      "id": 31,
+      "question": "What is 'Short Final'?",
+      "options": [
+        "A short flight",
+        "The very last moments before touchdown",
+        "The taxi to the gate",
+        "The beginning of the descent"
+      ],
+      "answer": 1,
+      "explanation": "Short final is when the aircraft is very close to the runway threshold."
+    },
+    {
+      "id": 32,
+      "question": "If you are flying 'East' (0-179 degrees), should your altitude usually be Even or Odd?",
+      "options": [
+        "Even (e.g., 32,000ft)",
+        "Odd (e.g., 33,000ft)",
+        "It doesn't matter",
+        "Always below 10,000ft"
+      ],
+      "answer": 1,
+      "explanation": "The 'Eastbound Odd, Westbound Even' rule helps prevent mid-air collisions."
+    },
+    {
+      "id": 34,
+      "question": "What should you do if you are on a collision course with another aircraft?",
+      "options": [
+        "Nothing, they will move",
+        "Maneuver to avoid the other aircraft",
+        "Close the app",
+        "Speed up"
+      ],
+      "answer": 1,
+      "explanation": "Safety is the priority; pilots must maneuver to avoid collisions."
+    },
+    {
+      "id": 35,
+      "question": "What does 'Wilco' mean in response to an ATC instruction?",
+      "options": [
+        "I will comply",
+        "I cannot do that",
+        "Who are you?",
+        "Repeat the message"
+      ],
+      "answer": 0,
+      "explanation": "'Wilco' is short for 'Will Comply.'"
+    }
+  ]
+}

@@ -1,0 +1,322 @@
+/*
+Longreach, a crew centre for virtual airlines on Infinite Flight.
+Copyright (C) 2026 Alex Evans
+
+Licensed under the PolyForm Noncommercial License 1.0.0. You should have
+received a copy of the licence with this program (LICENSE.md). If not, see
+<https://polyformproject.org/licenses/noncommercial/1.0.0>.
+*/
+
+/* Navbar */
+.navbar {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  padding: 0;
+  padding-top: env(safe-area-inset-top);
+  box-shadow: 0 1px 0 var(--border-color), 0 2px 8px var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  min-height: 76px;
+  position: relative;
+}
+
+.nav-logo h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--avg-gold);
+  margin: 0;
+}
+
+.nav-logo img {
+  height: 60px;
+  object-fit: contain;
+}
+
+/* Desktop nav links */
+.nav-links-desktop {
+  display: flex;
+  gap: 0;
+  margin-left: auto;
+  margin-right: 1rem;
+  align-items: center;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  padding: 1.35rem 1.1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+  border-bottom: 3px solid transparent;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.nav-link:hover {
+  color: var(--avg-green);
+  border-bottom-color: var(--avg-gold);
+}
+
+.nav-link.active {
+  color: var(--avg-green);
+  border-bottom-color: var(--avg-gold);
+  font-weight: 600;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  border-radius: 8px;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  background-color: var(--bg-hover);
+}
+
+/* Desktop user menu button */
+.user-menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.user-menu-button:hover {
+  background-color: var(--bg-hover);
+}
+
+.user-avatar-fallback {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--avg-green) 0%, var(--avg-green-dark) 100%);
+  border: 2px solid var(--avg-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+/* User Dropdown */
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px var(--shadow-hover);
+  min-width: 200px;
+  z-index: 3000;
+  overflow: hidden;
+}
+
+.user-dropdown-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-hover);
+}
+
+.user-dropdown-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Callsign in gold */
+.user-dropdown-callsign {
+  font-size: 0.8rem;
+  color: var(--avg-gold-dark);
+  font-weight: 600;
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+}
+
+.user-dropdown-item {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  transition: background-color 0.15s ease;
+  font-weight: 500;
+}
+
+.user-dropdown-item:hover {
+  background-color: var(--bg-hover);
+}
+
+.user-dropdown-item.logout {
+  color: #c0392b;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Hamburger button */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.hamburger:hover { background-color: var(--bg-hover); }
+
+.hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--text-primary);
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  transform-origin: center;
+}
+
+.hamburger-line.open:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-line.open:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger-line.open:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile menu */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1900;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 76px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 8px 24px var(--shadow-hover);
+  z-index: 2100;
+  padding: 0.5rem 0 1rem;
+  animation: slideDown 0.2s ease-out;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.mobile-menu-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0.5rem;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 0.875rem 1.25rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.15s ease, color 0.15s ease, border-left-color 0.15s ease;
+  font-family: inherit;
+  border-left: 3px solid transparent;
+}
+
+.mobile-nav-link:hover {
+  background-color: var(--bg-hover);
+  color: var(--avg-green);
+  border-left-color: var(--avg-gold);
+}
+
+.mobile-nav-link.active {
+  background-color: var(--bg-hover);
+  color: var(--avg-green);
+  font-weight: 600;
+  border-left-color: var(--avg-gold);
+}
+
+/* Responsive */
+.nav-user-mobile { display: none; }
+
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  .nav-links-desktop { display: none; }
+  .nav-user-desktop { display: none !important; }
+  .nav-user-mobile { display: flex !important; }
+
+  .nav-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 160px;
+  }
+
+  .nav-logo img {
+    height: 44px;
+    max-width: 160px;
+  }
+
+  .nav-container {
+    justify-content: flex-start;
+    position: relative;
+  }
+
+  .nav-actions {
+    margin-left: auto;
+  }
+}

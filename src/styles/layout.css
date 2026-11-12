@@ -1,0 +1,31 @@
+/*
+Longreach, a crew centre for virtual airlines on Infinite Flight.
+Copyright (C) 2026 Alex Evans
+
+Licensed under the PolyForm Noncommercial License 1.0.0. You should have
+received a copy of the licence with this program (LICENSE.md). If not, see
+<https://polyformproject.org/licenses/noncommercial/1.0.0>.
+*/
+
+/* Hero section */
+.hero-section {
+  padding: 80px 40px;
+  border-radius: 4px;
+  margin-bottom: 40px;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.hero-section h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  font-weight: 300;
+}
+
+.hero-section p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.125rem;
+  font-weight: 300;
+}

@@ -1,0 +1,70 @@
+{
+  "name": "Example Virtual Airlines",
+  "shortName": "Example Virtual",
+  "abbreviation": "EVA",
+  "crewCentreName": "Crew Centre",
+  "description": "A virtual airline flying on Infinite Flight.",
+
+  "callsign": {
+    "format": "Example {n}VA",
+    "short": "EVA{n}",
+    "min": 100,
+    "max": 999,
+    "legacy": []
+  },
+
+  "colors": {
+    "primary": "#1f5f8b",
+    "accent": "#d9a441",
+    "neutrals": "warm"
+  },
+
+  "logos": {
+    "light": "brand/default/logo-light.svg",
+    "dark": "brand/default/logo-dark.svg",
+    "icon": "brand/default/icon.svg"
+  },
+
+  "timezone": "UTC",
+
+  "hubs": [
+    { "icao": "KLAX", "name": "Los Angeles" },
+    { "icao": "KJFK", "name": "New York" }
+  ],
+
+  "requirements": {
+    "minimumGrade": 3
+  },
+
+  "atc": {
+    "airportPrefixes": [],
+    "regionName": ""
+  },
+
+  "urls": {
+    "crewCentre": "http://localhost:3000",
+    "api": "http://localhost:3001",
+    "website": "",
+    "discordInvite": ""
+  },
+
+  "legal": {
+    "operator": "",
+    "contact": "",
+    "jurisdiction": "",
+    "minimumAge": 13
+  },
+
+  "discord": {
+    "logoEmoji": ""
+  },
+
+  "features": {
+    "career": true,
+    "events": true,
+    "challenges": true,
+    "routesOfTheWeek": true,
+    "liveMode": true,
+    "atc": true
+  }
+}
