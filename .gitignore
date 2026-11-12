@@ -14,7 +14,8 @@ build/
 
 # PocketBase data — never commit your database
 pb_data/
-pocketbase
+# the PocketBase program itself (not the pocketbase/ deploy folder)
+pocketbase/pocketbase
 *.pb
 
 # Logs
