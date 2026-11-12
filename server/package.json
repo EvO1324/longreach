@@ -1,6 +1,6 @@
 {
   "name": "longreach-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Crew centre API and Discord bot",
   "main": "src/index.js",
   "scripts": {
