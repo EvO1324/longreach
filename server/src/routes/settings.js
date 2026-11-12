@@ -37,7 +37,8 @@ router.get('/settings', async (req, res) => {
     const records = await pb.collection('settings').getFullList({ requestKey: null });
     const map     = {};
     records.forEach(r => {
-      if (!PRIVATE_SETTINGS_KEYS.has(r.key)) map[r.key] = r.value;
+      // config.* holds Admin › Connections (webhooks, tokens): never public
+      if (!PRIVATE_SETTINGS_KEYS.has(r.key) && !r.key.startsWith('config.') && r.key !== 'config_version') map[r.key] = r.value;
     });
 
     const result = { settings: map };
@@ -49,6 +50,9 @@ router.get('/settings', async (req, res) => {
 });
 
 router.put('/settings/:key', requireAdmin, async (req, res) => {
+  if (req.params.key.startsWith('config.') || req.params.key === 'config_version') {
+    return res.status(400).json({ error: 'Change this in Admin › Connections' });
+  }
   try {
     const { value } = req.body;
     const pb = await getAdminClient();

@@ -16,7 +16,7 @@ const { syncRoleBadgesForPilot } = require('../../services/badges');
 const FRONTEND_URL             = brand.frontendUrl;
 const DISCORD_VERIFIED_ROLE_ID = process.env.DISCORD_VERIFIED_ROLE_ID;
 const DISCORD_GUILD_ID         = process.env.DISCORD_GUILD_ID;
-const UNVERIFIED_ROLE_ID       = process.env.DISCORD_UNVERIFIED_ROLE_ID || '1478636096735936512';
+const UNVERIFIED_ROLE_ID       = process.env.DISCORD_UNVERIFIED_ROLE_ID || null;
 const IFATC_ROLE_ID            = process.env.DISCORD_IFATC_ROLE_ID || null;
 const IFAET_ROLE_ID            = process.env.DISCORD_IFAET_ROLE_ID || null;
 const IF_BASE                  = 'https://api.infiniteflight.com/public/v2';
@@ -97,7 +97,7 @@ module.exports = {
         }
 
         // Remove unverified role
-        await discordReq('DELETE', `/guilds/${DISCORD_GUILD_ID}/members/${interaction.user.id}/roles/${UNVERIFIED_ROLE_ID}`)
+        if (UNVERIFIED_ROLE_ID) await discordReq('DELETE', `/guilds/${DISCORD_GUILD_ID}/members/${interaction.user.id}/roles/${UNVERIFIED_ROLE_ID}`)
           .catch(() => {});
         console.log(`[verify] Removed unverified role from ${interaction.user.username}`);
 

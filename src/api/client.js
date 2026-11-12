@@ -493,6 +493,14 @@ export const importer = {
   run: (type, rows, dryRun = true) => post(`/import/${type}`, { rows, dryRun }),
 };
 
+// Connections (Admin › Connections)
+export const connections = {
+  get:         ()           => get('/admin/connections'),
+  save:        (values)     => post('/admin/connections', { values }),
+  discord:     (guild = '') => get(`/admin/connections/discord${guild ? `?guild=${encodeURIComponent(guild)}` : ''}`),
+  testWebhook: (key, value) => post('/admin/connections/test-webhook', { key, value }),
+};
+
 // Updates (Admin › Updates)
 export const updates = {
   status: ()        => get('/updates'),

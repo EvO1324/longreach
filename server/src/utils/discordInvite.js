@@ -9,11 +9,12 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 
 const { getAdminClient } = require('../config/pocketbase');
 
-const INVITE_CHANNEL_ID = process.env.DISCORD_INVITE_CHANNEL_ID || '1476732250543620232';
+const INVITE_CHANNEL_ID = process.env.DISCORD_INVITE_CHANNEL_ID || null;
 
 async function createDiscordInvite(pilotId = null) {
   const botToken = process.env.DISCORD_BOT_TOKEN;
   if (!botToken) throw new Error('Bot token not configured');
+  if (!INVITE_CHANNEL_ID) throw new Error('DISCORD_INVITE_CHANNEL_ID not configured');
 
   const response = await fetch(`https://discord.com/api/v10/channels/${INVITE_CHANNEL_ID}/invites`, {
     method: 'POST',

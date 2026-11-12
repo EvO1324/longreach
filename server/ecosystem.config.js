@@ -11,12 +11,13 @@ module.exports = {
   apps: [
     {
       name: 'api',
-      script: 'src/index.js',
+      script: 'src/boot.js',
       env: { NODE_ENV: 'production' },
     },
     {
       name: 'bot',
-      script: 'src/bot.js',
+      script: 'src/boot.js',
+      args: 'bot',
       env: { NODE_ENV: 'production' },
     },
   ],

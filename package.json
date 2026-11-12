@@ -25,8 +25,7 @@
     "prebuild": "node scripts/brand.js && node scripts/buildAirportsMin.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "fly-secrets": "node scripts/flySecrets.js",
-    "release": "node scripts/release.js"
+    "fly-secrets": "node scripts/flySecrets.js"
   },
   "eslintConfig": {
     "extends": [

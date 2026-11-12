@@ -4,10 +4,10 @@
   "description": "Crew centre API and Discord bot",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "start": "node src/boot.js",
+    "dev": "nodemon src/boot.js",
     "lint": "eslint src/",
-    "start:bot": "node src/bot.js",
+    "start:bot": "node src/boot.js bot",
     "test": "node --test \"src/**/*.test.js\"",
     "predev": "node ../scripts/brand.js",
     "prestart": "node ../scripts/brand.js",

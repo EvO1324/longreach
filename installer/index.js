@@ -193,6 +193,9 @@ async function pbCreateOwner(admin, owner, config) {
     total_flights: 0,
     total_hours: 0,
   };
+  // pressing Install again after an interrupted run: the account is already there
+  const found = await fetchJson(`${admin.url}/api/collections/users/records?perPage=1&fields=callsign&filter=${encodeURIComponent(`email="${body.email.replace(/"/g, '')}"`)}`, { headers: { Authorization: admin.token } });
+  if (found.ok && found.data?.items?.length) return `${found.data.items[0].callsign}, already set up`;
   const r = await fetchJson(`${admin.url}/api/collections/users/records`, {
     method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: admin.token }, body: JSON.stringify(body),
   });

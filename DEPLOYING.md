@@ -156,7 +156,9 @@ In the crew centre's admin panel:
    cd server && fly deploy
    ```
 
-   For the first deploy, also run `fly secrets set REGISTER_COMMANDS=true --stage` before deploying, so the bot registers its slash commands.
+   The bot registers its slash commands when it starts.
+
+**Changing them later.** Roles, channels and webhooks (and the GitHub and Live Mode settings) can be changed any time in **Admin › Connections**, with no redeploy. Roles and channels are picked from lists once the bot is in your server. Saving restarts the crew centre for a few seconds. Values saved there replace the ones from setup.
 
 ## Updating
 

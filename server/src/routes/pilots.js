@@ -20,7 +20,7 @@ const { createDiscordInvite } = require('../utils/discordInvite');
 
 const router = express.Router();
 
-const LIVE_DISCORD_ROLE_ID = process.env.DISCORD_LIVE_ROLE_ID || '1554008841065336934';
+const LIVE_DISCORD_ROLE_ID = process.env.DISCORD_LIVE_ROLE_ID || null;
 
 function safePilot(u) {
   return {
@@ -476,7 +476,7 @@ router.patch('/:id', requirePermission('pilots.edit'), async (req, res) => {
       try {
         const botToken = process.env.DISCORD_BOT_TOKEN;
         const guildId  = process.env.DISCORD_GUILD_ID;
-        if (botToken && guildId) {
+        if (botToken && guildId && LIVE_DISCORD_ROLE_ID) {
           await fetch(`https://discord.com/api/v10/guilds/${guildId}/members/${data.discord_id}/roles/${LIVE_DISCORD_ROLE_ID}`, {
             method: data.live_access ? 'PUT' : 'DELETE',
             headers: { 'Authorization': `Bot ${botToken}` },

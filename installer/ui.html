@@ -418,7 +418,15 @@ received a copy of the licence with this program (LICENSE.md). If not, see
   function get(o, p) { return p.split('.').reduce(function (x, k) { return x == null ? undefined : x[k]; }, o); }
   function set(o, p, v) { var ks = p.split('.'); for (var i = 0; i < ks.length - 1; i++) { if (o[ks[i]] == null || typeof o[ks[i]] !== 'object') o[ks[i]] = {}; o = o[ks[i]]; } o[ks[ks.length - 1]] = v; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function api(p, body) { return fetch(p, body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(function (r) { return r.json(); }); }
+  var GONE = 'Setup stopped answering. If you\'re in a Codespace, check it\'s still running, then start setup again with npm run setup and press Install again. Don\'t reload this page: it still has your answers.';
+  function api(p, body) {
+    return fetch(p, body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .catch(function () { throw new Error(GONE); })
+      .then(function (r) { return r.text().then(function (t) {
+        if (!t) throw new Error(GONE);
+        try { return JSON.parse(t); } catch (e) { throw new Error(r.ok ? GONE : 'Setup answered ' + r.status + '. Reload this page and try again.'); }
+      }); });
+  }
   function status(id, cls, text) { var el = document.getElementById(id); if (el) { el.className = 'status ' + (cls || ''); el.textContent = text || ''; } }
 
   // tabs

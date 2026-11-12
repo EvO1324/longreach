@@ -17,7 +17,7 @@ const { approveBid, denyBid, notifyPilot, pilotName } = require('./ifLiveActions
 
 const DISCORD_BOT_TOKEN      = process.env.DISCORD_BOT_TOKEN;
 const DISCORD_CLIENT_ID      = process.env.DISCORD_CLIENT_ID;
-const UNVERIFIED_ROLE_ID     = process.env.DISCORD_UNVERIFIED_ROLE_ID || '1478636096735936512';
+const UNVERIFIED_ROLE_ID     = process.env.DISCORD_UNVERIFIED_ROLE_ID || null;
 
 if (!DISCORD_BOT_TOKEN || !DISCORD_CLIENT_ID) {
   console.warn('[bot] Missing DISCORD_BOT_TOKEN or DISCORD_CLIENT_ID — bot disabled (local dev mode)');

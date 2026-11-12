@@ -10,7 +10,7 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 import React, { useState, useEffect } from 'react';
 import {
   LayoutDashboard, BookOpen, FilePlus, Plane, BarChart2,
-  Map, Star, Trophy, Wrench, Calendar, RefreshCw,
+  Map, Star, Trophy, Wrench, Calendar, RefreshCw, Link2,
   Users, UserPlus, Activity, Bell, ScrollText,
   DatabaseBackup, HeartPulse, PackagePlus, BarChart3,
   ListOrdered, UserCog, SlidersHorizontal, Image,
@@ -107,6 +107,7 @@ const ADMIN_GROUPS = [
       { tab: 'multipliers', label: 'Multipliers',  icon: SlidersHorizontal, adminOnly: true },
       { tab: 'assets',      label: 'Assets',       icon: Image,             adminOnly: true },
       { tab: 'site',        label: 'Site settings', icon: Wrench,           adminOnly: true },
+      { tab: 'connections', label: 'Connections',   icon: Link2,            adminOnly: true },
       { tab: 'updates',     label: 'Updates',       icon: RefreshCw,        adminOnly: true },
     ],
   },

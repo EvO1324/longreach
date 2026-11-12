@@ -178,6 +178,7 @@ app.use('/api', docsRoutes);
 app.use('/api/watchlist', watchlistRoutes);
 app.use('/api/import', require('./routes/importer'));
 app.use('/api/updates', require('./routes/updates'));
+app.use('/api/admin/connections', require('./routes/connections'));
 
 const { requireAdmin } = require('./middleware/auth');
 

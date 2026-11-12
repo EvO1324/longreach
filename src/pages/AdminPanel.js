@@ -34,6 +34,7 @@ import ActivityManager     from './admin/ActivityManager';
 import LeaveManager       from './admin/LeaveManager';
 import SiteSettings        from './admin/SiteSettings';
 import UpdatesManager      from './admin/UpdatesManager';
+import Connections         from './admin/Connections';
 import AuditLog            from './admin/AuditLog';
 import ImportTool          from './admin/ImportTool';
 import VAHealth            from './admin/VAHealth';
@@ -122,6 +123,7 @@ const CATEGORIES = [
       { id: 'multipliers',  label: 'Multipliers',  perm: null, adminOnly: true },
       { id: 'assets',       label: 'Assets',       perm: null, adminOnly: true },
       { id: 'site',         label: 'Site settings',     perm: null, adminOnly: true },
+      { id: 'connections',  label: 'Connections',       perm: null, adminOnly: true },
       { id: 'updates',      label: 'Updates',           perm: null, adminOnly: true },
     ],
   },
@@ -288,6 +290,7 @@ function AdminPanel({ user }) {
           {activeTab === 'multipliers'  && <MultipliersManager />}
           {activeTab === 'assets'       && <AssetsManager />}
           {activeTab === 'site'         && <SiteSettings />}
+          {activeTab === 'connections'  && <Connections />}
           {activeTab === 'updates'      && <UpdatesManager />}
           {activeTab === 'import'       && <ImportTool />}
           {activeTab === 'health'       && <VAHealth />}

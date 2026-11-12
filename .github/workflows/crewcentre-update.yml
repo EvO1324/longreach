@@ -46,11 +46,28 @@ jobs:
           fi
           git fetch --no-tags upstream "refs/tags/${{ inputs.version }}:refs/tags/${{ inputs.version }}"
           git merge --no-edit "${{ inputs.version }}" -m "Update the crew centre to ${{ inputs.version }}"
-          git push
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      # the release's tag is the version, so nobody has to bump it by hand
+      - name: Set the version to ${{ inputs.version }}
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          node -e '
+            const fs = require("fs");
+            const v = process.env.VERSION.replace(/^v/, "");
+            for (const f of ["package.json", "server/package.json", "package-lock.json", "server/package-lock.json"]) {
+              if (!fs.existsSync(f)) continue;
+              const p = JSON.parse(fs.readFileSync(f, "utf8"));
+              p.version = v;
+              if (p.packages && p.packages[""]) p.packages[""].version = v;
+              fs.writeFileSync(f, JSON.stringify(p, null, 2) + "\n");
+            }'
+          git commit -am "Crew centre version ${VERSION#v}" || true
+          git push
 
       - name: Apply the brand
         run: node scripts/brand.js

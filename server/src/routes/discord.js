@@ -23,7 +23,7 @@ const WEBHOOKS = {
   iflive:        process.env.DISCORD_WEBHOOK_IFLIVE,
 };
 
-const RECRUITMENT_ROLE_ID = process.env.DISCORD_RECRUITMENT_ROLE_ID || '1483667249356079170';
+const RECRUITMENT_ROLE_ID = process.env.DISCORD_RECRUITMENT_ROLE_ID || null;
 
 const COLOURS = {
   green:  brand.embedColor('primary'),
@@ -85,7 +85,7 @@ async function sendImageOnly(webhookUrl, draw, name, fallback) {
 
 async function notifyRegistration({ first_name, last_name, callsign, ifc_username, if_user_id }) {
   await send(WEBHOOKS.registrations, {
-    content: `<@&${RECRUITMENT_ROLE_ID}> New pilot application`,
+    content: RECRUITMENT_ROLE_ID ? `<@&${RECRUITMENT_ROLE_ID}> New pilot application` : 'New pilot application',
     embeds: [{
       title: 'New Pilot Application',
       color: COLOURS.blue,
@@ -103,7 +103,7 @@ async function notifyRegistration({ first_name, last_name, callsign, ifc_usernam
 
 async function notifyExamResult({ first_name, last_name, callsign, ifc_username, score, passed }) {
   await send(WEBHOOKS.registrations, {
-    ...(passed ? { content: `<@&${RECRUITMENT_ROLE_ID}> Exam passed — ready for review` } : {}),
+    ...(passed ? { content: `${RECRUITMENT_ROLE_ID ? `<@&${RECRUITMENT_ROLE_ID}> ` : ''}Exam passed — ready for review` } : {}),
     embeds: [{
       title: passed ? 'Exam Passed' : 'Exam Failed',
       color: passed ? COLOURS.green : COLOURS.red,

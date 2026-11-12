@@ -23,7 +23,7 @@ const DISCORD_BOT_TOKEN        = process.env.DISCORD_BOT_TOKEN;
 const DISCORD_CLIENT_ID        = process.env.DISCORD_CLIENT_ID;
 const DISCORD_GUILD_ID         = process.env.DISCORD_GUILD_ID;
 const DISCORD_RANKUP_CHANNEL_ID = process.env.DISCORD_RANKUP_CHANNEL_ID;
-const UNVERIFIED_ROLE_ID       = process.env.DISCORD_UNVERIFIED_ROLE_ID || '1478636096735936512';
+const UNVERIFIED_ROLE_ID       = process.env.DISCORD_UNVERIFIED_ROLE_ID || null;
 
 if (!DISCORD_BOT_TOKEN || !DISCORD_CLIENT_ID) {
   console.error('[bot] Missing DISCORD_BOT_TOKEN or DISCORD_CLIENT_ID — bot will not start');
@@ -57,14 +57,16 @@ async function registerCommands() {
   const rest = new REST({ version: '10' }).setToken(DISCORD_BOT_TOKEN);
   const commandData = [...commands.values()].map(c => c.data.toJSON());
   try {
-    // Clear any stale global commands first (these cause duplicates)
+    if (!DISCORD_GUILD_ID) {
+      // no server set: global commands (can take up to an hour to show)
+      await rest.put(Routes.applicationCommands(DISCORD_CLIENT_ID), { body: commandData });
+      console.log(`[bot] Registered ${commandData.length} global slash commands (set DISCORD_GUILD_ID for instant ones)`);
+      return;
+    }
+    // guild commands show at once; clear global ones so nothing appears twice
     await rest.put(Routes.applicationCommands(DISCORD_CLIENT_ID), { body: [] });
-    // Register guild commands (instant propagation, no duplicates)
-    await rest.put(
-      Routes.applicationGuildCommands(DISCORD_CLIENT_ID, DISCORD_GUILD_ID),
-      { body: commandData }
-    );
-    console.log(`[bot] Registered ${commandData.length} guild slash commands (global commands cleared)`);
+    await rest.put(Routes.applicationGuildCommands(DISCORD_CLIENT_ID, DISCORD_GUILD_ID), { body: commandData });
+    console.log(`[bot] Registered ${commandData.length} guild slash commands`);
   } catch (err) {
     console.error('[bot] Failed to register commands:', err.message);
   }
@@ -108,17 +110,16 @@ const client = new Client({
   },
 });
 
+require('./config/runtime').restartOnChange();
+
 client.once('ready', async () => {
   console.log(`[bot] Logged in as ${client.user.tag}`);
   client.user.setActivity(brand.shortName, { type: ActivityType.Watching });
   notifyBotOnline({ tag: client.user.tag }).catch(() => {});
 
-  if (process.env.REGISTER_COMMANDS === 'true') {
-    console.log('[bot] REGISTER_COMMANDS=true — registering slash commands');
-    await registerCommands();
-  } else {
-    console.log('[bot] REGISTER_COMMANDS not set — skipping command registration on this machine');
-  }
+  // on by default; REGISTER_COMMANDS=false turns it off (e.g. on a second machine)
+  if (process.env.REGISTER_COMMANDS !== 'false') await registerCommands();
+  else console.log('[bot] REGISTER_COMMANDS=false, not registering slash commands');
 });
 
 // Interaction handler (slash commands)
@@ -169,6 +170,7 @@ client.on('interactionCreate', async (interaction) => {
 
 // New member join
 client.on('guildMemberAdd', async (member) => {
+  if (!UNVERIFIED_ROLE_ID) return;
   try {
     const role = member.guild.roles.cache.get(UNVERIFIED_ROLE_ID)
       || await member.guild.roles.fetch(UNVERIFIED_ROLE_ID).catch(() => null);
