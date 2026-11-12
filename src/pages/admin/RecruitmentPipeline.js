@@ -7,7 +7,7 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 <https://polyformproject.org/licenses/noncommercial/1.0.0>.
 */
 
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, useContext, useRef } from 'react';
 import ConfirmModal from '../../components/ConfirmModal';
 import { exam as examApi, pilots as pilotsApi, infiniteFlight, watchlist as watchlistApi } from '../../api/client';
 import { showToast } from '../../components/Toast';
@@ -52,6 +52,10 @@ const STAGES = [
   { key: 'approved',  label: 'Approved',  dot: AVG_GREEN, icon: 'check' },
   { key: 'rejected',  label: 'Rejected',  dot: '#c62828', icon: 'x'     },
 ];
+
+// How applicants are assessed (Recruitment settings): 'builtin' (the crew
+// centre's own exam), 'external' (a link marked by staff) or 'none'
+const ModeCtx = React.createContext('builtin');
 
 async function copyToClipboard(text) {
   try {
@@ -368,15 +372,23 @@ function OverflowMenu({ items }) {
 
 function ApplicantActionIcons({ pilot, onAction, isProcessing }) {
   const status = pilot.recruitment_status || 'applied';
+  const mode = useContext(ModeCtx);
   return (
     <>
-      {status === 'applied' && (
-        <TextChipBtn label="Contact" title="Contact & send exam" color={AVG_GREEN} disabled={isProcessing} onClick={() => onAction(pilot.id, 'contact_and_exam')} />
+      {status === 'applied' && mode !== 'none' && (
+        <TextChipBtn label="Contact" title={mode === 'external' ? 'Send exam link' : 'Contact & send exam'} color={AVG_GREEN} disabled={isProcessing} onClick={() => onAction(pilot.id, 'contact_and_exam')} />
       )}
-      {status === 'exam_sent' && pilot.exam_attempts === 0 && (
+      {status === 'applied' && mode === 'none' && (
+        <IconBtn icon={ICONS.check} title="Approve" color={AVG_GREEN} disabled={isProcessing} onClick={() => onAction(pilot.id, 'approve')} />
+      )}
+      {status === 'exam_sent' && mode !== 'builtin' && (<>
+        {mode === 'external' && <IconBtn icon={ICONS.refresh} title="Copy exam link message again" disabled={isProcessing} onClick={() => onAction(pilot.id, 'resend_external')} />}
+        <IconBtn icon={ICONS.check} title="Approve" color={AVG_GREEN} disabled={isProcessing} onClick={() => onAction(pilot.id, 'approve')} />
+      </>)}
+      {status === 'exam_sent' && mode === 'builtin' && pilot.exam_attempts === 0 && (
         <IconBtn icon={ICONS.refresh} title="Resend / regen link" disabled={isProcessing} onClick={() => onAction(pilot.id, 'regenerate_exam')} />
       )}
-      {status === 'exam_sent' && pilot.exam_attempts > 0 && (
+      {status === 'exam_sent' && mode === 'builtin' && pilot.exam_attempts > 0 && (
         <IconBtn icon={ICONS.check} title="Approve" color={AVG_GREEN} disabled={isProcessing} onClick={() => onAction(pilot.id, 'approve')} />
       )}
       {status === 'approved' && (
@@ -442,6 +454,7 @@ function ApplicantGridCard({ pilot, isSelected, onSelect, onAction, processing, 
 }
 
 function PilotDetail({ pilot, onAction, processing, watchlistFlag, user }) {
+  const mode = useContext(ModeCtx);
   const [showTranscript, setShowTranscript] = useState(false);
   const [avatarError, setAvatarError]       = useState(false);
   const isProcessing = processing === pilot.id;
@@ -646,8 +659,12 @@ function PilotDetail({ pilot, onAction, processing, watchlistFlag, user }) {
             </div>
           )}
 
-          {status === 'exam_sent' && pilot.exam_attempts === 0 && (
+          {status === 'exam_sent' && pilot.exam_attempts === 0 && mode === 'builtin' && (
             <div style={{ maxWidth: 260 }}><ExamTimer sentAt={pilot.exam_token_created} /></div>
+          )}
+
+          {status === 'exam_sent' && mode !== 'builtin' && (
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{mode === 'external' ? 'Exam link sent. Mark their answers, then approve or reject.' : 'Sent an exam before recruitment changed to no exam. Approve or reject them.'}</div>
           )}
 
           {status === 'approved' && pilot.discord_invite_sent_at && (
@@ -662,19 +679,32 @@ function PilotDetail({ pilot, onAction, processing, watchlistFlag, user }) {
       <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.85rem' }}>
         <div style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-secondary)', opacity: 0.6, marginBottom: '0.5rem' }}>Actions</div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-        {status === 'applied' && (
+        {status === 'applied' && mode === 'builtin' && (
           <ActionBtn label="Contact & Send Exam" variant="primary" icon={ICONS.mail} onClick={() => onAction(pilot.id, 'contact_and_exam')} />
         )}
 
-        {status === 'exam_sent' && pilot.exam_attempts === 0 && (
-          <ActionBtn label="Resend / Regen Link" variant="ghost" icon={ICONS.refresh} onClick={() => onAction(pilot.id, 'regenerate_exam')} />
+        {status === 'applied' && mode === 'external' && (
+          <ActionBtn label="Send Exam Link" variant="primary" icon={ICONS.mail} onClick={() => onAction(pilot.id, 'contact_and_exam')} />
         )}
 
-        {status === 'exam_sent' && pilot.exam_attempts > 0 && pilot.exam_passed && (
+        {status === 'applied' && mode === 'none' && (
           <ActionBtn label="Approve & Invite" variant="primary" icon={ICONS.check} onClick={() => onAction(pilot.id, 'approve')} />
         )}
 
-        {status === 'exam_sent' && pilot.exam_attempts > 0 && !pilot.exam_passed && (<>
+        {status === 'exam_sent' && mode !== 'builtin' && (<>
+          <ActionBtn label="Approve & Invite" variant="primary" icon={ICONS.check} onClick={() => onAction(pilot.id, 'approve')} />
+          {mode === 'external' && <ActionBtn label="Copy Link Message Again" variant="ghost" icon={ICONS.refresh} onClick={() => onAction(pilot.id, 'resend_external')} />}
+        </>)}
+
+        {status === 'exam_sent' && mode === 'builtin' && pilot.exam_attempts === 0 && (
+          <ActionBtn label="Resend / Regen Link" variant="ghost" icon={ICONS.refresh} onClick={() => onAction(pilot.id, 'regenerate_exam')} />
+        )}
+
+        {status === 'exam_sent' && mode === 'builtin' && pilot.exam_attempts > 0 && pilot.exam_passed && (
+          <ActionBtn label="Approve & Invite" variant="primary" icon={ICONS.check} onClick={() => onAction(pilot.id, 'approve')} />
+        )}
+
+        {status === 'exam_sent' && mode === 'builtin' && pilot.exam_attempts > 0 && !pilot.exam_passed && (<>
           <ActionBtn label="Approve Anyway" variant="primary" icon={ICONS.check} onClick={() => onAction(pilot.id, 'approve')} />
           <ActionBtn label="Reset Exam" variant="ghost" icon={ICONS.refresh} onClick={() => onAction(pilot.id, 'reset_exam')} />
         </>)}
@@ -741,7 +771,10 @@ function PilotDetail({ pilot, onAction, processing, watchlistFlag, user }) {
   );
 }
 
-function RecruitmentPipeline({ allPilots, onReload, user }) {
+function RecruitmentPipeline({ allPilots, onReload, user, recruitment }) {
+  const mode = recruitment?.exam || 'builtin';
+  const recRef = useRef(recruitment);
+  recRef.current = recruitment;
   const [processing, setProcessing] = useState(null);
   const [pendingAction, setPendingAction] = useState(null); // { pilotId, action, pilot }
   const [selectedId, setSelectedId] = useState(null);
@@ -761,6 +794,10 @@ function RecruitmentPipeline({ allPilots, onReload, user }) {
   const getFlag = (pilot) => pilot.ifc_username ? watchlistMap.get(pilot.ifc_username.toLowerCase()) : undefined;
 
   const pipelinePilots = allPilots.filter(p => p.status !== 'approved' && p.status !== 'archived');
+  // with no exam there's no "Exam sent" step, unless someone is still in it from before
+  const stages = mode === 'none' && !pipelinePilots.some(p => p.recruitment_status === 'exam_sent')
+    ? STAGES.filter(st => st.key !== 'exam_sent')
+    : STAGES;
 
   const handleAction = useCallback(async (pilotId, action) => {
     const p = allPilots.find(x => x.id === pilotId);
@@ -777,6 +814,38 @@ function RecruitmentPipeline({ allPilots, onReload, user }) {
     setProcessing(pilotId);
     try {
 
+      const rec = recRef.current || {};
+      const externalMessage = () => [
+        '<div align="center">',
+        `\n\n<img src="${brand.urls.crewCentre}${brand.logos.light}" width="300">`,
+        '\n\n# Recruitment Update',
+        '\n---\n<br>',
+        `\n\n### Hi ${p.first_name},`,
+        `\n\nThank you for applying to **${brand.shortName}**! We have reviewed your application and would like to invite you to the next stage of our recruitment process: the entry exam.`,
+        rec.external_note ? `\n\n${rec.external_note}` : '',
+        '\n\n<br>',
+        `\n\n[**START YOUR ENTRY EXAM**](${rec.external_url})`,
+        '\n\n<br>\n\n---',
+        `\n\n**${brand.shortName} Recruitment Team**`,
+        '\n\n</div>'
+      ].join('');
+
+      if (action === 'contact_and_exam' && rec.exam === 'external') {
+        await examApi.stage(pilotId, 'exam_sent');
+        if (p?.ifc_username) {
+          window.open(`https://community.infiniteflight.com/new-message?username=${encodeURIComponent(p.ifc_username)}&title=${encodeURIComponent(`${brand.shortName} Entry Exam`)}&body=${encodeURIComponent(externalMessage())}`, '_blank');
+          showToast('Moved to Exam sent. IFC message opened with your exam link.', 'success');
+        } else {
+          await copyToClipboard(externalMessage());
+          showToast('Moved to Exam sent. Message with your exam link copied to clipboard.', 'success');
+        }
+        onReload(); return;
+      }
+      if (action === 'resend_external') {
+        await copyToClipboard(externalMessage());
+        showToast('Message with your exam link copied to clipboard.', 'success');
+        return;
+      }
       if (action === 'contact_and_exam') {
         const data = await examApi.assign(pilotId);
         if (data?.exam_url && p?.ifc_username) {
@@ -790,8 +859,8 @@ function RecruitmentPipeline({ allPilots, onReload, user }) {
             '\n\n<br>',
             '\n\n| **Exam Overview** | |',
             '\n| :--- | :--- |',
-            '\n| **Questions** | 20 |',
-            '\n| **Pass Mark** | 70% |',
+            `\n| **Questions** | ${rec.per_exam || 20} |`,
+            `\n| **Pass Mark** | ${rec.pass_mark ?? 70}% |`,
             '\n| **Validity** | 72 Hours |',
             '\n\n<br>',
             `\n\n[**START YOUR ENTRY EXAM**](${data.exam_url})`,
@@ -842,7 +911,9 @@ function RecruitmentPipeline({ allPilots, onReload, user }) {
             '\n\n# Welcome to the Team!',
             '\n---\n<br>',
             `\n\n### Congratulations, ${p.first_name}!`,
-            `\n\nWe are pleased to inform you that you have **passed** your entry exam. It is a pleasure to officially welcome you to **${brand.name}**.`,
+            rec.exam === 'none'
+              ? `\n\nWe are pleased to inform you that your application has been **accepted**. It is a pleasure to officially welcome you to **${brand.name}**.`
+              : `\n\nWe are pleased to inform you that you have **passed** your entry exam. It is a pleasure to officially welcome you to **${brand.name}**.`,
             '\n\nTo begin your journey with us, please join our official Discord server and complete your induction.',
             '\n\n<br>',
             `\n\n[**JOIN OUR DISCORD SERVER**](${invite_url})`,
@@ -871,7 +942,9 @@ function RecruitmentPipeline({ allPilots, onReload, user }) {
             '\n\n# Welcome to the Team!',
             '\n---\n<br>',
             `\n\n### Congratulations, ${p.first_name}!`,
-            `\n\nWe are pleased to inform you that you have **passed** your entry exam. It is a pleasure to officially welcome you to **${brand.name}**.`,
+            rec.exam === 'none'
+              ? `\n\nWe are pleased to inform you that your application has been **accepted**. It is a pleasure to officially welcome you to **${brand.name}**.`
+              : `\n\nWe are pleased to inform you that you have **passed** your entry exam. It is a pleasure to officially welcome you to **${brand.name}**.`,
             '\n\nTo begin your journey with us, please join our official Discord server and complete your induction.',
             '\n\n<br>',
             `\n\n[**JOIN OUR DISCORD SERVER**](${invite_url})`,
@@ -944,6 +1017,7 @@ function RecruitmentPipeline({ allPilots, onReload, user }) {
   const closeMobileSheet = () => setMobileSheetOpen(false);
 
   return (
+    <ModeCtx.Provider value={mode}>
     <div>
       <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '14px', boxShadow: '0 1px 3px var(--shadow)', overflow: 'hidden' }}>
 
@@ -953,7 +1027,7 @@ function RecruitmentPipeline({ allPilots, onReload, user }) {
             <PaperPlaneAnimation size={22} />
             <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
               {total} total
-              {STAGES.map(stage => {
+              {stages.map(stage => {
                 const count = pipelinePilots.filter(p => (p.recruitment_status || 'applied') === stage.key).length;
                 return ` · ${count} ${stage.label}`;
               }).join('')}
@@ -971,7 +1045,7 @@ function RecruitmentPipeline({ allPilots, onReload, user }) {
         <div className="admin-grid-wide" style={{ display: 'grid', gridTemplateColumns: '1fr 320px', alignItems: 'stretch' }}>
           <div className="desktop-only" style={{ borderRight: '1px solid var(--border-color)' }}>
             <div style={{ display: 'flex', gap: '0.4rem', padding: '0.9rem 1.25rem 0', flexWrap: 'wrap' }}>
-              {STAGES.map(stage => {
+              {stages.map(stage => {
                 const count = searchedPilots.filter(p => (p.recruitment_status || 'applied') === stage.key).length;
                 const isActive = activeStage === stage.key;
                 return (
@@ -1011,7 +1085,7 @@ function RecruitmentPipeline({ allPilots, onReload, user }) {
           <div className="mobile-only" style={{ gridColumn: '1 / -1' }}>
             {/* Same stage tabs as desktop, just full width */}
             <div style={{ display: 'flex', gap: '0.4rem', padding: '0.9rem 1.25rem 0', flexWrap: 'wrap' }}>
-              {STAGES.map(stage => {
+              {stages.map(stage => {
                 const count = searchedPilots.filter(p => (p.recruitment_status || 'applied') === stage.key).length;
                 const isActive = activeStage === stage.key;
                 return (
@@ -1100,6 +1174,7 @@ function RecruitmentPipeline({ allPilots, onReload, user }) {
         .applicant-grid-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
       `}</style>
     </div>
+    </ModeCtx.Provider>
   );
 }
 

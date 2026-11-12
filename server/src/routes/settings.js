@@ -25,7 +25,7 @@ const { getCached, setCached, invalidateCache } = createCache('settings');
 const PRIVATE_SETTINGS_KEYS = new Set([
   'email_config', 'email_templates', 'bot_commands_registered_at',
   'leaderboard_post_time', 'leaderboard_post_day', 'leaderboard_last_fired',
-  'recruitment_reminder_last_ping', 'auto_approve_window_days',
+  'recruitment_reminder_last_ping', 'auto_approve_window_days', 'recruitment_config',
 ]);
 
 router.get('/settings', async (req, res) => {

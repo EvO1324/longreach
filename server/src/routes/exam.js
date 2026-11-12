@@ -578,4 +578,63 @@ router.patch('/config', requirePermission('recruitment.manage'), async (req, res
   }
 });
 
+// Recruitment set-up: how applicants are assessed
+//   builtin:  the crew centre's own multiple-choice exam (exam_topics / exam_questions)
+//   external: a link to an exam elsewhere (Google Forms etc.), marked by staff
+//   none:     no exam, staff approve or reject each application
+const RECRUIT_KEY = 'recruitment_config';
+const EXAM_MODES = ['builtin', 'external', 'none'];
+
+async function loadRecruitment(pb) {
+  const rec = await pb.collection('settings').getFirstListItem(`key = "${RECRUIT_KEY}"`, { requestKey: null }).catch(() => null);
+  let saved = null;
+  try { saved = rec?.value ? JSON.parse(rec.value) : null; } catch { saved = null; }
+  const bank = await loadExamBank(pb);
+  const questions = bank.reduce((n, t) => n + t.questions.length, 0);
+  const perExam = bank.reduce((n, t) => n + Math.min(t.questions_per_exam || 0, t.questions.length), 0);
+  const { passMark } = await loadExamConfig(pb);
+  // installs from before this setting existed, with questions already written, keep their exam
+  const implicit = !saved && questions > 0;
+  return {
+    configured: !!saved || implicit,
+    exam: saved?.exam || 'builtin',
+    external_url: saved?.external_url || '',
+    external_note: saved?.external_note || '',
+    questions,
+    per_exam: perExam,
+    pass_mark: passMark,
+  };
+}
+
+router.get('/recruitment', requirePermission('recruitment.view'), async (req, res) => {
+  try {
+    res.json(await loadRecruitment(await getAdminClient()));
+  } catch (err) {
+    console.error('[exam/recruitment]', err.message);
+    res.status(500).json({ error: 'Failed to load recruitment settings' });
+  }
+});
+
+router.put('/recruitment', requirePermission('recruitment.manage'), async (req, res) => {
+  const exam = String(req.body?.exam || '');
+  if (!EXAM_MODES.includes(exam)) return res.status(400).json({ error: 'Choose how applicants are assessed' });
+  const external_url = String(req.body?.external_url || '').trim();
+  const external_note = String(req.body?.external_note || '').trim().slice(0, 500);
+  if (exam === 'external' && !/^https?:\/\/\S+$/i.test(external_url)) {
+    return res.status(400).json({ error: 'Add the link to your exam (it should start with https://)' });
+  }
+  try {
+    const pb = await getAdminClient();
+    const value = JSON.stringify({ exam, external_url: exam === 'external' ? external_url : '', external_note: exam === 'external' ? external_note : '' });
+    const rec = await pb.collection('settings').getFirstListItem(`key = "${RECRUIT_KEY}"`, { requestKey: null }).catch(() => null);
+    if (rec) await pb.collection('settings').update(rec.id, { value });
+    else await pb.collection('settings').create({ key: RECRUIT_KEY, value });
+    logAction(req.user, 'recruitment.configured', { id: RECRUIT_KEY, name: 'Recruitment' }, { exam });
+    res.json(await loadRecruitment(pb));
+  } catch (err) {
+    console.error('[exam/recruitment/update]', err.message);
+    res.status(500).json({ error: 'Failed to save recruitment settings' });
+  }
+});
+
 module.exports = router;

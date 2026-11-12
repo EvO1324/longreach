@@ -251,6 +251,8 @@ export const exam = {
   questionStats: ()                    => get('/exam/question-stats'),
   config:        ()                    => get('/exam/config'),
   updateConfig:  (data)                => patch('/exam/config', data),
+  recruitment:     ()                  => get('/exam/recruitment'),
+  saveRecruitment: (data)              => request('PUT', '/exam/recruitment', data),
 };
 
 export const examTopics = {

@@ -12,10 +12,11 @@ import { useNavigate } from 'react-router-dom';
 import RecruitmentPipeline from './RecruitmentPipeline';
 import Watchlist from './Watchlist';
 import ExamManager from './ExamManager';
-import { pilots as pilotsApi, roles as rolesApi } from '../../api/client';
+import RecruitmentSetup from './RecruitmentSetup';
+import { pilots as pilotsApi, roles as rolesApi, exam as examApi } from '../../api/client';
 import { showToast } from '../../components/Toast';
 import { usePermissions } from '../../hooks/usePermissions';
-import { GraduationCap } from 'lucide-react';
+import { GraduationCap, Settings2 } from 'lucide-react';
 
 // Mini bar chart (SVG, no deps)
 function MiniBarChart({ data, color = 'var(--avg-green)', height = 80 }) {
@@ -354,6 +355,12 @@ function ArchivedPilotsTab({ pilots, onReload }) {
 }
 
 // Main PilotsManager
+const headerBtn = {
+  display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', fontWeight: 700,
+  color: 'var(--avg-green)', background: 'var(--avg-green-pale)', border: 'none',
+  borderRadius: '7px', padding: '0.45rem 0.8rem', cursor: 'pointer', flexShrink: 0,
+};
+
 function PilotsManager({ initialTab, user }) {
   const [allPilots, setAllPilots]       = useState([]);
   const [approvedPilots, setApproved]   = useState([]);
@@ -363,6 +370,9 @@ function PilotsManager({ initialTab, user }) {
   const [loading, setLoading]           = useState(true);
   const [activeTab, setActiveTab] = useState(initialTab === 'recruitment' ? 'pipeline' : 'pilots');
   const [examManagerOpen, setExamManagerOpen] = useState(false);
+  // how applicants are assessed (own exam, external, none); null until loaded
+  const [recruitment, setRecruitment] = useState(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const { can } = usePermissions(user);
   const hasFetched = useRef(false);
 
@@ -375,11 +385,13 @@ function PilotsManager({ initialTab, user }) {
   const loadAll = async () => {
     try {
       setLoading(true);
-      const [recruitData, approvedData, archivedData] = await Promise.all([
+      const [recruitData, approvedData, archivedData, recruitConfig] = await Promise.all([
         pilotsApi.recruitment(),
         pilotsApi.list({ sort: '-total_hours' }),
         pilotsApi.archived().catch(() => ({ pilots: [] })),
+        initialTab === 'recruitment' ? examApi.recruitment().catch(() => null) : null,
       ]);
+      if (recruitConfig) setRecruitment(recruitConfig);
       const all = recruitData.pilots || [];
       setAllPilots(all);
       setPending(all.filter(p => p.status === 'pending'));
@@ -408,24 +420,44 @@ function PilotsManager({ initialTab, user }) {
 
   if (loading) return <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>Loading...</div>;
 
+  // after saving, the own-exam option goes straight on to writing questions
+  const onRecruitmentSaved = (next) => {
+    setRecruitment(next);
+    setSettingsOpen(false);
+    if (next.exam === 'builtin' && !next.questions) setExamManagerOpen(true);
+  };
+
+  // First visit: choose how pilots join before anything else
+  if (initialTab === 'recruitment' && recruitment && !recruitment.configured) {
+    return (
+      <div>
+        {can('recruitment.manage')
+          ? <RecruitmentSetup firstTime current={recruitment} onSaved={onRecruitmentSaved} />
+          : <div className="card" style={{ maxWidth: 520 }}>
+              <div style={{ fontWeight: 700, marginBottom: '0.35rem' }}>Recruitment isn't set up yet</div>
+              <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>An admin needs to choose how new pilots join before applications can be reviewed here.</div>
+            </div>}
+        {examManagerOpen && <ExamManager onClose={() => setExamManagerOpen(false)} />}
+      </div>
+    );
+  }
+
   return (
     <div>
       {/* Sub-tabs */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem', borderBottom: '1px solid var(--border-color)' }}>
         {tabs.map(({ key, label, badge, primary }) => (
           <React.Fragment key={key}>
-            {key === 'overview' && can('recruitment.manage') && (
-              <button
-                onClick={() => setExamManagerOpen(true)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', fontWeight: 700,
-                  color: 'var(--avg-green)', background: 'var(--avg-green-pale)', border: 'none',
-                  borderRadius: '7px', padding: '0.45rem 0.8rem', cursor: 'pointer', flexShrink: 0,
-                }}
-              >
-                <GraduationCap size={14} /> Manage Exam
+            {key === 'overview' && can('recruitment.manage') && (<>
+              {recruitment?.exam === 'builtin' && (
+                <button onClick={() => setExamManagerOpen(true)} style={headerBtn}>
+                  <GraduationCap size={14} /> Manage Exam
+                </button>
+              )}
+              <button onClick={() => setSettingsOpen(true)} style={headerBtn}>
+                <Settings2 size={14} /> Recruitment settings
               </button>
-            )}
+            </>)}
             <button onClick={() => setActiveTab(key)} style={{
               padding: '0.7rem 0', background: 'none', border: 'none',
               borderBottom: activeTab === key ? '3px solid var(--avg-green)' : '3px solid transparent',
@@ -446,8 +478,16 @@ function PilotsManager({ initialTab, user }) {
 
       {examManagerOpen && <ExamManager onClose={() => setExamManagerOpen(false)} />}
 
+      {settingsOpen && (
+        <div onClick={() => setSettingsOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 4000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-primary)', borderRadius: 14, padding: '1.75rem', width: '100%', maxWidth: 820, maxHeight: '88vh', overflowY: 'auto', boxShadow: '0 24px 64px rgba(0,0,0,0.3)' }}>
+            <RecruitmentSetup current={recruitment} onSaved={onRecruitmentSaved} onCancel={() => setSettingsOpen(false)} />
+          </div>
+        </div>
+      )}
+
       {activeTab === 'overview'   && <OverviewTab allPilots={allPilots} approvedPilots={approvedPilots} />}
-      {activeTab === 'pipeline'   && <RecruitmentPipeline allPilots={allPilots} onReload={reload} user={user} />}
+      {activeTab === 'pipeline'   && <RecruitmentPipeline allPilots={allPilots} onReload={reload} user={user} recruitment={recruitment} />}
       {activeTab === 'watchlist'  && <Watchlist />}
       {activeTab === 'pilots'     && <ActivePilotsTab pilots={approvedPilots} onReload={reload} />}
       {activeTab === 'archived'   && <ArchivedPilotsTab pilots={archivedPilots} onReload={reload} />}
