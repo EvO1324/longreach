@@ -1,0 +1,84 @@
+{
+  "name": "Longreach Virtual Airline",
+  "shortName": "Longreach Demo",
+  "abbreviation": "LVA",
+  "crewCentreName": "Demo Crew Centre",
+  "description": "A demo of the Longreach Crew Centre",
+  "callsign": {
+    "format": "Qantas {n}VA",
+    "short": "LVA{n}",
+    "min": 100,
+    "max": 999,
+    "legacy": []
+  },
+  "colors": {
+    "primary": "#1f5f8b",
+    "accent": "#d9a441",
+    "neutrals": "warm"
+  },
+  "logos": {
+    "light": "brand/logo-light.svg",
+    "dark": "brand/logo-dark.svg",
+    "icon": "brand/icon.png"
+  },
+  "timezone": "Australia/Sydney",
+  "hubs": [
+    {
+      "icao": "YSSY",
+      "name": "Sydney"
+    },
+    {
+      "icao": "YMML",
+      "name": "Melbourne"
+    },
+    {
+      "icao": "YPPH",
+      "name": "Perth"
+    }
+  ],
+  "requirements": {
+    "minimumGrade": 3
+  },
+  "atc": {
+    "airportPrefixes": [],
+    "regionName": ""
+  },
+  "urls": {
+    "crewCentre": "https://longreach-demo.vercel.app",
+    "api": "https://longreach-demo-api.fly.dev",
+    "website": "",
+    "discordInvite": ""
+  },
+  "legal": {
+    "operator": "Alex Evans",
+    "contact": "",
+    "jurisdiction": "",
+    "minimumAge": 13
+  },
+  "discord": {
+    "logoEmoji": ""
+  },
+  "features": {
+    "career": true,
+    "events": true,
+    "challenges": true,
+    "routesOfTheWeek": true,
+    "liveMode": true,
+    "atc": true
+  },
+  "dashboard": {
+    "greeting": "Welcome back, {name}",
+    "stats": [
+      "flights",
+      "hours",
+      "lastFlight",
+      "streak"
+    ],
+    "sections": [
+      "rank",
+      "routesOfTheWeek",
+      "recentFlights"
+    ]
+  },
+  "font": "Plus Jakarta Sans"
+}

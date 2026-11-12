@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'my-crewcentre-api'  # your Fly app's name (fly launch picks one)
+app = 'longreach-demo-api'  # your Fly app's name (fly launch picks one)
 primary_region = 'syd'  # the Fly region nearest your pilots
 
 [build]
