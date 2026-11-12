@@ -15,6 +15,7 @@ const { getAdminClient } = require('../config/pocketbase');
 const { requireAdmin } = require('../middleware/auth');
 const { logAction } = require('../utils/audit');
 const runtime = require('../config/runtime');
+const { guildInfo } = require('../utils/discordGuild');
 
 const router = express.Router();
 router.use(requireAdmin);
@@ -105,29 +106,7 @@ router.post('/', async (req, res) => {
 
 // The server's roles and text channels, for the pickers
 router.get('/discord', async (req, res) => {
-  const token = process.env.DISCORD_BOT_TOKEN;
-  const guild = String(req.query.guild || process.env.DISCORD_GUILD_ID || '').trim();
-  if (!token) return res.json({ ok: false, error: 'The bot token isn\'t set, so roles and channels can\'t be listed.' });
-  if (!SNOWFLAKE.test(guild)) return res.json({ ok: false, error: 'Set the server ID first.' });
-  try {
-    const call = p => fetch(`https://discord.com/api/v10${p}`, { headers: { Authorization: `Bot ${token}` } });
-    const [r, c] = await Promise.all([call(`/guilds/${guild}/roles`), call(`/guilds/${guild}/channels`)]);
-    if (r.status === 403 || r.status === 404) return res.json({ ok: false, error: 'The bot isn\'t in that server.' });
-    if (!r.ok || !c.ok) return res.json({ ok: false, error: `Discord answered ${r.ok ? c.status : r.status}.` });
-    const roles = (await r.json())
-      .filter(x => !x.managed && x.name !== '@everyone')
-      .sort((a, b) => b.position - a.position)
-      .map(x => ({ id: x.id, name: x.name }));
-    const all = await c.json();
-    const cats = new Map(all.filter(x => x.type === 4).map(x => [x.id, x.name]));
-    const channels = all
-      .filter(x => x.type === 0 || x.type === 5)
-      .sort((a, b) => (cats.get(a.parent_id) || '').localeCompare(cats.get(b.parent_id) || '') || a.position - b.position)
-      .map(x => ({ id: x.id, name: x.name, category: cats.get(x.parent_id) || null }));
-    res.json({ ok: true, roles, channels });
-  } catch (err) {
-    res.json({ ok: false, error: 'Couldn\'t reach Discord.' });
-  }
+  res.json(await guildInfo(req.query.guild || process.env.DISCORD_GUILD_ID));
 });
 
 // Reads a webhook's details (posts nothing). Tests the typed URL, or the saved one.

@@ -36,6 +36,7 @@ PocketBase lists tables alphabetically. Here they are by what they're for.
 | --- | --- |
 | `staff_applications` | Applications for staff positions |
 | `staff_positions` | The positions open for applications |
+| `tickets` | Discord support tickets: who opened them, their channel, whether they're open, and the transcript once closed |
 | `watchlist` | Infinite Flight Community usernames to watch or block when they apply |
 | `exam_topics` | Entry exam topics and how many questions each exam draws from them |
 | `exam_questions` | The question bank |

@@ -14,6 +14,11 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env.local') });
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
-require('./config/runtime').load().finally(() => {
-  require(process.argv[2] === 'bot' ? './bot' : './index');
-});
+const bot = process.argv[2] === 'bot';
+require('./config/runtime').load()
+  // the bot asks Discord for message content only if it's allowed to (ticket transcripts)
+  .then(() => bot && require('./utils/discordGuild').hasMessageContent().then(on => { if (on) process.env.DISCORD_MESSAGE_CONTENT = 'true'; }))
+  .catch(() => {})
+  .finally(() => {
+    require(bot ? './bot' : './index');
+  });

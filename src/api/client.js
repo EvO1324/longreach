@@ -496,6 +496,15 @@ export const importer = {
   run: (type, rows, dryRun = true) => post(`/import/${type}`, { rows, dryRun }),
 };
 
+// Tickets (Admin › Tickets)
+export const tickets = {
+  config:     ()       => get('/tickets/config'),
+  saveConfig: (data)   => request('PUT', '/tickets/config', data),
+  postPanel:  ()       => post('/tickets/panel', {}),
+  list:       (status) => get(`/tickets${status ? `?status=${status}` : ''}`),
+  get:        (id)     => get(`/tickets/${id}`),
+};
+
 // Plugins (Admin › Plugins)
 export const plugins = {
   list: ()              => get('/plugins'),

@@ -144,7 +144,7 @@ In the crew centre's admin panel:
 ## 8. Discord (optional)
 
 1. **Create the bot.** In the developer portal, create an application and add a bot. Copy its token, and the application ID and secret.
-2. **Invite it.** Use **OAuth2 → URL Generator** with the `bot` and `applications.commands` scopes and the **Manage Roles** and **Manage Nicknames** permissions. In your server's role list, drag the bot's role above the roles it hands out.
+2. **Invite it.** Use **OAuth2 → URL Generator** with the `bot` and `applications.commands` scopes and the **Manage Roles**, **Manage Nicknames** and **Manage Channels** permissions (Manage Channels is for support tickets). In your server's role list, drag the bot's role above the roles it hands out.
 3. **Webhooks.** In each channel that should get posts (PIREPs, applications, staff), open **Edit Channel → Integrations → Webhooks** and copy the URL.
 4. **Save and deploy.** Run `npm run setup`, add the token, IDs and webhooks under **Services** (the test buttons check them), install, then:
 
@@ -157,6 +157,8 @@ In the crew centre's admin panel:
    ```
 
    The bot registers its slash commands when it starts.
+
+**Support tickets** (optional): switch on **Support tickets** in Admin › Plugins, then set it up in Admin › Tickets and post the panel. For full transcripts, also switch on **Message Content Intent** under Bot › Privileged Gateway Intents in the developer portal.
 
 **Changing them later.** Roles, channels and webhooks (and the GitHub and Live Mode settings) can be changed any time in **Admin › Connections**, with no redeploy. Roles and channels are picked from lists once the bot is in your server. Saving restarts the crew centre for a few seconds. Values saved there replace the ones from setup.
 

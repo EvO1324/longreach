@@ -4604,5 +4604,149 @@
   "updateRule": null,
   "deleteRule": null,
   "options": {}
+ },
+ {
+  "id": "6hx0zh2lgwsptm9",
+  "name": "tickets",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "uexzdxo4",
+    "name": "number",
+    "type": "number",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "noDecimal": true
+    }
+   },
+   {
+    "system": false,
+    "id": "hiexxaeb",
+    "name": "channel_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "z5skrh5p",
+    "name": "user_discord_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "fhlhkt6o",
+    "name": "user_discord_name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "ctl7nf63",
+    "name": "user_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "mg5z7at2",
+    "name": "status",
+    "type": "select",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSelect": 1,
+     "values": [
+      "open",
+      "closed"
+     ]
+    }
+   },
+   {
+    "system": false,
+    "id": "dducrh4b",
+    "name": "closed_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "z3gb875f",
+    "name": "closed_by",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "7ug2cani",
+    "name": "transcript",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [
+   "CREATE INDEX `idx_tickets_status_user` ON `tickets` (`status`, `user_discord_id`)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
  }
 ]

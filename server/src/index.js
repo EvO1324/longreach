@@ -184,6 +184,7 @@ app.use('/api/watchlist', watchlistRoutes);
 app.use('/api/import', require('./routes/importer'));
 app.use('/api/updates', require('./routes/updates'));
 app.use('/api/admin/connections', require('./routes/connections'));
+app.use('/api/tickets', require('./routes/tickets'));
 
 const { requireAdmin } = require('./middleware/auth');
 

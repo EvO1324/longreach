@@ -10,7 +10,7 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 import React, { useState, useEffect } from 'react';
 import {
   LayoutDashboard, BookOpen, FilePlus, Plane, BarChart2,
-  Map, Star, Trophy, Wrench, Calendar, RefreshCw, Link2, Puzzle,
+  Map, Star, Trophy, Wrench, Calendar, RefreshCw, Link2, Puzzle, Ticket,
   Users, UserPlus, Activity, Bell, ScrollText,
   DatabaseBackup, HeartPulse, PackagePlus, BarChart3,
   ListOrdered, UserCog, SlidersHorizontal, Image,
@@ -75,6 +75,7 @@ const ADMIN_GROUPS = [
       { tab: 'pireps',     label: 'PIREPs',           icon: FilePlus,       perm: 'pireps.view' },
       { tab: 'notams',     label: 'NOTAMs',           icon: Bell,           perm: 'notams.manage' },
       { tab: 'news',       label: 'News',             icon: Newspaper,      perm: 'notams.manage' },
+      { tab: 'tickets',    label: 'Tickets',          icon: Ticket,         adminOnly: true, feature: 'tickets' },
       { tab: 'audit',      label: 'Audit Log',        icon: ScrollText,     perm: 'audit.view' },
       { tab: 'import',     label: 'Import',           icon: DatabaseBackup, adminOnly: true },
       { tab: 'health',     label: 'VA Health',        icon: HeartPulse,     adminOnly: true },

@@ -37,6 +37,7 @@ import SiteSettings        from './admin/SiteSettings';
 import UpdatesManager      from './admin/UpdatesManager';
 import Connections         from './admin/Connections';
 import Plugins             from './admin/Plugins';
+import TicketsManager      from './admin/TicketsManager';
 import AuditLog            from './admin/AuditLog';
 import ImportTool          from './admin/ImportTool';
 import VAHealth            from './admin/VAHealth';
@@ -93,6 +94,7 @@ const CATEGORIES = [
       { id: 'pireps',    label: 'PIREPs',           perm: 'pireps.view' },
       { id: 'notams',    label: 'NOTAMs',            perm: 'notams.manage' },
       { id: 'news',      label: 'News',              perm: 'notams.manage' },
+      { id: 'tickets',   label: 'Tickets',           perm: null, adminOnly: true, feature: 'tickets' },
       { id: 'audit',     label: 'Audit Log',         perm: 'audit.view' },
       { id: 'import',    label: 'Import',            perm: null, adminOnly: true },
       { id: 'health',    label: 'VA Health',          perm: null, adminOnly: true },
@@ -294,6 +296,7 @@ function AdminPanel({ user }) {
           {activeTab === 'assets'       && <AssetsManager />}
           {activeTab === 'site'         && <SiteSettings />}
           {activeTab === 'plugins'      && <Plugins />}
+          {activeTab === 'tickets'      && features.tickets !== false && <TicketsManager />}
           {activeTab === 'connections'  && <Connections />}
           {activeTab === 'updates'      && <UpdatesManager />}
           {activeTab === 'import'       && <ImportTool />}

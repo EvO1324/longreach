@@ -18,6 +18,7 @@ const { getAdminClient } = require('./config/pocketbase');
 const { notifyBotOnline } = require('./routes/discord');
 const { handleFileButton } = require('./bot/landingFile');
 const { handleExtendButton } = require('./bot/liveExtend');
+const { handleTicketButton, onChannelDelete } = require('./bot/tickets');
 
 const DISCORD_BOT_TOKEN        = process.env.DISCORD_BOT_TOKEN;
 const DISCORD_CLIENT_ID        = process.env.DISCORD_CLIENT_ID;
@@ -79,6 +80,8 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
+    // only when switched on in the developer portal (boot.js checks), for ticket transcripts
+    ...(process.env.DISCORD_MESSAGE_CONTENT === 'true' ? [GatewayIntentBits.MessageContent] : []),
   ],
   makeCache: Options.cacheWithLimits({
     ...Options.DefaultMakeCacheSettings,
@@ -144,6 +147,19 @@ client.on('interactionCreate', async (interaction) => {
     return;
   }
 
+  // Support tickets (Admin › Tickets)
+  if (interaction.isButton() && interaction.customId.startsWith('ticket:')) {
+    try {
+      await handleTicketButton(interaction);
+    } catch (err) {
+      console.error(`[bot] Error handling ${interaction.customId}:`, err);
+      const reply = { content: 'Something went wrong. Please try again.', flags: MessageFlags.Ephemeral };
+      if (interaction.deferred || interaction.replied) await interaction.editReply(reply).catch(() => {});
+      else await interaction.reply(reply).catch(() => {});
+    }
+    return;
+  }
+
   // Extend 1 hour on a 1 HOUR LEFT TO LAND message
   if (interaction.isButton() && interaction.customId.startsWith('liveextend:')) {
     try {
@@ -169,6 +185,8 @@ client.on('interactionCreate', async (interaction) => {
     }
   }
 });
+
+client.on('channelDelete', onChannelDelete);
 
 // New member join
 client.on('guildMemberAdd', async (member) => {
