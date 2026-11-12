@@ -127,6 +127,7 @@ export const fleet = {
   add:         (data)       => post('/fleet', data),
   remove:      (id)         => del(`/fleet/${id}`),
   updateImage: (id, imgUrl) => patch(`/fleet/${id}`, { image_url: imgUrl }),
+  updateIcao:  (id, code)   => patch(`/fleet/${id}`, { icao_code: code }),
 };
 
 // Ranks

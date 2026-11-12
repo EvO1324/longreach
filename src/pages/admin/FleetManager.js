@@ -13,6 +13,8 @@ import React, { useState, useEffect } from 'react';
 import { fleet as fleetApi, flights as flightsApi, infiniteFlight, upload } from '../../api/client';
 import { showToast } from '../../components/Toast';
 
+const icaoChip = { fontSize:'0.7rem', fontWeight:700, padding:'0.1rem 0.4rem', borderRadius:'4px', background:'rgba(var(--brand-primary-rgb),0.1)', color:'var(--avg-green)', border:'1px solid rgba(var(--brand-primary-rgb),0.2)', fontFamily:'monospace', flexShrink:0 };
+
 function FleetManager() {
   const [fleet, setFleet]                       = useState([]);
   const [aircraft, setAircraft]                 = useState([]);
@@ -30,7 +32,7 @@ function FleetManager() {
   const [uploading, setUploading]               = useState(false);
   const [editUploading, setEditUploading]       = useState(false);
   const [addIcao, setAddIcao]                   = useState('');
-  const [editingIcaoId, setEditingIcaoId]       = useState(null);
+  const [editingIcao, setEditingIcao]           = useState(false);
   const [editIcaoVal, setEditIcaoVal]           = useState('');
   const [confirmRemove, setConfirmRemove]       = useState(null);
 
@@ -66,25 +68,33 @@ function FleetManager() {
     } else { setLiveries([]); }
   };
 
+  // The ICAO code belongs to the aircraft type: every livery of a type shares it
+  const icaoForAircraft = (aircraftId) => fleet.find(l => l.aircraft_id === aircraftId && l.icao_code)?.icao_code || '';
+  const existingIcao = selectedAircraft ? icaoForAircraft(selectedAircraft) : '';
+  const typeInFleet  = !!selectedAircraft && fleet.some(l => l.aircraft_id === selectedAircraft);
+
   const handleAdd = async () => {
     if (!selectedLivery) { showToast('Please select a livery', 'error'); return; }
     const livery = liveries.find(l => l.id === selectedLivery);
+    const icao = (typeInFleet ? existingIcao : addIcao).trim().toUpperCase();
     try {
       setAdding(true);
-      await fleetApi.add({ name: `${livery.aircraftName} - ${livery.liveryName}`, aircraft_id: livery.aircraftID, livery_id: livery.id, livery_name: livery.liveryName, image_url: imageUrl.trim(), icao_code: addIcao.trim().toUpperCase() });
+      await fleetApi.add({ name: `${livery.aircraftName} - ${livery.liveryName}`, aircraft_id: livery.aircraftID, livery_id: livery.id, livery_name: livery.liveryName, image_url: imageUrl.trim(), icao_code: icao });
       showToast('Aircraft added!', 'success');
       setSelectedAircraft(''); setSelectedLivery(''); setLiveries([]); setImageUrl(''); setAddIcao(''); setShowAddPanel(false);
       await loadFleet();
     } catch (e) { showToast('Failed: ' + e.message, 'error'); } finally { setAdding(false); }
   };
 
-  const handleSaveIcao = async (id) => {
+  // Saves the type's code on every livery of that type
+  const handleSaveIcao = async () => {
+    const code = editIcaoVal.trim().toUpperCase();
     try {
-      await fleetApi.updateIcao(id, editIcaoVal.trim().toUpperCase());
-      showToast('ICAO code updated!', 'success');
-      setEditingIcaoId(null);
+      await Promise.all(selected.liveries.map(l => fleetApi.updateIcao(l.id, code)));
+      showToast('ICAO code updated', 'success');
+      setEditingIcao(false);
       await loadFleet();
-      setSelected(prev => prev ? { ...prev, liveries: prev.liveries.map(l => l.id === id ? { ...l, icao_code: editIcaoVal.trim().toUpperCase() } : l) } : null);
+      setSelected(prev => prev ? { ...prev, liveries: prev.liveries.map(l => ({ ...l, icao_code: code })) } : null);
     } catch { showToast('Failed to update ICAO', 'error'); }
   };
 
@@ -117,6 +127,8 @@ function FleetManager() {
   };
 
   const getStats = name => stats[name] || { totalFlights: 0, totalHours: 0 };
+
+  const typeIcao = selected ? (selected.liveries.find(l => l.icao_code)?.icao_code || '') : '';
 
   const grouped = fleet.reduce((acc, ac) => {
     const type = ac.name.split(' - ')[0];
@@ -182,7 +194,7 @@ function FleetManager() {
             const typeFlights = livs.reduce((s, ac) => s + getStats(ac.name).totalFlights, 0);
             const typeHours   = livs.reduce((s, ac) => s + getStats(ac.name).totalHours, 0);
             return (
-              <div key={type} className="fm-card" onClick={() => setSelected({ type, liveries: livs })}>
+              <div key={type} className="fm-card" onClick={() => { setEditingIcao(false); setSelected({ type, liveries: livs }); }}>
                 {hero
                   ? <div style={{ position:'relative' }}>
                       <img src={hero} alt={type} className="fm-img" onError={e => e.target.style.display='none'} />
@@ -193,7 +205,10 @@ function FleetManager() {
                     </div>
                 }
                 <div style={{ padding:'0.75rem' }}>
-                  <div style={{ fontWeight:700, fontSize:'0.95rem', marginBottom:'0.25rem', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{type}</div>
+                  <div style={{ display:'flex', alignItems:'center', gap:'0.4rem', marginBottom:'0.25rem' }}>
+                    <span style={{ fontWeight:700, fontSize:'0.95rem', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{type}</span>
+                    {livs.find(l => l.icao_code) && <span style={icaoChip}>{livs.find(l => l.icao_code).icao_code}</span>}
+                  </div>
                   <div style={{ fontSize:'0.78rem', color:'var(--text-secondary)', marginBottom:'0.5rem' }}>{livs.length} {livs.length === 1 ? 'livery' : 'liveries'}</div>
                   <div style={{ display:'flex', gap:'0.75rem' }}>
                     <span style={{ fontSize:'0.78rem', fontWeight:600, color: typeFlights > 0 ? 'var(--avg-green)' : 'var(--text-secondary)' }}>{typeFlights} flt</span>
@@ -219,7 +234,7 @@ function FleetManager() {
                   <div style={{ position:'absolute', inset:0, background:'linear-gradient(transparent 40%,rgba(0,0,0,0.7))' }} />
                   <div style={{ position:'absolute', bottom:'1rem', left:'1.25rem' }}>
                     <div style={{ color:'white', fontWeight:800, fontSize:'1.2rem' }}>{selected.type}</div>
-                    <div style={{ color:'rgba(255,255,255,0.65)', fontSize:'0.82rem' }}>{selected.liveries.length} {selected.liveries.length === 1 ? 'livery' : 'liveries'}</div>
+                    <div style={{ color:'rgba(255,255,255,0.65)', fontSize:'0.82rem' }}>{selected.liveries.length} {selected.liveries.length === 1 ? 'livery' : 'liveries'}{typeIcao ? ` · ${typeIcao}` : ''}</div>
                   </div>
                   <button onClick={() => { setSelected(null); setEditingId(null); }} style={{ position:'absolute', top:'0.75rem', right:'0.75rem', background:'rgba(0,0,0,0.5)', border:'none', borderRadius:'50%', width:32, height:32, cursor:'pointer', color:'white', display:'flex', alignItems:'center', justifyContent:'center', backdropFilter:'blur(4px)' }}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -229,7 +244,7 @@ function FleetManager() {
                 <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'1.25rem 1.5rem', borderBottom:'1px solid var(--border-color)', flexShrink:0 }}>
                   <div>
                     <div style={{ fontWeight:800, fontSize:'1.1rem' }}>{selected.type}</div>
-                    <div style={{ fontSize:'0.82rem', color:'var(--text-secondary)' }}>{selected.liveries.length} {selected.liveries.length === 1 ? 'livery' : 'liveries'}</div>
+                    <div style={{ fontSize:'0.82rem', color:'var(--text-secondary)' }}>{selected.liveries.length} {selected.liveries.length === 1 ? 'livery' : 'liveries'}{typeIcao ? ` · ${typeIcao}` : ''}</div>
                   </div>
                   <button onClick={() => { setSelected(null); setEditingId(null); }} style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text-secondary)', display:'flex' }}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -237,6 +252,33 @@ function FleetManager() {
                 </div>
               );
             })()}
+
+            {/* ICAO code: one per aircraft type */}
+            <div style={{ display:'flex', alignItems:'center', gap:'0.75rem', padding:'0.875rem 1.5rem', borderBottom:'1px solid var(--border-color)', flexShrink:0, flexWrap:'wrap' }}>
+              <span style={{ fontSize:'0.82rem', fontWeight:600, color:'var(--text-secondary)' }}>ICAO code</span>
+              {editingIcao ? (
+                <>
+                  <input
+                    autoFocus
+                    value={editIcaoVal}
+                    onChange={e => setEditIcaoVal(e.target.value.toUpperCase().slice(0, 6))}
+                    onKeyDown={e => { if (e.key === 'Enter') handleSaveIcao(); if (e.key === 'Escape') setEditingIcao(false); }}
+                    placeholder="e.g. A388"
+                    maxLength={6}
+                    style={{ width:110, padding:'0.4rem 0.6rem', border:'1.5px solid var(--avg-green)', borderRadius:'6px', background:'var(--bg-card)', color:'var(--text-primary)', fontSize:'0.9rem', fontFamily:'monospace', fontWeight:700, outline:'none' }}
+                  />
+                  <button onClick={handleSaveIcao} className="btn btn-primary" style={{ padding:'0.4rem 0.9rem', fontSize:'0.8rem' }}>Save</button>
+                  <button onClick={() => setEditingIcao(false)} className="btn btn-secondary" style={{ padding:'0.4rem 0.7rem', fontSize:'0.8rem' }}>Cancel</button>
+                </>
+              ) : (
+                <>
+                  {typeIcao ? <span style={icaoChip}>{typeIcao}</span> : <span style={{ fontSize:'0.82rem', color:'var(--text-secondary)' }}>Not set</span>}
+                  <button onClick={() => { setEditIcaoVal(typeIcao); setEditingIcao(true); }} style={{ background:'none', border:'none', padding:0, cursor:'pointer', color:'var(--text-secondary)', fontSize:'0.8rem', fontFamily:'inherit', textDecoration:'underline' }}>
+                    {typeIcao ? 'Change' : 'Add'}
+                  </button>
+                </>
+              )}
+            </div>
 
             {/* Liveries */}
             <div style={{ overflowY:'auto', padding:'1rem', display:'flex', flexDirection:'column', gap:'0.5rem' }}>
@@ -255,18 +297,10 @@ function FleetManager() {
                       <div style={{ flex:1, minWidth:0 }}>
                         <div style={{ display:'flex', alignItems:'center', gap:'0.4rem', marginBottom:'0.15rem' }}>
                           <span style={{ fontWeight:600, fontSize:'0.9rem', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{liveryLabel}</span>
-                          {ac.icao_code && (
-                            <span style={{ fontSize:'0.7rem', fontWeight:700, padding:'0.1rem 0.4rem', borderRadius:'4px', background:'rgba(var(--brand-primary-rgb),0.1)', color:'var(--avg-green)', border:'1px solid rgba(var(--brand-primary-rgb),0.2)', fontFamily:'monospace', flexShrink:0 }}>{ac.icao_code}</span>
-                          )}
                         </div>
                         <div style={{ fontSize:'0.75rem', color: s.totalFlights > 0 ? 'var(--avg-green)' : 'var(--text-secondary)', fontWeight:600 }}>{s.totalFlights} flt · {s.totalHours.toFixed(1)}h</div>
                       </div>
                       <div style={{ display:'flex', gap:'0.4rem', flexShrink:0 }}>
-                        <button
-                          onClick={() => { setEditingIcaoId(editingIcaoId === ac.id ? null : ac.id); setEditIcaoVal(ac.icao_code || ''); }}
-                          style={{ padding:'0.35rem 0.7rem', background:'none', border:'1.5px solid var(--border-color)', borderRadius:'6px', cursor:'pointer', fontSize:'0.75rem', fontWeight:600, color:'var(--text-primary)', whiteSpace:'nowrap', fontFamily:'monospace' }}>
-                          {ac.icao_code || 'ICAO'}
-                        </button>
                         <button
                           onClick={() => { setEditingId(isEditing ? null : ac.id); setEditImageUrl(ac.image_url || ''); }}
                           style={{ padding:'0.35rem 0.7rem', background:'none', border:'1.5px solid var(--border-color)', borderRadius:'6px', cursor:'pointer', fontSize:'0.75rem', fontWeight:600, color:'var(--text-primary)', whiteSpace:'nowrap' }}>
@@ -279,26 +313,6 @@ function FleetManager() {
                         </button>
                       </div>
                     </div>
-
-                    {/* Inline ICAO editor */}
-                    {editingIcaoId === ac.id && (
-                      <div style={{ margin:'0.25rem 0 0.25rem 0', padding:'0.75rem', background:'var(--bg-secondary)', borderRadius:'8px', border:'1px solid var(--border-color)' }}>
-                        <label style={{ display:'block', marginBottom:'0.4rem', fontSize:'0.78rem', fontWeight:600, color:'var(--text-secondary)' }}>ICAO Code</label>
-                        <div style={{ display:'flex', gap:'0.5rem' }}>
-                          <input
-                            value={editIcaoVal}
-                            onChange={e => setEditIcaoVal(e.target.value.toUpperCase().slice(0, 6))}
-                            placeholder="e.g. A388"
-                            maxLength={6}
-                            style={{ flex:1, padding:'0.45rem 0.7rem', border:'1.5px solid var(--border-color)', borderRadius:'6px', background:'var(--bg-card)', color:'var(--text-primary)', fontSize:'0.9rem', fontFamily:'monospace', fontWeight:700, outline:'none' }}
-                            onFocus={e => e.target.style.borderColor='var(--avg-green)'}
-                            onBlur={e => e.target.style.borderColor='var(--border-color)'}
-                          />
-                          <button onClick={() => handleSaveIcao(ac.id)} className="btn btn-primary" style={{ padding:'0.45rem 0.9rem', fontSize:'0.8rem' }}>Save</button>
-                          <button onClick={() => setEditingIcaoId(null)} className="btn btn-secondary" style={{ padding:'0.45rem 0.7rem', fontSize:'0.8rem' }}>Cancel</button>
-                        </div>
-                      </div>
-                    )}
 
                     {/* Inline image editor */}
                     {isEditing && (
@@ -364,6 +378,13 @@ function FleetManager() {
             <label style={{ display:'block', marginBottom:'0.5rem', fontWeight:600, fontSize:'0.875rem' }}>
               ICAO Code <span style={{ fontWeight:400, color:'var(--text-secondary)' }}>(optional, e.g. A388)</span>
             </label>
+            {typeInFleet ? (
+              <div style={{ fontSize:'0.85rem', color:'var(--text-secondary)', lineHeight:1.5 }}>
+                {existingIcao
+                  ? <>Uses <span style={icaoChip}>{existingIcao}</span>, the code for this aircraft type. Change it from the type in your fleet.</>
+                  : 'This type is already in your fleet. Set its ICAO code from the type in your fleet.'}
+              </div>
+            ) : (
             <input
               value={addIcao}
               onChange={e => setAddIcao(e.target.value.toUpperCase().slice(0, 6))}
@@ -373,6 +394,7 @@ function FleetManager() {
               onFocus={e => e.target.style.borderColor = 'var(--avg-green)'}
               onBlur={e => e.target.style.borderColor = 'var(--border-color)'}
             />
+            )}
           </div>
         <div style={{ padding:'1.25rem 1.5rem', borderTop:'1px solid var(--border-color)' }}>
           <button onClick={handleAdd} disabled={!selectedLivery || adding} className="btn btn-primary" style={{ width:'100%', padding:'0.8rem' }}>

@@ -10,8 +10,10 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 import React, { useEffect, useMemo, useState } from 'react';
 import { connections as api } from '../../api/client';
 import { showToast } from '../../components/Toast';
+import Dropdown from '../../components/Dropdown';
 
-const control = { width: '100%', padding: '0.5rem 0.65rem', borderRadius: 8, border: '1px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-primary)', fontSize: '0.9rem', fontFamily: 'inherit', boxSizing: 'border-box' };
+// same size as components/Dropdown, so text boxes and dropdowns line up
+const control = { width: '100%', padding: '0.75rem 1rem', borderRadius: 8, border: '1.5px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-primary)', fontSize: '1rem', fontFamily: 'inherit', boxSizing: 'border-box', outline: 'none' };
 const small = { fontSize: '0.78rem', color: 'var(--text-secondary)' };
 const linkBtn = { background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: 'var(--text-secondary)', fontSize: '0.8rem', fontFamily: 'inherit', textDecoration: 'underline' };
 
@@ -20,26 +22,28 @@ function Picker({ field, value, options, onChange }) {
   const [typing, setTyping] = useState(false);
   if (!list || typing) {
     return (
-      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
         <input value={value} onChange={e => onChange(e.target.value)} placeholder="Discord ID" style={control} inputMode="numeric" />
         {list && <button type="button" style={linkBtn} onClick={() => setTyping(false)}>List</button>}
       </div>
     );
   }
-  const known = !value || list.some(o => o.id === value);
+  const items = [
+    { value: '', label: 'Not set' },
+    ...(value && !list.some(o => o.id === value) ? [{ value, label: `Not found (${value})` }] : []),
+    ...list.map(o => ({
+      value: o.id,
+      label: field.kind === 'role' ? `@${o.name}` : `#${o.name}${o.category ? `  ·  ${o.category}` : ''}`,
+    })),
+  ];
   return (
-    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-      <select value={value} onChange={e => onChange(e.target.value)} style={control}>
-        <option value="">Not set</option>
-        {!known && <option value={value}>Not in the server ({value})</option>}
-        {field.kind === 'role'
-          ? list.map(o => <option key={o.id} value={o.id}>@{o.name}</option>)
-          : Object.entries(list.reduce((acc, o) => { (acc[o.category || ''] ||= []).push(o); return acc; }, {})).map(([cat, items]) => (
-              <optgroup key={cat} label={cat || 'No category'}>
-                {items.map(o => <option key={o.id} value={o.id}>#{o.name}</option>)}
-              </optgroup>
-            ))}
-      </select>
+    <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <Dropdown
+          options={items} value={value} onChange={onChange}
+          placeholder="Not set" searchPlaceholder={field.kind === 'role' ? 'Search roles…' : 'Search channels…'}
+        />
+      </div>
       <button type="button" style={linkBtn} onClick={() => setTyping(true)}>ID</button>
     </div>
   );

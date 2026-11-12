@@ -67,6 +67,7 @@ router.get('/fleet', requireAuthOrApiKey, async (req, res) => {
         aircraft_id: item.aircraft_id,
         livery_id: item.livery_id,
         image_url: item.image_url || '',
+        icao_code: item.icao_code || '',
       });
     });
 
@@ -80,12 +81,19 @@ router.get('/fleet', requireAuthOrApiKey, async (req, res) => {
 
 router.post('/fleet', requireAdmin, async (req, res) => {
   try {
-    const { name, aircraft_id, livery_id, livery_name } = req.body;
+    const { name, aircraft_id, livery_id, livery_name, image_url } = req.body;
     if (!name || !aircraft_id || !livery_id) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
     const pb = await getAdminClient();
-    const item = await pb.collection('fleet').create({ name, aircraft_id, livery_id, livery_name });
+    // the ICAO code belongs to the aircraft type: a new livery takes the type's code
+    const sameType = await pb.collection('fleet').getFullList({ filter: `aircraft_id = "${escFilterValue(aircraft_id)}"`, fields: 'id,icao_code', requestKey: null });
+    const typeCode = sameType.find(f => f.icao_code)?.icao_code || '';
+    const icao_code = typeCode || String(req.body.icao_code || '').trim().toUpperCase().slice(0, 6);
+    const item = await pb.collection('fleet').create({ name, aircraft_id, livery_id, livery_name, image_url: String(image_url || '').trim(), icao_code });
+    if (icao_code && !typeCode) {
+      await Promise.all(sameType.map(f => pb.collection('fleet').update(f.id, { icao_code })));
+    }
     invalidateCache('fleet');
     logAction(req.user, 'fleet.added', { id: item.id, name: item.name }, { livery: livery_name });
     res.status(201).json({ item });
