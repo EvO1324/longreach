@@ -72,6 +72,13 @@ jobs:
       - name: Apply the brand
         run: node scripts/brand.js
 
+      # without it the site updates but the API stays on the old version
+      - name: Check the Fly.io token
+        if: env.FLY_API_TOKEN == ''
+        run: |
+          echo "::error::The FLY_API_TOKEN secret isn't set, so the API wasn't deployed. Make one with 'fly tokens create deploy -a YOUR-API-APP', add it under Settings › Secrets and variables › Actions, then press Update again."
+          exit 1
+
       - uses: superfly/flyctl-actions/setup-flyctl@master
         if: env.FLY_API_TOKEN != ''
 
