@@ -97,6 +97,7 @@ function TicketsManager() {
   const [list, setList] = useState(null);
   const [filter, setFilter] = useState('');
   const [openId, setOpenId] = useState(null);
+  const [showSettings, setShowSettings] = useState(null);
 
   useEffect(() => {
     api.config().then(d => { setData(d); setForm(d.config); setSaved(d.config); }).catch(err => showToast(err.message || 'Couldn\'t load tickets', 'error'));
@@ -109,6 +110,9 @@ function TicketsManager() {
   if (!form) return <div style={hint}>Loading…</div>;
 
   const d = data.discord;
+  const setUp = !!(saved.category_id && saved.panel_channel_id);
+  // folded away once it's set up; open the first time
+  if (showSettings === null) setShowSettings(!setUp);
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
   const setIn = (group, k, v) => setForm(f => ({ ...f, [group]: { ...f[group], [k]: v } }));
   const channelOpts = d.ok ? d.channels.map(c => ({ value: c.id, label: `#${c.name}${c.category ? `  ·  ${c.category}` : ''}` })) : [];
@@ -139,11 +143,49 @@ function TicketsManager() {
     } finally { setPosting(false); }
   };
 
-  const card = { margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: 0 };
+  // boxes inside the Settings card: an outline rather than another card
+  const card = { margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: 0, border: '1px solid var(--border-color)', borderRadius: 12, padding: '1.1rem' };
   const exampleUser = '@pilot';
 
   return (
     <div style={{ paddingBottom: changed ? '5rem' : 0 }}>
+      <section className="card" style={{ marginBottom: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+          <h3 style={{ margin: 0, fontSize: '1rem' }}>Tickets{list ? ` · ${list.open} open` : ''}</h3>
+          <div style={{ display: 'flex', gap: '0.4rem' }}>
+            {[['', 'All'], ['open', 'Open'], ['closed', 'Closed']].map(([k, t]) => (
+              <button key={k} onClick={() => setFilter(k)} style={{ padding: '0.35rem 0.8rem', borderRadius: 999, border: `1.5px solid ${filter === k ? 'var(--avg-green)' : 'var(--border-color)'}`, background: filter === k ? 'var(--avg-green)' : 'transparent', color: filter === k ? '#fff' : 'var(--text-primary)', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600, fontFamily: 'inherit' }}>{t}</button>
+            ))}
+          </div>
+        </div>
+        {!list ? <div style={hint}>Loading…</div>
+          : !list.tickets.length ? <div style={{ ...hint, padding: '1rem 0' }}>No tickets yet.</div>
+          : (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {list.tickets.map(t => (
+                <button key={t.id} onClick={() => setOpenId(t.id)} style={{ display: 'grid', gridTemplateColumns: '70px 1fr auto', gap: '1rem', alignItems: 'center', padding: '0.7rem 0.25rem', border: 'none', borderTop: '1px solid var(--border-color)', background: 'none', textAlign: 'left', cursor: 'pointer', fontFamily: 'inherit', color: 'var(--text-primary)' }}>
+                  <span style={{ fontFamily: 'monospace', fontWeight: 700 }}>#{String(t.number).padStart(4, '0')}</span>
+                  <span style={{ minWidth: 0 }}>
+                    <span style={{ fontWeight: 600 }}>{t.user_discord_name}</span>
+                    <span style={{ ...hint, marginLeft: 8 }}>opened {new Date(t.created).toLocaleDateString()}{t.status === 'closed' && t.closed_by ? ` · closed by ${t.closed_by}` : ''}</span>
+                  </span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: t.status === 'open' ? 'var(--avg-green)' : 'var(--text-secondary)' }}>{t.status === 'open' ? 'Open' : 'Closed'}</span>
+                </button>
+              ))}
+            </div>
+          )}
+      </section>
+
+      <section className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        <button type="button" onClick={() => setShowSettings(v => !v)} aria-expanded={showSettings} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', padding: '1rem 1.25rem', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', color: 'var(--text-primary)', textAlign: 'left' }}>
+          <span>
+            <span style={{ display: 'block', fontWeight: 700, fontSize: '1rem' }}>Settings</span>
+            <span style={{ ...hint, marginTop: '0.15rem', display: 'block' }}>{setUp ? 'Panel, ticket channels, staff roles and messages' : 'Not set up yet'}</span>
+          </span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, transition: 'transform .2s', transform: showSettings ? 'rotate(180deg)' : 'none', color: 'var(--text-secondary)' }}><polyline points="6 9 12 15 18 9" /></svg>
+        </button>
+        {showSettings && (
+          <div style={{ padding: '0 1.25rem 1.25rem', borderTop: '1px solid var(--border-color)', paddingTop: '1.25rem' }}>
       <p style={{ margin: '0 0 1.25rem', color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.55, maxWidth: 780 }}>
         Members press a button in Discord to open a private ticket channel with your staff. Set up where it goes and what it says here, then post the panel.
       </p>
@@ -156,7 +198,7 @@ function TicketsManager() {
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))', gap: '1rem', alignItems: 'start' }}>
-        <section className="card" style={card}>
+        <section style={card}>
           <h3 style={{ margin: 0, fontSize: '1rem' }}>Where</h3>
           <Field title="Panel channel" help="Where the message with the button goes, e.g. #support.">
             <Dropdown options={channelOpts} value={form.panel_channel_id} onChange={v => set('panel_channel_id', v)} placeholder="Choose a channel" searchPlaceholder="Search channels…" disabled={!d.ok} />
@@ -180,7 +222,7 @@ function TicketsManager() {
           </Field>
         </section>
 
-        <section className="card" style={card}>
+        <section style={card}>
           <h3 style={{ margin: 0, fontSize: '1rem' }}>Panel message</h3>
           <Field title="Title"><input value={form.panel.title} onChange={e => setIn('panel', 'title', e.target.value)} style={input} maxLength={256} /></Field>
           <Field title="Message" help="Discord formatting works, like **bold** and links.">
@@ -210,7 +252,7 @@ function TicketsManager() {
           </div>
         </section>
 
-        <section className="card" style={card}>
+        <section style={card}>
           <h3 style={{ margin: 0, fontSize: '1rem' }}>Inside a ticket</h3>
           <Field title="Title" help="{number} is the ticket number.">
             <input value={form.welcome.title} onChange={e => setIn('welcome', 'title', e.target.value)} style={input} maxLength={256} />
@@ -228,7 +270,7 @@ function TicketsManager() {
           />
         </section>
 
-        <section className="card" style={card}>
+        <section style={card}>
           <h3 style={{ margin: 0, fontSize: '1rem' }}>Options</h3>
           {[
             ['ping_staff', 'Ping the staff roles when a ticket opens'],
@@ -245,31 +287,8 @@ function TicketsManager() {
         </section>
       </div>
 
-      <section className="card" style={{ marginTop: '1rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-          <h3 style={{ margin: 0, fontSize: '1rem' }}>Tickets{list ? ` · ${list.open} open` : ''}</h3>
-          <div style={{ display: 'flex', gap: '0.4rem' }}>
-            {[['', 'All'], ['open', 'Open'], ['closed', 'Closed']].map(([k, t]) => (
-              <button key={k} onClick={() => setFilter(k)} style={{ padding: '0.35rem 0.8rem', borderRadius: 999, border: `1.5px solid ${filter === k ? 'var(--avg-green)' : 'var(--border-color)'}`, background: filter === k ? 'var(--avg-green)' : 'transparent', color: filter === k ? '#fff' : 'var(--text-primary)', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600, fontFamily: 'inherit' }}>{t}</button>
-            ))}
           </div>
-        </div>
-        {!list ? <div style={hint}>Loading…</div>
-          : !list.tickets.length ? <div style={{ ...hint, padding: '1rem 0' }}>No tickets yet.</div>
-          : (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              {list.tickets.map(t => (
-                <button key={t.id} onClick={() => setOpenId(t.id)} style={{ display: 'grid', gridTemplateColumns: '70px 1fr auto', gap: '1rem', alignItems: 'center', padding: '0.7rem 0.25rem', border: 'none', borderTop: '1px solid var(--border-color)', background: 'none', textAlign: 'left', cursor: 'pointer', fontFamily: 'inherit', color: 'var(--text-primary)' }}>
-                  <span style={{ fontFamily: 'monospace', fontWeight: 700 }}>#{String(t.number).padStart(4, '0')}</span>
-                  <span style={{ minWidth: 0 }}>
-                    <span style={{ fontWeight: 600 }}>{t.user_discord_name}</span>
-                    <span style={{ ...hint, marginLeft: 8 }}>opened {new Date(t.created).toLocaleDateString()}{t.status === 'closed' && t.closed_by ? ` · closed by ${t.closed_by}` : ''}</span>
-                  </span>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: t.status === 'open' ? 'var(--avg-green)' : 'var(--text-secondary)' }}>{t.status === 'open' ? 'Open' : 'Closed'}</span>
-                </button>
-              ))}
-            </div>
-          )}
+        )}
       </section>
 
       {openId && <Transcript id={openId} onClose={() => setOpenId(null)} />}

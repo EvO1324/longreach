@@ -274,6 +274,20 @@ function AdminPanel({ user }) {
 
         {/* Tab content */}
         <div style={{ animation: 'adminFadeIn 0.2s ease-out' }}>
+          {/* a switched-off plugin's page says so instead of showing nothing */}
+          {(() => {
+            const def = CATEGORIES.flatMap(c => c.tabs).find(t => t.id === activeTab);
+            if (!def?.feature || features[def.feature] !== false) return null;
+            return (
+              <div className="card" style={{ maxWidth: 520 }}>
+                <div style={{ fontWeight: 700, marginBottom: '0.35rem' }}>{def.label} is switched off</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '0.9rem' }}>
+                  Switch it on in Plugins to use it.
+                </div>
+                <a href="/admin?tab=plugins" className="btn btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>Open Plugins</a>
+              </div>
+            );
+          })()}
           {activeTab === 'pilots'       && <PilotsManager initialTab='pilots' user={user} />}
           {activeTab === 'recruitment'  && <PilotsManager initialTab='recruitment' user={user} />}
           {activeTab === 'activity'     && <ActivityManager />}
@@ -283,11 +297,11 @@ function AdminPanel({ user }) {
           {activeTab === 'news'         && <NewsManager />}
           {activeTab === 'audit'        && <AuditLog />}
           {activeTab === 'routes'       && <RoutesManager />}
-          {activeTab === 'featured'     && <FeaturedRoutes />}
+          {activeTab === 'featured'     && features.routesOfTheWeek !== false && <FeaturedRoutes />}
           {activeTab === 'fleet'        && <FleetManager />}
           {activeTab === 'airlines'     && <AirlinesManager />}
-          {activeTab === 'challenges'   && <ChallengesManager />}
-          {activeTab === 'events'       && <EventsManager />}
+          {activeTab === 'challenges'   && features.challenges !== false && <ChallengesManager />}
+          {activeTab === 'events'       && features.events !== false && <EventsManager />}
           {activeTab === 'docs'         && <Docs user={user} />}
           {activeTab === 'ranks'        && <RanksManager />}
           {activeTab === 'badges'       && <BadgesManager />}
