@@ -12,7 +12,9 @@ import { ranks as ranksApi } from '../api/client';
 
 // Flight-number prefixes that count as "our" flights. Everything else is a
 // codeshare.
-export const HOME_AIRLINES = ['QF', 'JQ'];
+import brand from '../brand';
+// The VA's own airline codes (va.config.json airlines.home); others are codeshares
+export const HOME_AIRLINES = brand.airlines?.home || [];
 
 const MANUFACTURERS = /^(airbus|boeing|embraer|bombardier|de havilland canada|de havilland|mitsubishi|cessna|daher)\s+/;
 export function normaliseType(name) {
@@ -26,7 +28,7 @@ export function normaliseType(name) {
 
 export function isCodeshare(flightNumber) {
   const fn = String(flightNumber || '').trim().toUpperCase();
-  if (!fn) return false;
+  if (!fn || !HOME_AIRLINES.length) return false;
   return !HOME_AIRLINES.some(p => fn.startsWith(p));
 }
 

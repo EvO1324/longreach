@@ -26,6 +26,10 @@ received a copy of the licence with this program (LICENSE.md). If not, see
     colors: { primary: '#1f5f8b', accent: '#d9a441', neutrals: 'warm' },
     logos: { light: 'brand/default/logo-light.svg', dark: 'brand/default/logo-dark.svg', icon: 'brand/default/icon.svg' },
     timezone: 'UTC',
+    // The VA's own airline codes (flight number prefixes, e.g. ["QF", "JQ"]).
+    // Routes with any other prefix are codeshares, which a rank can unlock.
+    // Empty: no route counts as a codeshare.
+    airlines: { home: [] },
     // Career mode hubs: where a career can start
     hubs: [{ icao: 'KLAX', name: 'Los Angeles' }, { icao: 'KJFK', name: 'New York' }],
     // Infinite Flight grade needed to sign up
@@ -303,6 +307,8 @@ received a copy of the licence with this program (LICENSE.md). If not, see
     else config.hubs.forEach(function (h, i) {
       if (!h || !/^[A-Z0-9]{4}$/i.test(h.icao || '')) errors.push('hubs[' + i + '].icao must be a 4-letter ICAO code');
     });
+    if (!Array.isArray(config.airlines.home)) errors.push('airlines.home must be a list of airline codes, e.g. ["QF", "JQ"]');
+    else config.airlines.home = config.airlines.home.map(function (c) { return String(c).trim().toUpperCase(); }).filter(Boolean);
     var statKeys = DASHBOARD_STATS.map(function (x) { return x.key; });
     var d = config.dashboard || {};
     if (!Array.isArray(d.stats) || d.stats.length < 2 || d.stats.length > 6) errors.push('dashboard.stats needs 2 to 6 cards');

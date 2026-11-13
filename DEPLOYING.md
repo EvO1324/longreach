@@ -138,7 +138,7 @@ In the crew centre's admin panel:
 
 - **Ranks** and **Badges**: "Use default" gives you a starting set to edit.
 - **Fleet**, **Airlines** and **Routes**: what your pilots can fly.
-- **Docs**: rules and guides. For a starting set: `cd server && node scripts/seedDocs.js --live`.
+- **Docs**: guides for pilots and staff are added for you. Edit them to suit your VA, especially the code of conduct.
 - **Staff roles**: what each staff position can do.
 
 ## 8. Discord (optional)

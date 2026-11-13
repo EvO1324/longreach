@@ -461,7 +461,7 @@ app.listen(PORT, () => {
   // After an update: add the database tables and fields the new version needs
   if (process.env.DISABLE_SCHEMA_SYNC !== 'true') {
     require('./config/pocketbase').getAdminClient()
-      .then(pb => require('./services/updates').syncSchema(pb))
+      .then(pb => require('./services/updates').syncSchema(pb).then(() => require('./services/docs').seedDocs(pb)))
       .catch(err => console.error('[updates] database update failed:', err.message));
   }
 

@@ -9,7 +9,8 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 
 // Flight-number prefixes that count as "our" flights. Everything else is a
 // codeshare.
-const HOME_AIRLINES = ['QF', 'JQ'];
+// The VA's own airline codes (va.config.json airlines.home); others are codeshares
+const HOME_AIRLINES = require('../config/brand').airlines?.home || [];
 
 // Pure helpers
 
@@ -61,7 +62,7 @@ function codeshareUnlockIndex(sorted) {
 
 function isCodeshare(flightNumber) {
   const fn = String(flightNumber || '').trim().toUpperCase();
-  if (!fn) return false;
+  if (!fn || !HOME_AIRLINES.length) return false;
   return !HOME_AIRLINES.some(p => fn.startsWith(p));
 }
 

@@ -22,7 +22,6 @@ import { DeveloperBadge, isDeveloper } from './DeveloperBadge';
 import { loadSettings } from '../services/settingsService';
 import { flights as flightsApi, changelog as changelogApi } from '../api/client';
 import { usePermissions } from '../hooks/usePermissions';
-import { canSeeEvents } from '../utils/eventsAccess';
 
 import brand, { logoFor, features } from '../brand';
 
@@ -33,7 +32,7 @@ const NAV_GROUPS = [
       { to: '/dashboard',  label: 'Dashboard',  icon: LayoutDashboard },
       { to: '/logbook',    label: 'Logbook',    icon: BookOpen },
       { to: '/log-flight', label: 'File PIREP', icon: FilePlus },
-      { to: '/career',     label: 'Career',     icon: Plane, adminOnly: true, beta: true, feature: 'career' },
+      { to: '/career',     label: 'Career',     icon: Plane, feature: 'career' },
       { to: '/leave',      label: 'Leave',      icon: Calendar },
       { to: '/statistics', label: 'Statistics', icon: BarChart2 },
       { to: '/if-live', label: 'IF Live', icon: Satellite, liveAccess: true, adminOnly: true, feature: 'liveMode' },
@@ -44,9 +43,9 @@ const NAV_GROUPS = [
     items: [
       { to: '/routes',  label: 'Routes',   icon: Map },
       { to: '/rotw',    label: 'ROTW',     icon: Star, feature: 'routesOfTheWeek' },
-      { to: '/events',  label: 'Events',   icon: CalendarDays, beta: true, feature: 'events' },
+      { to: '/events',  label: 'Events',   icon: CalendarDays, feature: 'events' },
       { to: '/livemap', label: 'Live Map', icon: Map },
-      { to: '/challenges', label: 'Challenges', icon: Trophy, adminOnly: true, beta: true, feature: 'challenges' },
+      { to: '/challenges', label: 'Challenges', icon: Trophy, feature: 'challenges' },
     ],
   },
   {
@@ -136,7 +135,6 @@ export default function Sidebar({ user, darkMode, onToggleDarkMode, onLogout }) 
   const [changelogOpen, setChangelogOpen]     = useState(false);
   const [changelogData, setChangelogData]     = useState([]);
   const [changelogLoaded, setChangelogLoaded] = useState(false);
-  const [challengesVisible, setChallengesVisible] = useState(false);
 
   const TAG_COLORS = {
     new:      { color: '#2e7d32', bg: 'rgba(46,125,50,0.1)' },
@@ -178,7 +176,6 @@ export default function Sidebar({ user, darkMode, onToggleDarkMode, onLogout }) 
   useEffect(() => {
     loadSettings(true).then(s => {
       setLogo(s[darkMode ? 'logo_dark' : 'logo_light'] || logoFor(darkMode));
-      setChallengesVisible(s['challenges_visible'] !== 'false');
     });
   }, [darkMode]);
 
@@ -391,8 +388,6 @@ export default function Sidebar({ user, darkMode, onToggleDarkMode, onLogout }) 
                   if (item.liveAccess) return isAdmin || user.live_access;
                   if (item.adminOnly && !isAdmin && user.role !== 'beta_tester') return false;
                   if (item.staffOnly && !isAdmin) return false;
-                  if (item.to === '/challenges' && !challengesVisible) return false;
-                  if (item.to === '/events' && !canSeeEvents(user)) return false;
                   return true;
                 }).map(item => (
                   <NavLink key={item.to} to={item.to} style={({ isActive }) => ({

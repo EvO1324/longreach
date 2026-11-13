@@ -21,12 +21,13 @@ const router = express.Router();
 
 const PERM = 'events.manage';
 
+// Every signed-in pilot; the Events plugin decides whether they're on at all
 function canSeeEvents(user) {
-  return ['admin', 'staff', 'beta_tester'].includes(user?.role) || !!user?.staff_role || isDeveloperUser(user);
+  return !!user;
 }
 function requireEventsAccess(req, res, next) {
   requireAuth(req, res, () => {
-    if (!canSeeEvents(req.user)) return res.status(403).json({ error: 'Events are in beta and not open to everyone yet' });
+    if (!canSeeEvents(req.user)) return res.status(403).json({ error: 'Sign in to see events' });
     next();
   });
 }

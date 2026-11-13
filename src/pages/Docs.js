@@ -8,7 +8,7 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 */
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { Plane, Search, Award, BookOpen, CheckSquare, Users, Bot, ClipboardList, Lock, Menu, X, Map, ShieldCheck, Star, Briefcase, CalendarClock, TicketCheck, RefreshCw, Plus, Trash2, Satellite } from 'lucide-react';
+import { Plane, Search, Award, BookOpen, CheckSquare, Users, Bot, ClipboardList, Lock, Menu, X, Map, ShieldCheck, Star, Briefcase, CalendarClock, TicketCheck, RefreshCw, Plus, Trash2, Satellite, Trophy, Radio } from 'lucide-react';
 import { usePermissions } from '../hooks/usePermissions';
 import { docs as docsApi } from '../api/client';
 
@@ -18,7 +18,7 @@ const GOLD  = 'var(--brand-accent)';
 
 const ICONS = {
   Plane, Search, Award, BookOpen, CheckSquare, Users, Bot, ClipboardList,
-  Map, ShieldCheck, Star, Briefcase, CalendarClock, TicketCheck, RefreshCw, Satellite,
+  Map, ShieldCheck, Star, Briefcase, CalendarClock, TicketCheck, RefreshCw, Satellite, Trophy, Radio,
 };
 
 // Components

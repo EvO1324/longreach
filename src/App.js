@@ -202,14 +202,16 @@ function App() {
               <Route path="/statistics" element={<Statistics user={user} />} />
               <Route path="/routes"     element={<RoutesPage />} />
               <Route path="/rotw"       element={on('routesOfTheWeek', <RoutesOfTheWeek />)} />
-              <Route path="/events"     element={on('events', canSeeEvents(user) ? <Events /> : <Navigate to="/dashboard" replace />)} />
+              <Route path="/events"     element={on('events', <Events />)} />
               <Route path="/log-flight" element={<FilePirep user={user} />} />
               <Route path="/profile"    element={<Profile user={user} onUserUpdate={handleUserUpdate} />} />
               <Route path="/tools"      element={<Tools user={user} />} />
               <Route path="/docs"       element={<Docs user={user} />} />
               <Route path="/livemap"    element={<LiveMap />} />
               <Route path="/leave"      element={<Leave />} />
-              <Route path="/career"     element={on('career', (user.role === 'admin' || user.role === 'staff' || user.role === 'beta_tester' || user.staff_role) ? <Career user={user} /> : <Navigate to="/dashboard" replace />)} />
+              <Route path="/career"     element={on('career', <Career user={user} />)} />
+              <Route path="/challenges" element={on('challenges', <Challenges user={user} />)} />
+              <Route path="/challenges/:id" element={on('challenges', <Challenges user={user} />)} />
               <Route path="/staff-apply" element={<StaffApply user={user} />} />
               <Route path="/legal"      element={<Legal user={user} />} />
               <Route path="/pilot/:id"  element={<PublicProfile currentUser={user} />} />
@@ -218,12 +220,6 @@ function App() {
                   <Route path="/admin"           element={<AdminPanel user={user} />} />
                   <Route path="/admin/pirep/:id" element={<PirepDetail user={user} />} />
                   <Route path="/admin/pilot/:id" element={<PilotDetail user={user} />} />
-                </>
-              )}
-              {(user.role === 'admin' || isDeveloper(user)) && (
-                <>
-                  <Route path="/challenges" element={on('challenges', <Challenges user={user} />)} />
-                  <Route path="/challenges/:id" element={on('challenges', <Challenges user={user} />)} />
                 </>
               )}
               <Route path="/if-live" element={on('liveMode', (user.role === 'admin' || user.role === 'staff' || user.live_access || user.staff_role || isDeveloper(user)) ? <IFLive user={user} /> : <Navigate to="/dashboard" replace />)} />

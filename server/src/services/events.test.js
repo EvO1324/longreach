@@ -118,7 +118,7 @@ test('events beta: only admins, staff, beta testers and the developer account', 
   assert.equal(canSeeEvents({ role: 'staff' }), true);
   assert.equal(canSeeEvents({ role: 'beta_tester' }), true);
   assert.equal(canSeeEvents({ role: 'pilot', staff_role: 'r1' }), true);
-  assert.equal(canSeeEvents({ role: 'pilot' }), false);
-  assert.equal(canSeeEvents({ role: 'pilot', staff_role: '' }), false);
+  assert.equal(canSeeEvents({ role: 'pilot' }), true);
+  assert.equal(canSeeEvents({ role: 'pilot', staff_role: '' }), true);
   assert.equal(canSeeEvents(null), false);
 });

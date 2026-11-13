@@ -280,6 +280,9 @@ received a copy of the licence with this program (LICENSE.md). If not, see
             <label class="f"><span>Grade needed to join</span><select data-bind="config.requirements.minimumGrade" data-type="number"><option value="0">Any</option><option value="1">Grade 1</option><option value="2">Grade 2</option><option value="3">Grade 3</option><option value="4">Grade 4</option><option value="5">Grade 5</option></select></label>
             <label class="f"><span>ATC airports (ICAO prefixes)</span><input type="text" id="atcPrefixes" placeholder="Any"></label>
           </div>
+          <h3>Your airline codes</h3>
+          <label class="f"><span>Flight number prefixes (optional)</span><input type="text" id="homeAirlines" placeholder="e.g. QF, JQ"></label>
+          <p class="note">Routes with any other prefix count as codeshares, which a rank can unlock. Leave empty if you don't use codeshares.</p>
         </section>
 
         <section data-tab="services" data-title="Services">
@@ -487,6 +490,7 @@ received a copy of the licence with this program (LICENSE.md). If not, see
     });
     $('#legacyInput').value = (S.config.callsign.legacy || []).join(', ');
     $('#atcPrefixes').value = (S.config.atc.airportPrefixes || []).join(', ');
+    $('#homeAirlines').value = ((S.config.airlines || {}).home || []).join(', ');
   }
   document.addEventListener('input', function (e) {
     var el = e.target;
@@ -494,6 +498,7 @@ received a copy of the licence with this program (LICENSE.md). If not, see
     else if (el.dataset.env) S.env[el.dataset.env] = el.value;
     else if (el.id === 'legacyInput') { S.config.callsign.legacy = el.value.split(',').map(function (s) { return s.trim(); }).filter(Boolean); changed(); }
     else if (el.id === 'atcPrefixes') S.config.atc.airportPrefixes = el.value.split(/[,\s]+/).map(function (s) { return s.trim().toUpperCase(); }).filter(Boolean);
+    else if (el.id === 'homeAirlines') { S.config.airlines = S.config.airlines || {}; S.config.airlines.home = el.value.split(/[,\s]+/).map(function (s) { return s.trim().toUpperCase(); }).filter(Boolean); }
   });
   document.addEventListener('change', function (e) { if (e.target.dataset.bind && e.target.tagName === 'SELECT') e.target.dispatchEvent(new Event('input', { bubbles: true })); });
   function changed() { renderCallsign(); renderPreview(); renderLogos(); renderTabs(); $('#topName').textContent = S.config.name || 'Crew centre setup'; }

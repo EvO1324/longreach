@@ -12,6 +12,7 @@ const { getAdminClient } = require('../config/pocketbase');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
 const { logAction } = require('../utils/audit');
 const { escFilterValue } = require('../utils/pbFilter');
+const plugins = require('../config/plugins');
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.get('/docs', requireAuth, async (req, res) => {
     const records = await pb.collection('docs').getFullList({
       filter, sort: 'sort_order', requestKey: null,
     });
-    const docs = records.map(r => ({
+    const docs = records.filter(r => !r.plugin || plugins.isOn(r.plugin)).map(r => ({
       id:         r.doc_id,
       recordId:   r.id,
       label:      r.label,

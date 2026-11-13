@@ -14,6 +14,9 @@ const fs = require('fs');
 const path = require('path');
 const ra = require('./rankAccess');
 
+// these tests use a VA whose own airlines are QF and JQ
+ra.HOME_AIRLINES.splice(0, ra.HOME_AIRLINES.length, 'QF', 'JQ');
+
 // Trimmed copy of the live rank ladder (Nov 2026).
 const RANKS = [
   { id: 'r1', name: 'New Pilot',           hours_required: 0,    order_position: 1, aircraft_restrictions: '["Bombardier Dash 8-Q400","E190","Airbus A319"]' },
@@ -81,6 +84,6 @@ test('frontend copy in src/utils/rankAccess.js matches this file', () => {
   for (const name of ['normaliseType', 'isCodeshare', 'parseRouteAircraft', 'aircraftLock', 'routeLock']) {
     assert.equal(body(front, name), body(back, name), `${name} differs between frontend and server`);
   }
-  const consts = src => [src.match(/const MANUFACTURERS = .*$/m)[0], src.match(/const HOME_AIRLINES = .*$/m)[0]];
+  const consts = src => [src.match(/const MANUFACTURERS = .*$/m)[0], /HOME_AIRLINES = .*airlines\?\.home \|\| \[\];$/m.test(src)];
   assert.deepEqual(consts(front), consts(back));
 });

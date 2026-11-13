@@ -107,11 +107,7 @@ In **Admin › Import**:
 2. **Fill them in:** add a few pilots, routes, fleet and flights.
 3. **Import them:** do pilots first, so the flights can be matched to them.
 
-Then set up ranks with **Admin › Ranks › Use default ranks**. For a starting set of docs:
-
-```bash
-cd server && node scripts/seedDocs.js --live
-```
+Then set up ranks with **Admin › Ranks › Use default ranks**. Docs for pilots and staff are added for you.
 
 ## Updating the demo
 
