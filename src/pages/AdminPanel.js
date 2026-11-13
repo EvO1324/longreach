@@ -38,6 +38,8 @@ import UpdatesManager      from './admin/UpdatesManager';
 import Connections         from './admin/Connections';
 import Plugins             from './admin/Plugins';
 import TicketsManager      from './admin/TicketsManager';
+import Embeds              from './admin/Embeds';
+import PartnersManager     from './admin/PartnersManager';
 import AuditLog            from './admin/AuditLog';
 import ImportTool          from './admin/ImportTool';
 import VAHealth            from './admin/VAHealth';
@@ -108,6 +110,7 @@ const CATEGORIES = [
       { id: 'featured',   label: 'Featured Routes', perm: null, adminOnly: true, feature: 'routesOfTheWeek' },
       { id: 'fleet',      label: 'Fleet',           perm: null, adminOnly: true },
       { id: 'airlines',   label: 'Airlines',        perm: null, adminOnly: true },
+      { id: 'partners',   label: 'Partners',        perm: null, adminOnly: true, feature: 'partners' },
       { id: 'events',     label: 'Events',          perm: 'events.manage', feature: 'events' },
       { id: 'challenges', label: 'Challenges',      perm: null, adminOnly: true, feature: 'challenges' },
     ],
@@ -129,6 +132,7 @@ const CATEGORIES = [
       { id: 'site',         label: 'Site settings',     perm: null, adminOnly: true },
       { id: 'plugins',      label: 'Plugins',           perm: null, adminOnly: true },
       { id: 'connections',  label: 'Connections',       perm: null, adminOnly: true },
+      { id: 'embeds',       label: 'Embeds',            perm: null, adminOnly: true },
       { id: 'updates',      label: 'Updates',           perm: null, adminOnly: true },
     ],
   },
@@ -312,6 +316,8 @@ function AdminPanel({ user }) {
           {activeTab === 'plugins'      && <Plugins />}
           {activeTab === 'tickets'      && features.tickets !== false && <TicketsManager />}
           {activeTab === 'connections'  && <Connections />}
+          {activeTab === 'embeds'       && <Embeds />}
+          {activeTab === 'partners'     && features.partners !== false && <PartnersManager />}
           {activeTab === 'updates'      && <UpdatesManager />}
           {activeTab === 'import'       && <ImportTool />}
           {activeTab === 'health'       && <VAHealth />}

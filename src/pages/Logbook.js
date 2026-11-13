@@ -16,7 +16,7 @@ import { cacheGet, cacheSet } from '../cache';
 import AircraftLabel from '../components/AircraftLabel';
 
 const PAGE_SIZE = 20;
-const FIELDS = 'id,flight_number,departure_icao,arrival_icao,aircraft,registration,event,flight_time,distance_nm,date,status,notes,multiplier_value,multiplier_name,is_career,is_live,auto_approved,fuel_used_kg,landing_stats';
+const FIELDS = 'id,flight_number,departure_icao,arrival_icao,aircraft,registration,event,flight_time,distance_nm,date,status,notes,multiplier_value,multiplier_name,is_career,is_live,auto_approved,fuel_used_kg,landing_stats,pilot_unread';
 
 function Logbook({ user }) {
   const [flights, setFlights]     = useState([]);
@@ -31,6 +31,11 @@ function Logbook({ user }) {
   const [sortKey, setSortKey]     = useState('date');
   const [sortDir, setSortDir]     = useState(-1);
   const [myStats, setMyStats]     = useState(null);
+
+  // opening a flight reads its comments, so the "new reply" tag goes
+  useEffect(() => {
+    if (selectedFlight?.pilot_unread) setFlights(fs => fs.map(f => f.id === selectedFlight.id ? { ...f, pilot_unread: false } : f));
+  }, [selectedFlight]);
   const searchDebounce            = useRef(null);
   const isMounted                 = useRef(false);
 
@@ -141,6 +146,7 @@ function Logbook({ user }) {
     { key: 'is_live',       label: 'LIVE',   color: 'var(--brand-accent)',          bg: 'rgba(var(--brand-accent-rgb),0.14)' },
     { key: 'is_career',     label: 'CAREER', color: 'var(--avg-green)', bg: 'rgba(var(--brand-primary-rgb),0.1)' },
     { key: 'event',         label: 'EVENT',  color: '#7b3fa0',          bg: 'rgba(123,63,160,0.12)' },
+    { key: 'pilot_unread',  label: 'NEW REPLY', color: '#c62828',       bg: 'rgba(198,40,40,0.1)' },
   ];
   const flightTags = (flight) => TAGS.filter(t => flight[t.key]).map(t => (
     <span key={t.key} style={{ fontSize: '0.6rem', fontWeight: 700, color: t.color, background: t.bg, padding: '0.1rem 0.35rem', borderRadius: '4px' }}>{t.label}</span>
@@ -313,7 +319,7 @@ function Logbook({ user }) {
                       {selectedFlight?.id === flight.id && (
                         <tr>
                           <td colSpan={7} style={{ padding: '0.75rem 1rem 0.5rem', background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-color)' }}>
-                            <FlightModal flight={selectedFlight} fleetData={fleet} onClose={() => setSelectedFlight(null)} />
+                            <FlightModal flight={selectedFlight} fleetData={fleet} userId={user?.id} onClose={() => setSelectedFlight(null)} />
                           </td>
                         </tr>
                       )}
@@ -347,7 +353,7 @@ function Logbook({ user }) {
                   </div>
                   {selectedFlight?.id === flight.id && (
                     <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-color)' }}>
-                      <FlightModal flight={selectedFlight} fleetData={fleet} onClose={() => setSelectedFlight(null)} />
+                      <FlightModal flight={selectedFlight} fleetData={fleet} userId={user?.id} onClose={() => setSelectedFlight(null)} />
                     </div>
                   )}
                 </div>

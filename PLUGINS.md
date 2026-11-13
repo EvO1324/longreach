@@ -28,6 +28,7 @@ The site updates straight away. The API and bot restart by themselves (about 20 
    - `on: false`: new plugins arrive switched off, so an update never turns something on by surprise.
    - `api`: the API paths it owns. They answer 404 while it's off. `apiAllow` lists exceptions.
    - `commands`: its Discord slash command names.
+   - `beta: true`: optional. Shows a Testing label on the Plugins page while it's still being tried out.
 
    Then run `npm run brand` to copy the list to the site and the API.
 

@@ -22,7 +22,8 @@ PocketBase lists tables alphabetically. Here they are by what they're for.
 
 | Table | What's in it |
 | --- | --- |
-| `flights` | Every PIREP: route, aircraft, time and status, plus what it counted for (multiplier, event, challenge leg, career, ferry, Live Mode, ATC session) |
+| `flights` | Every PIREP: route, aircraft, time and status, plus what it counted for (multiplier, event, challenge leg, career, ferry, Live Mode, ATC session), and whether the pilot or staff have an unread comment |
+| `pirep_comments` | The comment thread on a PIREP between the pilot and staff |
 | `routes` | The VA's routes and the aircraft allowed on each |
 | `fleet` | Aircraft and liveries pilots can fly, matched to Infinite Flight's IDs |
 | `airlines` | Airline codes, names and logos (codeshares) |
@@ -36,7 +37,8 @@ PocketBase lists tables alphabetically. Here they are by what they're for.
 | --- | --- |
 | `staff_applications` | Applications for staff positions |
 | `staff_positions` | The positions open for applications |
-| `tickets` | Discord support tickets: who opened them, their channel, whether they're open, and the transcript once closed |
+| `tickets` | Discord support tickets: who opened them, the topic, who claimed them, their channel, whether they're open, and the transcript once closed |
+| `partners` | Linked partner VAs (Partner VAs plugin): their address, the tokens each side uses, what we share with them, and when we last heard from them |
 | `watchlist` | Infinite Flight Community usernames to watch or block when they apply |
 | `exam_topics` | Entry exam topics and how many questions each exam draws from them |
 | `exam_questions` | The question bank |

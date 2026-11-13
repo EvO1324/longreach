@@ -7,9 +7,10 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 <https://polyformproject.org/licenses/noncommercial/1.0.0>.
 */
 
-// Ticket buttons. "Open a ticket" (on the panel posted from Admin › Tickets)
-// makes a private channel for the member and the staff roles; "Close ticket"
-// in that channel saves a transcript and deletes it.
+// Ticket buttons. "Open a ticket" (or the topic dropdown) on the panel posted
+// from Admin › Tickets makes a private channel for the member and the staff
+// roles; "Claim" lets a staff member take it; "Close ticket" saves a
+// transcript and deletes the channel.
 
 const { ChannelType, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const { getAdminClient } = require('../config/pocketbase');
@@ -25,14 +26,17 @@ const MEMBER_PERMS = [
 // discord.js wants allowedMentions where the Discord API says allowed_mentions
 const toDiscordJs = ({ allowed_mentions, ...msg }) => ({ ...msg, ...(allowed_mentions ? { allowedMentions: allowed_mentions } : {}) });
 
-async function openTicket(interaction) {
+async function openTicket(interaction, categoryId) {
   if (!plugins.isOn('tickets')) return interaction.reply(ephemeral('Tickets are switched off at the moment.'));
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
   const pb = await getAdminClient();
   const config = await tickets.load(pb);
   const guild = interaction.guild;
-  if (!guild || !config.category_id) return interaction.editReply('Tickets aren\'t set up yet. Please ask a member of staff.');
+  const category = categoryId ? tickets.categoryOf(config, categoryId) : null;
+  if (categoryId && !category) return interaction.editReply('That topic isn\'t available any more. Please ask a member of staff.');
+  const parent = tickets.parentFor(config, category);
+  if (!guild || !parent) return interaction.editReply('Tickets aren\'t set up yet. Please ask a member of staff.');
 
   const user = interaction.user;
   if (config.one_open_per_user) {
@@ -48,7 +52,7 @@ async function openTicket(interaction) {
 
   const last = await pb.collection('tickets').getList(1, 1, { sort: '-number', fields: 'number', requestKey: null });
   const number = (last.items[0]?.number || 0) + 1;
-  const staffRoles = config.staff_role_ids.filter(id => guild.roles.cache.has(id));
+  const staffRoles = tickets.rolesFor(config, category).filter(id => guild.roles.cache.has(id));
   const name = interaction.member?.displayName || user.globalName || user.username;
 
   let channel;
@@ -56,8 +60,8 @@ async function openTicket(interaction) {
     channel = await guild.channels.create({
       name: tickets.channelName(config, number, user.username),
       type: ChannelType.GuildText,
-      parent: config.category_id,
-      topic: `Ticket #${String(number).padStart(4, '0')} for ${name}`,
+      parent,
+      topic: `Ticket #${String(number).padStart(4, '0')} for ${name}${category ? ` · ${category.label}` : ''}`,
       permissionOverwrites: [
         { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
         { id: user.id, allow: MEMBER_PERMS },
@@ -74,9 +78,9 @@ async function openTicket(interaction) {
     const pilot = await pb.collection('users').getFirstListItem(pb.filter('discord_id = {:id}', { id: user.id }), { fields: 'id', requestKey: null }).catch(() => null);
     await pb.collection('tickets').create({
       number, channel_id: channel.id, user_discord_id: user.id, user_discord_name: name,
-      user_id: pilot?.id || '', status: 'open',
+      user_id: pilot?.id || '', status: 'open', category: category?.label || '',
     });
-    await channel.send(toDiscordJs(tickets.welcomeMessage(config, { userId: user.id, name, number })));
+    await channel.send(toDiscordJs(tickets.welcomeMessage(config, { userId: user.id, name, number, category })));
   } catch (err) {
     console.error('[tickets] open:', err.message);
     await channel.delete().catch(() => {});
@@ -108,15 +112,7 @@ async function transcriptOf(channel) {
     before = batch.last().id;
     if (batch.size < 100) break;
   }
-  return out.reverse().map(m => ({
-    at: m.createdAt.toISOString(),
-    author: m.member?.displayName || m.author.globalName || m.author.username,
-    author_id: m.author.id,
-    bot: m.author.bot,
-    content: m.content || '',
-    embeds: m.embeds.map(e => [e.title, e.description].filter(Boolean).join('\n')).filter(Boolean),
-    attachments: [...m.attachments.values()].map(a => a.url),
-  }));
+  return out.reverse().map(tickets.transcriptEntry);
 }
 
 async function closeTicket(interaction) {
@@ -135,21 +131,32 @@ async function closeTicket(interaction) {
   const config = await tickets.load(pb);
   if (config.log_channel_id) {
     const log = await interaction.guild.channels.fetch(config.log_channel_id).catch(() => null);
-    await log?.send({ embeds: [{
-      title: `Ticket #${String(t.number).padStart(4, '0')} closed`,
-      color: parseInt(String(config.panel.color).replace('#', ''), 16) || 0,
-      fields: [
-        { name: 'Opened by', value: `<@${t.user_discord_id}>`, inline: true },
-        { name: 'Closed by', value: `<@${interaction.user.id}>`, inline: true },
-        { name: 'Messages', value: String(transcript.filter(m => !m.bot).length), inline: true },
-      ],
-      footer: { text: 'The transcript is in Admin › Tickets' },
-      timestamp: new Date().toISOString(),
-    }], allowedMentions: { parse: [] } }).catch(() => {});
+    await log?.send({
+      embeds: [tickets.logEmbed(config, t, { closedBy: `<@${interaction.user.id}>`, messages: transcript.filter(m => !m.bot).length })],
+      allowedMentions: { parse: [] },
+    }).catch(() => {});
   }
 
   await channel.send(`🔒 Ticket closed by ${closer}. This channel will be deleted in a few seconds.`).catch(() => {});
   setTimeout(() => channel.delete('Ticket closed').catch(() => {}), 5000);
+}
+
+// Staff only: anyone with one of the ticket's staff roles, or Manage Channels
+async function claimTicket(interaction) {
+  const pb = await getAdminClient();
+  const t = await pb.collection('tickets').getFirstListItem(pb.filter('channel_id = {:id} && status = "open"', { id: interaction.channelId }), { requestKey: null }).catch(() => null);
+  if (!t) return interaction.reply(ephemeral('This ticket is closed.'));
+  const config = await tickets.load(pb);
+  const roles = tickets.rolesFor(config, tickets.categoryOfTicket(config, t));
+  const member = interaction.member;
+  const isStaff = member?.permissions?.has?.(PermissionFlagsBits.ManageChannels) || roles.some(id => member?.roles?.cache?.has(id));
+  if (!isStaff) return interaction.reply(ephemeral('Only staff can claim tickets.'));
+  if (t.claimed_by) return interaction.reply(ephemeral(`${t.claimed_by} has already claimed this ticket.`));
+
+  const name = member?.displayName || interaction.user.globalName || interaction.user.username;
+  await pb.collection('tickets').update(t.id, { claimed_by: name, claimed_by_id: interaction.user.id, claimed_at: new Date().toISOString() });
+  await interaction.update({ components: tickets.ticketButtons(config, name) });
+  await interaction.channel.send({ content: `🙋 <@${interaction.user.id}> has claimed this ticket.`, allowedMentions: { parse: [] } }).catch(() => {});
 }
 
 // A ticket channel deleted by hand still counts as closed
@@ -162,9 +169,13 @@ async function onChannelDelete(channel) {
 }
 
 async function handleTicketButton(interaction) {
-  if (interaction.customId === 'ticket:open') return openTicket(interaction);
-  if (interaction.customId === 'ticket:close') return askToClose(interaction);
-  if (interaction.customId === 'ticket:close:confirm') return closeTicket(interaction);
+  const id = interaction.customId;
+  if (id === 'ticket:open') return openTicket(interaction);
+  if (id === 'ticket:open:select') return openTicket(interaction, interaction.values?.[0]);
+  if (id.startsWith('ticket:open:')) return openTicket(interaction, id.slice('ticket:open:'.length));
+  if (id === 'ticket:claim') return claimTicket(interaction);
+  if (id === 'ticket:close') return askToClose(interaction);
+  if (id === 'ticket:close:confirm') return closeTicket(interaction);
 }
 
 module.exports = { handleTicketButton, onChannelDelete, transcriptOf };

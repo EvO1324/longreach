@@ -408,3 +408,4 @@ module.exports.expertFlights = expertFlights;
 module.exports.flightPlanEnds = flightPlanEnds;
 module.exports.fleetList = fleetList;
 module.exports.sharedResponse = sharedResponse;
+module.exports.liveFlights = liveFlights;

@@ -185,6 +185,8 @@ app.use('/api/import', require('./routes/importer'));
 app.use('/api/updates', require('./routes/updates'));
 app.use('/api/admin/connections', require('./routes/connections'));
 app.use('/api/tickets', require('./routes/tickets'));
+app.use('/api/embed', require('./routes/embed'));
+app.use('/api/partners', require('./routes/partners'));
 
 const { requireAdmin } = require('./middleware/auth');
 

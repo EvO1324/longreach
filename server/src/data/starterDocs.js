@@ -51,13 +51,13 @@ module.exports = [
         { label: 'Land where you filed', desc: 'Diverted? File the route you actually flew, or let staff know.' },
       ] },
       { heading: 'Multipliers', body: 'Some flights earn extra hours: Routes of the Week, events, a bonus from your rank, or a multiplier staff have given you. Only one applies per PIREP. Your credited hours are your flight time times the multiplier.' },
-      { heading: 'If it\'s rejected', body: 'Staff add a reason, which you can see in your logbook. A pending PIREP can\'t be filed twice, so wait for staff rather than filing it again.' },
+      { heading: 'If it\'s rejected', body: 'Staff add a reason, which you can see in your logbook. Open the PIREP there and reply under Comments if you want to explain. A pending PIREP can\'t be filed twice, so wait for staff rather than filing it again.' },
     ],
   },
   {
     doc_id: 'logbook-and-stats', label: 'Logbook and statistics', title: 'Logbook and statistics', icon_name: 'BookOpen', sort_order: 3,
     sections: [
-      { heading: 'Logbook', body: 'Every PIREP you\'ve filed, with its status: approved, pending or rejected. Open one to see its details, multiplier and landing stats.' },
+      { heading: 'Logbook', body: 'Every PIREP you\'ve filed, with its status: approved, pending or rejected. Open one to see its details, multiplier, landing stats and comments. Use the comments to ask staff about a PIREP. A NEW REPLY tag means staff have answered.' },
       { heading: 'Statistics', body: 'Your totals, month by month, plus your most flown routes, aircraft and airports. {short}-wide stats are there too.' },
       { heading: 'In Discord', list: [
         { label: '/stats', desc: 'Crew centre stats for you or another pilot.' },
@@ -165,7 +165,7 @@ module.exports = [
   {
     doc_id: 'getting-help', label: 'Getting help', title: 'Getting help', icon_name: 'TicketCheck', sort_order: 13,
     sections: [
-      { heading: 'Ask staff', body: 'Message a member of staff on Discord. If {short} uses support tickets, press Open a ticket in the support channel and you\'ll get a private channel with the staff team.' },
+      { heading: 'Ask staff', body: 'Message a member of staff on Discord. If {short} uses support tickets, press Open a ticket (or pick a topic) in the support channel and you\'ll get a private channel with the staff team.' },
       { heading: 'Something broken?', body: 'Tell staff what you were doing and what happened. A screenshot helps.' },
     ],
   },
@@ -219,7 +219,7 @@ module.exports = [
     doc_id: 'staff-pireps', label: 'Reviewing PIREPs', title: 'Staff guide: reviewing PIREPs', icon_name: 'CheckSquare', sort_order: 102, admin_only: true,
     sections: [
       { heading: 'The queue', body: 'PIREPs that weren\'t approved automatically wait in Operations › PIREPs. Each one shows which checks passed and failed: Infinite Flight account linked, route, date and aircraft or livery.' },
-      { heading: 'Deciding', body: 'Compare it with the pilot\'s Infinite Flight logbook. Approve it, or reject it with a reason the pilot will see. Approving adds the hours and can promote them.', highlight: true },
+      { heading: 'Deciding', body: 'Compare it with the pilot\'s Infinite Flight logbook. Approve it, or reject it with a reason the pilot will see. The reason starts the PIREP\'s comment thread, where you and the pilot can reply. Pilots who reply show at the top of the PIREPs page. Approving adds the hours and can promote them.', highlight: true },
       { heading: 'Common reasons it needs a look', list: [
         { label: 'No Infinite Flight account linked', desc: 'Ask them to link it on their profile.' },
         { label: 'Filed late', desc: 'Outside the automatic approval window.' },
@@ -280,16 +280,17 @@ module.exports = [
     doc_id: 'staff-discord', label: 'Discord and tickets', title: 'Staff guide: Discord and tickets', icon_name: 'Bot', sort_order: 109, admin_only: true,
     sections: [
       { heading: 'Connections', body: 'Admins set the bot\'s roles, channels and webhooks in Configuration › Connections, picked from your server\'s own. Saving restarts the crew centre for a few seconds.' },
-      { heading: 'Support tickets', body: 'With the Support tickets plugin on, members press Open a ticket to get a private channel with the staff roles. Close ticket saves a transcript, which you can read in Operations › Tickets, then deletes the channel.' },
+      { heading: 'Support tickets', body: 'With the Support tickets plugin on, members press Open a ticket, or pick a topic, to get a private channel with the staff roles. Each topic can go to its own roles and category. Staff press Claim to take a ticket. In Operations › Tickets you can read an open ticket live, reply, claim or close it. Closing saves a transcript and deletes the channel.' },
       { heading: 'Bot permissions', body: 'The bot needs Manage Roles, Manage Nicknames and Manage Channels, and its role must sit above the roles it gives out. Full ticket transcripts also need Message Content Intent switched on in the Discord developer portal.', highlight: true },
     ],
   },
   {
     doc_id: 'staff-site', label: 'Site, plugins and updates', title: 'Staff guide: site, plugins and updates', icon_name: 'RefreshCw', sort_order: 110, admin_only: true,
     sections: [
-      { heading: 'Plugins', body: 'Switch optional features on and off: Career mode, Live Mode, Routes of the Week, Events, Challenges, ATC sessions and Support tickets. Switching one off hides it and keeps its data.' },
+      { heading: 'Plugins', body: 'Switch optional features on and off: Career mode, Live Mode, Routes of the Week, Events, Challenges, ATC sessions, Support tickets and Partner VAs. Switching one off hides it and keeps its data.' },
       { heading: 'Updates', body: 'New versions appear in Updates with notes on what changed. Update installs it, and pilots can keep using the crew centre meanwhile.' },
       { heading: 'Site settings', body: 'Automatic PIREP approval and other site-wide settings.' },
+      { heading: 'Embeds', body: 'Widgets for your own website: who\'s flying now, your numbers, and the top pilots. Switch one on, pick light or dark, and paste the code into your site. Anyone can see a widget once it\'s on.' },
       { heading: 'NOTAMs and news', body: 'NOTAMs show on every pilot\'s dashboard until they expire or you switch them off. News posts pop up on the dashboard.' },
       { heading: 'VA Health', body: 'Pilot numbers, recruitment, and the most flown routes and aircraft.' },
       { heading: 'Docs', body: 'Admins can edit any doc from its page here in Docs.', highlight: true },

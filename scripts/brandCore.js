@@ -358,6 +358,10 @@ received a copy of the licence with this program (LICENSE.md). If not, see
     { id: 'atc', name: 'ATC sessions', on: true,
       description: 'Pilots log IFATC sessions alongside their flights, and the dashboard shows who is controlling.',
       api: [], commands: ['atc'] },
+    // still being tested between two crew centres
+    { id: 'partners', name: 'Partner VAs', on: false, beta: true,
+      description: 'Link up with another Longreach VA to share codeshare routes and see each other\'s flights. In testing.',
+      api: ['/api/partners'], commands: [] },
   ];
 
   // Which plugins are on: saved choices first, then va.config.json features,

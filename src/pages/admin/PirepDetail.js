@@ -12,6 +12,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { flights as flightsApi, infiniteFlight, fleet as fleetApi } from '../../api/client';
 import { showToast } from '../../components/Toast';
 import Dropdown from '../../components/Dropdown';
+import PirepThread from '../../components/PirepThread';
 
 const STATUS_COLORS = {
   pending:  { bg: 'rgba(230,81,0,0.1)',   color: '#e65100',  label: 'Pending'  },
@@ -543,6 +544,10 @@ function PirepDetail({ user }) {
               }}>
                 {saving ? 'Saving...' : 'Save Changes'}
               </button>
+            </div>
+
+            <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
+              <PirepThread flightId={pirep.id} userId={user?.id} emptyText="Message the pilot about this PIREP. They'll see it in their logbook." />
             </div>
           </div>
         </div>

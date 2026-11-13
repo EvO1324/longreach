@@ -15,6 +15,8 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 const brand = require('../config/brand');
 
 const KEY = 'tickets_config';
+const CC_FOOTER = 'Sent from the crew centre';
+const MAX_CATEGORIES = 10;
 const BUTTON_STYLES = { primary: 1, secondary: 2, success: 3, danger: 4 };
 
 const DEFAULTS = {
@@ -24,6 +26,11 @@ const DEFAULTS = {
   log_channel_id: '',
   ping_staff: true,
   one_open_per_user: true,
+  claim: true,
+  // Topics on the panel. Two or more show as a dropdown; each can have its own
+  // staff roles and Discord category (blank = the ones above).
+  //   { id, label, emoji, description, staff_role_ids, category_id }
+  categories: [],
   name_prefix: 'ticket',
   panel: {
     title: 'Need a hand?',
@@ -32,6 +39,7 @@ const DEFAULTS = {
     button_emoji: '🎫',
     button_style: 'primary',
     color: brand.colors?.primary || '#1f5f8b',
+    select_placeholder: 'What do you need help with?',
   },
   welcome: {
     title: 'Ticket #{number}',
@@ -51,6 +59,7 @@ function merge(saved) {
   return {
     ...DEFAULTS, ...s,
     staff_role_ids: Array.isArray(s.staff_role_ids) ? s.staff_role_ids : DEFAULTS.staff_role_ids,
+    categories: Array.isArray(s.categories) ? s.categories : DEFAULTS.categories,
     panel: { ...DEFAULTS.panel, ...(s.panel || {}) },
     welcome: { ...DEFAULTS.welcome, ...(s.welcome || {}) },
   };
@@ -86,6 +95,24 @@ function clean(input, current) {
     if (color && !HEX.test(color)) throw new Error('The panel colour should look like #1f5f8b');
     const style = str(i.panel?.button_style, 10) || 'primary';
     if (!BUTTON_STYLES[style]) throw new Error('Unknown button colour');
+    const cats = (Array.isArray(i.categories) ? i.categories : []).slice(0, MAX_CATEGORIES + 1);
+    if (cats.length > MAX_CATEGORIES) throw new Error(`Up to ${MAX_CATEGORIES} categories`);
+    const seen = new Set();
+    const categories = cats.map((c, n) => {
+      const label = str(c?.label, 80);
+      if (!label) throw new Error(`Category ${n + 1} needs a name`);
+      let cid = str(c?.id, 40).toLowerCase().replace(/[^a-z0-9-]/g, '') || label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || `topic-${n + 1}`;
+      while (seen.has(cid)) cid = `${cid}-${n + 1}`;
+      seen.add(cid);
+      const roleIds = (Array.isArray(c?.staff_role_ids) ? c.staff_role_ids : []).map(r => id(r, `${label}: staff role`)).filter(Boolean);
+      return {
+        id: cid, label,
+        emoji: str(c?.emoji, 8),
+        description: str(c?.description, 100),
+        staff_role_ids: [...new Set(roleIds)].slice(0, 10),
+        category_id: id(c?.category_id, `${label}: Discord category`),
+      };
+    });
     const prefix = str(i.name_prefix, 20).toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'ticket';
     const config = merge({
       ...current,
@@ -95,6 +122,8 @@ function clean(input, current) {
       staff_role_ids: [...new Set(roles)].slice(0, 10),
       ping_staff: i.ping_staff !== false,
       one_open_per_user: i.one_open_per_user !== false,
+      claim: i.claim !== false,
+      categories,
       name_prefix: prefix,
       panel: {
         title: str(i.panel?.title, 256),
@@ -103,6 +132,7 @@ function clean(input, current) {
         button_emoji: str(i.panel?.button_emoji, 8),
         button_style: style,
         color: color ? (color.startsWith('#') ? color : `#${color}`) : DEFAULTS.panel.color,
+        select_placeholder: str(i.panel?.select_placeholder, 150) || DEFAULTS.panel.select_placeholder,
       },
       welcome: {
         title: str(i.welcome?.title, 256),
@@ -119,37 +149,132 @@ function clean(input, current) {
 
 const colorInt = hex => parseInt(String(hex || '').replace('#', ''), 16) || 0;
 
-// {user}, {name} and {number} in the welcome message
-function fill(text, { userId, name, number }) {
+// {user}, {name}, {number} and {category} in the welcome message
+function fill(text, { userId, name, number, category }) {
   return String(text || '')
     .replace(/\{user\}/g, userId ? `<@${userId}>` : name || '')
     .replace(/\{name\}/g, name || '')
-    .replace(/\{number\}/g, String(number).padStart(4, '0'));
+    .replace(/\{number\}/g, String(number).padStart(4, '0'))
+    .replace(/\{category\}/g, category?.label || 'Support');
 }
 
+const categoryOf = (config, id) => (config.categories || []).find(c => c.id === id) || null;
+// a category's own staff roles and Discord category, or the main ones
+const rolesFor = (config, cat) => (cat?.staff_role_ids?.length ? cat.staff_role_ids : config.staff_role_ids) || [];
+const parentFor = (config, cat) => cat?.category_id || config.category_id || '';
+// the category a ticket record was opened under (stored by label)
+const categoryOfTicket = (config, t) => (config.categories || []).find(c => c.label === t?.category) || null;
+
 // The message with the "Open a ticket" button (Discord API shape)
+// Two or more categories: a dropdown. One: the button opens that category.
 function panelMessage(config) {
   const p = config.panel;
-  const button = { type: 2, style: BUTTON_STYLES[p.button_style] || 1, label: p.button_label, custom_id: 'ticket:open' };
-  if (p.button_emoji) button.emoji = { name: p.button_emoji };
+  const cats = config.categories || [];
   const embed = { color: colorInt(p.color) };
   if (p.title) embed.title = p.title;
   if (p.description) embed.description = p.description;
+  if (cats.length >= 2) {
+    const options = cats.map(c => {
+      const o = { label: c.label, value: c.id };
+      if (c.description) o.description = c.description;
+      if (c.emoji) o.emoji = { name: c.emoji };
+      return o;
+    });
+    return { embeds: [embed], components: [{ type: 1, components: [{ type: 3, custom_id: 'ticket:open:select', placeholder: p.select_placeholder, options }] }] };
+  }
+  const button = { type: 2, style: BUTTON_STYLES[p.button_style] || 1, label: p.button_label, custom_id: cats.length === 1 ? `ticket:open:${cats[0].id}` : 'ticket:open' };
+  if (p.button_emoji) button.emoji = { name: p.button_emoji };
   return { embeds: [embed], components: [{ type: 1, components: [button] }] };
 }
 
+// Close (and Claim) under the welcome message. Once claimed, Claim shows who.
+function ticketButtons(config, claimedBy) {
+  const row = [{ type: 2, style: 4, label: config.welcome.close_label, custom_id: 'ticket:close', emoji: { name: '🔒' } }];
+  if (config.claim) {
+    row.push(claimedBy
+      ? { type: 2, style: 2, label: `Claimed by ${claimedBy}`.slice(0, 80), custom_id: 'ticket:claim', disabled: true }
+      : { type: 2, style: 1, label: 'Claim', custom_id: 'ticket:claim', emoji: { name: '🙋' } });
+  }
+  return [{ type: 1, components: row }];
+}
+
 // The first message in a new ticket channel
-function welcomeMessage(config, { userId, name, number }) {
+function welcomeMessage(config, { userId, name, number, category }) {
   const w = config.welcome;
-  const mentions = [`<@${userId}>`, ...(config.ping_staff ? config.staff_role_ids.map(r => `<@&${r}>`) : [])];
-  const embed = { color: colorInt(config.panel.color), description: fill(w.message, { userId, name, number }) };
-  if (w.title) embed.title = fill(w.title, { userId, name, number });
+  const roles = rolesFor(config, category);
+  const mentions = [`<@${userId}>`, ...(config.ping_staff ? roles.map(r => `<@&${r}>`) : [])];
+  const vars = { userId, name, number, category };
+  const embed = { color: colorInt(config.panel.color), description: fill(w.message, vars) };
+  if (w.title) embed.title = fill(w.title, vars);
+  if (category) embed.footer = { text: category.label };
   return {
     content: mentions.join(' '),
     embeds: [embed],
-    components: [{ type: 1, components: [{ type: 2, style: 4, label: w.close_label, custom_id: 'ticket:close', emoji: { name: '🔒' } }] }],
-    allowed_mentions: { users: [userId], roles: config.ping_staff ? config.staff_role_ids : [] },
+    components: ticketButtons(config),
+    allowed_mentions: { users: [userId], roles: config.ping_staff ? roles : [] },
   };
+}
+
+// A staff reply sent from Admin › Tickets
+function replyMessage(config, { name, body }) {
+  return {
+    embeds: [{ author: { name: `${name} · Staff` }, description: String(body).slice(0, 4000), color: colorInt(config.panel.color), footer: { text: CC_FOOTER } }],
+    allowed_mentions: { parse: [] },
+  };
+}
+
+// Posted in the log channel when a ticket closes
+function logEmbed(config, t, { closedBy, messages }) {
+  const fields = [
+    { name: 'Opened by', value: `<@${t.user_discord_id}>`, inline: true },
+    { name: 'Closed by', value: closedBy, inline: true },
+    { name: 'Messages', value: String(messages), inline: true },
+  ];
+  if (t.category) fields.push({ name: 'Category', value: t.category, inline: true });
+  if (t.claimed_by) fields.push({ name: 'Claimed by', value: t.claimed_by, inline: true });
+  return {
+    title: `Ticket #${String(t.number).padStart(4, '0')} closed`,
+    color: colorInt(config.panel.color),
+    fields,
+    footer: { text: 'The transcript is in Admin › Tickets' },
+    timestamp: new Date().toISOString(),
+  };
+}
+
+// One transcript line. Takes a discord.js message or a Discord API one. A
+// reply sent from the crew centre is shown under the staff member's name.
+function transcriptEntry(m) {
+  const embeds = m.embeds || [];
+  const author = m.author || {};
+  const fromCC = author.bot && embeds[0]?.footer?.text === CC_FOOTER;
+  const name = fromCC
+    ? String(embeds[0].author?.name || 'Staff').replace(/ · Staff$/, '')
+    : m.member?.displayName || m.member?.nick || author.globalName || author.global_name || author.username || 'Unknown';
+  const attachments = m.attachments?.values ? [...m.attachments.values()] : (m.attachments || []);
+  return {
+    at: m.createdAt ? m.createdAt.toISOString() : m.timestamp,
+    author: name,
+    author_id: author.id,
+    bot: !!author.bot && !fromCC,
+    staff: fromCC || undefined,
+    content: fromCC ? (embeds[0].description || '') : (m.content || ''),
+    embeds: fromCC ? [] : embeds.map(e => [e.title, e.description].filter(Boolean).join('\n')).filter(Boolean),
+    attachments: attachments.map(a => a.url),
+  };
+}
+
+// Up to 500 messages through the Discord API, oldest first
+async function fetchTranscript(discord, channelId, max = 500) {
+  const out = [];
+  let before;
+  while (out.length < max) {
+    const r = await discord('GET', `/channels/${channelId}/messages?limit=100${before ? `&before=${before}` : ''}`);
+    if (!r.ok || !Array.isArray(r.data) || !r.data.length) break;
+    out.push(...r.data);
+    before = r.data[r.data.length - 1].id;
+    if (r.data.length < 100) break;
+  }
+  return out.reverse().map(transcriptEntry);
 }
 
 function channelName(config, number, username) {
@@ -157,4 +282,8 @@ function channelName(config, number, username) {
   return [config.name_prefix || 'ticket', String(number).padStart(4, '0'), who].filter(Boolean).join('-');
 }
 
-module.exports = { KEY, DEFAULTS, BUTTON_STYLES, load, save, clean, merge, fill, panelMessage, welcomeMessage, channelName };
+module.exports = {
+  KEY, DEFAULTS, BUTTON_STYLES, CC_FOOTER, load, save, clean, merge, fill,
+  categoryOf, categoryOfTicket, rolesFor, parentFor,
+  panelMessage, welcomeMessage, ticketButtons, replyMessage, logEmbed, transcriptEntry, fetchTranscript, channelName,
+};

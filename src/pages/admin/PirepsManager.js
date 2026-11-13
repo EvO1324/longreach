@@ -33,6 +33,12 @@ function PirepsManager() {
   const [rejectModal, setRejectModal]     = useState(null);
   const [rejectNote, setRejectNote]       = useState('');
   const [expandedNotes, setExpandedNotes] = useState({});
+  const [replies, setReplies]             = useState([]);
+
+  // pilots who've replied on a PIREP's comments
+  useEffect(() => {
+    flightsApi.unreadComments().then(d => setReplies(d.flights || [])).catch(() => {});
+  }, []);
 
   const loadPending = useCallback(async () => {
     const data = await flightsApi.pending();
@@ -119,6 +125,23 @@ function PirepsManager() {
 
   return (
     <>
+      {replies.length > 0 && (
+        <div style={{ marginBottom: '1.25rem', padding: '0.85rem 1rem', border: '1px solid var(--border-color)', borderRadius: '10px', background: 'var(--bg-card)' }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem' }}>
+            {replies.length === 1 ? '1 pilot has replied' : `${replies.length} pilots have replied`}
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+            {replies.map(f => {
+              const u = f.expand?.user;
+              return (
+                <button key={f.id} onClick={() => navigate(`/admin/pirep/${f.id}`)} style={{ padding: '0.35rem 0.7rem', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', color: 'var(--text-primary)' }}>
+                  <strong>{u?.callsign || [u?.first_name, u?.last_name].filter(Boolean).join(' ') || 'Pilot'}</strong> · {f.departure_icao} → {f.arrival_icao}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
       {/* Sub-tabs */}
       <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '1.25rem', borderBottom: '2px solid var(--border-color)' }}>
         {[

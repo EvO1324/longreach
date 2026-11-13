@@ -13,7 +13,7 @@ import { showToast } from '../../components/Toast';
 
 const small = { fontSize: '0.8rem', color: 'var(--text-secondary)' };
 
-function Switch({ on, busy, onChange, label }) {
+export function Switch({ on, busy, onChange, label }) {
   return (
     <button
       type="button" role="switch" aria-checked={on} aria-label={label} disabled={busy}
@@ -68,7 +68,10 @@ function Plugins() {
         {list.map(p => (
           <section key={p.id} className="card" style={{ margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1rem' }}>{p.name}</h3>
+              <h3 style={{ margin: 0, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                {p.name}
+                {p.beta && <span style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', padding: '0.15rem 0.45rem', borderRadius: 4, background: 'rgba(230,81,0,0.1)', color: '#e65100' }}>Testing</span>}
+              </h3>
               <Switch on={p.enabled} busy={busy === p.id} label={p.name} onChange={v => toggle(p, v)} />
             </div>
             <div style={{ ...small, lineHeight: 1.5 }}>{p.description}</div>

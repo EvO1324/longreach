@@ -56,6 +56,76 @@ test('panel and welcome messages are what Discord expects', () => {
   assert.strictEqual(tickets.channelName(config, 12, 'Sam_Flies.99'), 'ticket-0012-samflies99');
 });
 
+test('categories: tidied, a dropdown for two or more, a button for one', () => {
+  const ROLE2 = '666666666666666666';
+  const { config, error } = tickets.clean({
+    category_id: CAT, staff_role_ids: [ROLE], panel: { title: 'Help' },
+    categories: [
+      { label: 'Recruitment', emoji: '✈️', staff_role_ids: [ROLE2] },
+      { label: 'PIREP query', description: 'Questions about a PIREP', category_id: CHAN },
+      { label: 'Recruitment' },
+    ],
+  }, tickets.merge({}));
+  assert.strictEqual(error, undefined);
+  assert.deepStrictEqual(config.categories.map(c => c.id), ['recruitment', 'pirep-query', 'recruitment-3']);
+
+  const menu = tickets.panelMessage(config).components[0].components[0];
+  assert.strictEqual(menu.type, 3);
+  assert.strictEqual(menu.custom_id, 'ticket:open:select');
+  assert.deepStrictEqual(menu.options[0], { label: 'Recruitment', value: 'recruitment', emoji: { name: '✈️' } });
+  assert.strictEqual(menu.options[1].description, 'Questions about a PIREP');
+
+  const one = tickets.panelMessage({ ...config, categories: [config.categories[1]] }).components[0].components[0];
+  assert.strictEqual(one.custom_id, 'ticket:open:pirep-query');
+
+  // a category's own roles and Discord category, or the main ones
+  const rec = tickets.categoryOf(config, 'recruitment');
+  assert.deepStrictEqual(tickets.rolesFor(config, rec), [ROLE2]);
+  assert.strictEqual(tickets.parentFor(config, rec), CAT);
+  assert.strictEqual(tickets.parentFor(config, tickets.categoryOf(config, 'pirep-query')), CHAN);
+  assert.deepStrictEqual(tickets.rolesFor(config, null), [ROLE]);
+
+  const w = tickets.welcomeMessage({ ...config, welcome: { ...config.welcome, message: 'About {category}' } }, { userId: '9', name: 'Sam', number: 1, category: rec });
+  assert.strictEqual(w.content, `<@9> <@&${ROLE2}>`);
+  assert.strictEqual(w.embeds[0].description, 'About Recruitment');
+
+  assert.match(tickets.clean({ panel: { title: 'x' }, categories: [{ label: '' }] }, {}).error, /needs a name/);
+  assert.match(tickets.clean({ panel: { title: 'x' }, categories: Array.from({ length: 11 }, (_, n) => ({ label: `t${n}` })) }, {}).error, /Up to 10/);
+});
+
+test('claim button, staff replies and transcripts', () => {
+  const config = tickets.merge({});
+  assert.strictEqual(tickets.ticketButtons(config)[0].components[1].custom_id, 'ticket:claim');
+  assert.strictEqual(tickets.ticketButtons(config, 'Sam')[0].components[1].label, 'Claimed by Sam');
+  assert.strictEqual(tickets.ticketButtons(config, 'Sam')[0].components[1].disabled, true);
+  assert.strictEqual(tickets.ticketButtons({ ...config, claim: false })[0].components.length, 1);
+
+  // a reply sent from the crew centre reads as the staff member, not the bot
+  const sent = tickets.replyMessage(config, { name: 'Alex', body: 'On it' });
+  const fromCC = tickets.transcriptEntry({ id: '1', timestamp: '2026-01-01T00:00:00Z', author: { id: 'bot', username: 'Bot', bot: true }, content: '', embeds: sent.embeds, attachments: [] });
+  assert.deepStrictEqual(fromCC, { at: '2026-01-01T00:00:00Z', author: 'Alex', author_id: 'bot', bot: false, staff: true, content: 'On it', embeds: [], attachments: [] });
+
+  const pilot = tickets.transcriptEntry({ id: '2', timestamp: 't', author: { id: '9', username: 'sam', global_name: 'Sam' }, content: 'Hi', embeds: [], attachments: [{ url: 'u' }] });
+  assert.strictEqual(pilot.author, 'Sam');
+  assert.deepStrictEqual(pilot.attachments, ['u']);
+});
+
+test('fetchTranscript pages back through Discord, oldest first', async () => {
+  const all = Array.from({ length: 150 }, (_, n) => ({ id: String(1000 + n), timestamp: `t${n}`, author: { id: '9', username: 's' }, content: `m${n}`, embeds: [], attachments: [] }));
+  const calls = [];
+  const discord = async (method, path) => {
+    calls.push(path);
+    const before = (path.match(/before=(\d+)/) || [])[1];
+    const newest = all.filter(m => !before || Number(m.id) < Number(before)).reverse();
+    return { ok: true, data: newest.slice(0, 100) };
+  };
+  const t = await tickets.fetchTranscript(discord, 'c');
+  assert.strictEqual(t.length, 150);
+  assert.strictEqual(t[0].content, 'm0');
+  assert.strictEqual(t[149].content, 'm149');
+  assert.strictEqual(calls.length, 2);
+});
+
 // The bot's buttons against a pretend Discord server and database
 test('opening and closing a ticket', async () => {
   const rows = [];

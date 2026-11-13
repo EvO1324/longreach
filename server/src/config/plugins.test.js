@@ -37,7 +37,7 @@ function run(url) {
 test('saved choice beats va.config.json, which beats the default', () => {
   assert.deepStrictEqual(
     core.pluginState({ career: false }, { career: true, events: false }),
-    { career: false, liveMode: true, routesOfTheWeek: true, events: false, challenges: true, tickets: false, atc: true },
+    { career: false, liveMode: true, routesOfTheWeek: true, events: false, challenges: true, tickets: false, atc: true, partners: false },
   );
   assert.strictEqual(core.pluginState({}, {}).tickets, false, 'new plugins start switched off');
 });

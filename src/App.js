@@ -76,6 +76,7 @@ const PublicProfile = lazy(() => import('./pages/PublicProfile'));
 const StaffApply    = lazy(() => import('./pages/StaffApply'));
 const Legal         = lazy(() => import('./pages/Legal'));
 const IFLive        = lazy(() => import('./pages/admin/IFLivePanel'));
+const Partners      = lazy(() => import('./pages/Partners'));
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -212,6 +213,7 @@ function App() {
               <Route path="/career"     element={on('career', <Career user={user} />)} />
               <Route path="/challenges" element={on('challenges', <Challenges user={user} />)} />
               <Route path="/challenges/:id" element={on('challenges', <Challenges user={user} />)} />
+              <Route path="/partners"   element={on('partners', <Partners />)} />
               <Route path="/staff-apply" element={<StaffApply user={user} />} />
               <Route path="/legal"      element={<Legal user={user} />} />
               <Route path="/pilot/:id"  element={<PublicProfile currentUser={user} />} />

@@ -1503,6 +1503,26 @@
     "presentable": false,
     "unique": false,
     "options": {}
+   },
+   {
+    "system": false,
+    "id": "3oy1gn4c",
+    "name": "pilot_unread",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "52kt8brn",
+    "name": "staff_unread",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
    }
   ],
   "indexes": [
@@ -4751,10 +4771,297 @@
      "max": null,
      "pattern": ""
     }
+   },
+   {
+    "system": false,
+    "id": "zbck7u2m",
+    "name": "category",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "0o83jf6h",
+    "name": "claimed_by",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "xkxkswve",
+    "name": "claimed_by_id",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "u42w7ncw",
+    "name": "claimed_at",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
    }
   ],
   "indexes": [
    "CREATE INDEX `idx_tickets_status_user` ON `tickets` (`status`, `user_discord_id`)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "edi4x4c1425gx62",
+  "name": "pirep_comments",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "60m6iwa1",
+    "name": "flight",
+    "type": "relation",
+    "required": true,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "azywc9ne81y8vhf",
+     "cascadeDelete": true,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "3nxcxlc3",
+    "name": "user",
+    "type": "relation",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "collectionId": "_pb_users_auth_",
+     "cascadeDelete": false,
+     "minSelect": null,
+     "maxSelect": 1,
+     "displayFields": null
+    }
+   },
+   {
+    "system": false,
+    "id": "glbspubb",
+    "name": "author_name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "30cktgwo",
+    "name": "staff",
+    "type": "bool",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {}
+   },
+   {
+    "system": false,
+    "id": "6388nwn1",
+    "name": "body",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [
+   "CREATE INDEX `idx_pirep_comments_flight` ON `pirep_comments` (`flight`)"
+  ],
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null,
+  "options": {}
+ },
+ {
+  "id": "vqwvvqqs5tmagan",
+  "name": "partners",
+  "type": "base",
+  "system": false,
+  "schema": [
+   {
+    "system": false,
+    "id": "axy2bx5k",
+    "name": "name",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "j5ibecfc",
+    "name": "url",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "01jebgyh",
+    "name": "their_token",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "96cdmkdu",
+    "name": "our_token",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "klb05v82",
+    "name": "status",
+    "type": "select",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "maxSelect": 1,
+     "values": [
+      "pending",
+      "active",
+      "paused"
+     ]
+    }
+   },
+   {
+    "system": false,
+    "id": "8l55thxv",
+    "name": "share",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "7a8yxdjp",
+    "name": "logo_url",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "6umhv2wr",
+    "name": "last_seen",
+    "type": "date",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": "",
+     "max": ""
+    }
+   },
+   {
+    "system": false,
+    "id": "m9hb2t11",
+    "name": "last_error",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+     "min": null,
+     "max": null,
+     "pattern": ""
+    }
+   }
+  ],
+  "indexes": [
+   "CREATE UNIQUE INDEX `idx_partners_our_token` ON `partners` (`our_token`)"
   ],
   "listRule": null,
   "viewRule": null,

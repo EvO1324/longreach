@@ -21,6 +21,16 @@ const { tryAutoApprove } = require('../../services/pirepAutoApprove');
 const { updateUserStats, updateVaStats, checkRankUp } = require('../../services/pirepStats');
 const { invalidateCache } = require('./_cache');
 const { returnGift, reclaimGift } = require('../../services/giftMultipliers');
+const { addComment } = require('./comments');
+
+// The rejection reason starts the PIREP's comment thread
+async function reasonComment(pb, req, flightId, reason) {
+  if (!reason) return;
+  const user = await pb.collection('users').getOne(req.user.id, { fields: 'id,first_name,last_name,callsign', requestKey: null }).catch(() => null);
+  await addComment(pb, { flightId, user, staff: true, body: reason });
+  // the rejection banner already tells them, so no second unread flag
+  await pb.collection('flights').update(flightId, { pilot_unread: false }).catch(() => {});
+}
 
 const router = express.Router();
 
@@ -226,11 +236,11 @@ router.patch('/:id/reject', requirePermission('pireps.reject'), async (req, res)
 
     await pb.collection('flights').update(req.params.id, {
       status:               'rejected',
-      notes:                reason || 'Rejected by admin',
       rejection_note:       reason || '',
       rejection_note_read:  false,
     });
     invalidateCache('flights-pending');
+    reasonComment(pb, req, flight.id, reason).catch(() => {});
     returnGift(pb, flight); // a gifted multiplier shouldn't be lost to a rejected PIREP
     dailyStats.recordRejection(pb, flight.date).catch(err => console.error('[daily_stats] record failed:', err.message));
 
@@ -388,6 +398,7 @@ router.patch('/:id/reject-approved', requirePermission('pireps.approve'), async 
       auto_approved:       false,
     });
     invalidateCache('flights-pending');
+    reasonComment(pb, req, flight.id, reason).catch(() => {});
     returnGift(pb, flight);
 
     // Notify pilot

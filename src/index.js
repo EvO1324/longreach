@@ -12,8 +12,13 @@ import ReactDOM from 'react-dom/client';
 import './styles/index.css';
 import App from './App';
 
+const Embed = React.lazy(() => import('./pages/Embed'));
+
+// Website embeds (/embed/<widget>) skip the app: no login, no sidebar
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <App />
+  window.location.pathname.startsWith('/embed/')
+    ? <React.Suspense fallback={null}><Embed /></React.Suspense>
+    : <App />
 );
 

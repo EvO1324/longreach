@@ -148,7 +148,7 @@ client.on('interactionCreate', async (interaction) => {
   }
 
   // Support tickets (Admin › Tickets)
-  if (interaction.isButton() && interaction.customId.startsWith('ticket:')) {
+  if ((interaction.isButton() || interaction.isStringSelectMenu()) && interaction.customId.startsWith('ticket:')) {
     try {
       await handleTicketButton(interaction);
     } catch (err) {

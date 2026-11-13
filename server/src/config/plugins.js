@@ -37,7 +37,7 @@ async function save(pb, next) {
 
 const list = () => {
   const on = state();
-  return core.PLUGINS.map(p => ({ id: p.id, name: p.name, description: p.description, enabled: on[p.id] }));
+  return core.PLUGINS.map(p => ({ id: p.id, name: p.name, description: p.description, enabled: on[p.id], beta: !!p.beta }));
 };
 
 // API paths of a switched-off plugin answer 404

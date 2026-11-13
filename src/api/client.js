@@ -94,6 +94,10 @@ export const flights = {
   retryAutoApprove:  (id)          => post(`/flights/${id}/retry-auto-approve`, {}),
   rejectApproved:    (id, reason)   => patch(`/flights/${id}/reject-approved`, { reason }),
   approveRejected:   (id)            => patch(`/flights/${id}/approve-rejected`, {}),
+  comments:          (id)            => get(`/flights/${id}/comments`),
+  addComment:        (id, body)      => post(`/flights/${id}/comments`, { body }),
+  removeComment:     (id, cid)       => del(`/flights/${id}/comments/${cid}`),
+  unreadComments:    ()              => get('/flights/comments/unread'),
 };
 
 // Pilots
@@ -503,6 +507,25 @@ export const tickets = {
   postPanel:  ()       => post('/tickets/panel', {}),
   list:       (status) => get(`/tickets${status ? `?status=${status}` : ''}`),
   get:        (id)     => get(`/tickets/${id}`),
+  reply:      (id, body) => post(`/tickets/${id}/reply`, { body }),
+  claim:      (id)     => post(`/tickets/${id}/claim`, {}),
+  close:      (id)     => post(`/tickets/${id}/close`, {}),
+};
+
+// Website embeds (Admin › Embeds)
+export const embeds = {
+  config: ()     => get('/embed/config'),
+  save:   (data) => request('PUT', '/embed/config', data),
+};
+
+// Partner VAs (Admin › Partners, the "partners" plugin)
+export const partners = {
+  list:     ()          => get('/partners'),
+  invite:   (share)     => post('/partners/invite', { share }),
+  accept:   (code, share) => post('/partners/accept', { code, share }),
+  update:   (id, data)  => request('PATCH', `/partners/${id}`, data),
+  remove:   (id)        => del(`/partners/${id}`),
+  feed:     ()          => get('/partners/feed'),
 };
 
 // Plugins (Admin › Plugins)

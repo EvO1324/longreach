@@ -10,8 +10,9 @@ received a copy of the licence with this program (LICENSE.md). If not, see
 import React, { useEffect, useState } from 'react';
 import { getAirport } from '../services/airportService';
 import { RegTag } from './AircraftLabel';
+import PirepThread from './PirepThread';
 
-function FlightModal({ flight, fleetData, onClose }) {
+function FlightModal({ flight, fleetData, onClose, userId }) {
   const [airports, setAirports] = useState({ dep: null, arr: null });
 
   const aircraftRecord = fleetData?.find(ac => ac.name === flight.aircraft);
@@ -192,6 +193,12 @@ function FlightModal({ flight, fleetData, onClose }) {
                   );
                 })}
               </div>
+            </div>
+          )}
+
+          {userId && (
+            <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px solid var(--border-color)' }}>
+              <PirepThread flightId={flight.id} userId={userId} emptyText="Question about this PIREP? Ask staff here." />
             </div>
           )}
         </div>

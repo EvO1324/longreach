@@ -12,9 +12,9 @@ import core from './brandCore';
 
 const brand = config;
 export const callsign = core.callsignTools(config.callsign);
-// Which plugins are on. Starts from va.config.json and is updated from
-// Admin › Plugins when the site loads (see App.js).
-export const features = { ...(config.features || {}) };
+// Which plugins are on. Starts from va.config.json and each plugin's default,
+// then is updated from Admin › Plugins when the site loads (see App.js).
+export const features = { ...(config.features || {}), ...core.pluginState(null, config.features) };
 export const colors = config.colors;
 export const logoFor = darkMode => (darkMode ? config.logos.dark : config.logos.light);
 

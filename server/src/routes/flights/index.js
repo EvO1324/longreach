@@ -11,6 +11,7 @@ const express = require('express');
 const router = express.Router();
 
 router.use(require('./list'));
+router.use(require('./comments'));
 router.use(require('./submit'));
 router.use(require('./moderation'));
 

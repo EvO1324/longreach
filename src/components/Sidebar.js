@@ -14,7 +14,7 @@ import {
   Users, UserPlus, Activity, Bell, ScrollText,
   DatabaseBackup, HeartPulse, PackagePlus, BarChart3,
   ListOrdered, UserCog, SlidersHorizontal, Image,
-  LayoutGrid, ClipboardList, FileText, Satellite, Newspaper, Code, Award, CalendarDays
+  LayoutGrid, ClipboardList, FileText, Satellite, Newspaper, Code, Award, CalendarDays, Handshake, AppWindow
 } from 'lucide-react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import UserAvatar from './UserAvatar';
@@ -46,6 +46,7 @@ const NAV_GROUPS = [
       { to: '/events',  label: 'Events',   icon: CalendarDays, feature: 'events' },
       { to: '/livemap', label: 'Live Map', icon: Map },
       { to: '/challenges', label: 'Challenges', icon: Trophy, feature: 'challenges' },
+      { to: '/partners',   label: 'Partners',   icon: Handshake, feature: 'partners' },
     ],
   },
   {
@@ -88,6 +89,7 @@ const ADMIN_GROUPS = [
       { tab: 'featured',   label: 'Featured Routes', icon: Star,        adminOnly: true, feature: 'routesOfTheWeek' },
       { tab: 'fleet',      label: 'Fleet',           icon: PackagePlus, adminOnly: true },
       { tab: 'airlines',  label: 'Airlines',        icon: Plane,       adminOnly: true },
+      { tab: 'partners',  label: 'Partners',        icon: Handshake,   adminOnly: true, feature: 'partners' },
       { tab: 'events',     label: 'Events',          icon: CalendarDays, perm: 'events.manage', feature: 'events' },
       { tab: 'challenges', label: 'Challenges',      icon: Trophy,      adminOnly: true, feature: 'challenges' },
     ],
@@ -109,6 +111,7 @@ const ADMIN_GROUPS = [
       { tab: 'site',        label: 'Site settings', icon: Wrench,           adminOnly: true },
       { tab: 'plugins',     label: 'Plugins',       icon: Puzzle,           adminOnly: true },
       { tab: 'connections', label: 'Connections',   icon: Link2,            adminOnly: true },
+      { tab: 'embeds',      label: 'Embeds',        icon: AppWindow,        adminOnly: true },
       { tab: 'updates',     label: 'Updates',       icon: RefreshCw,        adminOnly: true },
     ],
   },
