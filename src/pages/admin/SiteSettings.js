@@ -583,7 +583,7 @@ function ChangelogManager() {
   const labelStyle = { fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '0.3rem' };
 
   return (
-    <ToolCard icon={BookOpen} title="Changelog" description="Manage public release notes shown to pilots.">
+    <ToolCard icon={BookOpen} title="Changelog" description="What's New for pilots. Crew centre updates are added automatically; add your own here.">
       {loading ? (
         <div style={{ textAlign: 'center', padding: '1rem', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Loading…</div>
       ) : editing ? (
@@ -658,11 +658,17 @@ function ChangelogManager() {
                   onClick={() => setExpanded(expanded === r.id ? null : r.id)}
                   style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', cursor: 'pointer', background: 'var(--bg-secondary)' }}
                 >
-                  <span style={{ fontFamily: 'monospace', fontSize: '0.8rem', fontWeight: 700, color: 'var(--avg-green)', flexShrink: 0 }}>v{r.version}</span>
+                  <span style={{ fontFamily: 'monospace', fontSize: '0.8rem', fontWeight: 700, color: 'var(--avg-green)', flexShrink: 0 }}>v{String(r.version || '').replace(/^v/i, '')}</span>
                   <span style={{ fontWeight: 600, fontSize: '0.875rem', flex: 1 }}>{r.title}</span>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', flexShrink: 0 }}>{r.date?.split('T')[0] || ''}</span>
-                  <button onClick={e => { e.stopPropagation(); openEdit(r); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: '0.2rem' }}><Edit3 size={13} /></button>
-                  <button onClick={e => { e.stopPropagation(); remove(r.id); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#c62828', padding: '0.2rem' }}><Trash2 size={13} /></button>
+                  {r.source === 'release' ? (
+                    <span title="From the crew centre's release notes" style={{ fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-secondary)', flexShrink: 0 }}>Update</span>
+                  ) : (
+                    <>
+                      <button onClick={e => { e.stopPropagation(); openEdit(r); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: '0.2rem' }}><Edit3 size={13} /></button>
+                      <button onClick={e => { e.stopPropagation(); remove(r.id); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#c62828', padding: '0.2rem' }}><Trash2 size={13} /></button>
+                    </>
+                  )}
                   {expanded === r.id ? <ChevronUp size={14} color="var(--text-secondary)" /> : <ChevronDown size={14} color="var(--text-secondary)" />}
                 </div>
                 {expanded === r.id && (

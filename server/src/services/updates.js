@@ -93,6 +93,56 @@ async function lastRun() {
   return run ? { status: run.status, conclusion: run.conclusion, started: run.created_at, url: run.html_url, title: run.display_title } : null;
 }
 
+// Release notes (GitHub markdown) -> What's New entries. Headings pick the tag:
+// "## New", "## Changed", "## Fixed", "## Removed". Bullets become entries.
+const TAGS = [
+  [/new|add|feature/i, 'new'],
+  [/fix|bug/i, 'fixed'],
+  [/remov|drop|deprecat/i, 'removed'],
+  [/chang|improv|updat|tweak/i, 'improved'],
+];
+const plain = t => t
+  .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+  .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+  .replace(/(\*\*|__|`)/g, '')
+  .replace(/(^|\s)[*_]([^*_]+)[*_](?=\s|$|[.,!?])/g, '$1$2')
+  .trim();
+
+function notesToEntries(notes) {
+  const out = [];
+  let tag = 'improved';
+  for (const raw of String(notes || '').split(/\r?\n/)) {
+    const line = raw.trimEnd();
+    const heading = line.match(/^\s*#{1,6}\s+(.+)$/) || line.match(/^\s*\*\*([^*]+)\*\*:?\s*$/);
+    if (heading) {
+      const found = TAGS.find(([re]) => re.test(heading[1]));
+      if (found) tag = found[1];
+      continue;
+    }
+    const bullet = line.match(/^(\s*)[-*+]\s+(.+)$/);
+    if (!bullet) continue;
+    const text = plain(bullet[2]);
+    if (!text) continue;
+    // an indented bullet adds detail to the one above it
+    if (bullet[1].length >= 2 && out.length) out[out.length - 1].text += ` (${text})`;
+    else out.push({ tag, text });
+  }
+  return out;
+}
+
+// Releases up to the installed version, shaped like changelog records
+async function installedReleases() {
+  const all = await releases();
+  return all
+    .filter(r => !newer(r.version, CURRENT))
+    .map(r => {
+      const version = r.version.replace(/^v/i, '');
+      const title = r.name && r.name !== r.version && r.name.replace(/^v/i, '') !== version ? r.name : 'Crew centre update';
+      return { id: `release-${version}`, source: 'release', version, title, date: r.date, entries: notesToEntries(r.notes) };
+    })
+    .filter(r => r.entries.length);
+}
+
 async function syncSchema(pb) {
   const KEY = 'schema_version';
   const rec = await pb.collection('settings').getFirstListItem(`key = "${KEY}"`, { requestKey: null }).catch(() => null);
@@ -105,4 +155,4 @@ async function syncSchema(pb) {
   return { synced: true };
 }
 
-module.exports = { status, apply, lastRun, syncSchema, newer, CURRENT, UPSTREAM };
+module.exports = { status, apply, lastRun, syncSchema, newer, notesToEntries, installedReleases, CURRENT, UPSTREAM };

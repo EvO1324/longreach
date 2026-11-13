@@ -611,7 +611,7 @@ export default function Sidebar({ user, darkMode, onToggleDarkMode, onLogout }) 
               )}
               {changelogData.map((release, ri) => (
                 <div key={ri} style={{ marginBottom: '1.5rem' }}>
-                  <div style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: '0.5rem', color: 'var(--avg-green)' }}>{release.version || release.title}</div>
+                  <div style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: '0.5rem', color: 'var(--avg-green)' }}>{release.version ? `v${String(release.version).replace(/^v/i, '')}` : release.title}</div>
                   {release.entries.map((entry, ei) => {
                     const tag = (entry.tag || '').toLowerCase();
                     const tc = TAG_COLORS[tag] || { color: 'var(--text-secondary)', bg: 'var(--bg-hover)' };

@@ -11,15 +11,21 @@ const express    = require('express');
 const router     = express.Router();
 const { getAdminClient } = require('../config/pocketbase');
 const { requireAuth, requirePermission } = require('../middleware/auth');
+const updates    = require('../services/updates');
 
+// Your own entries plus the crew centre's releases (the installed version and
+// older). A release you've written your own entry for isn't shown twice.
 router.get('/', async (req, res) => {
   try {
     const pb      = await getAdminClient();
-    const records = await pb.collection('changelog').getFullList({
-      sort: '-date,-created',
-      requestKey: null,
-    });
-    res.json({ changelog: records });
+    const [records, releases] = await Promise.all([
+      pb.collection('changelog').getFullList({ sort: '-date,-created', requestKey: null }),
+      updates.installedReleases().catch(() => []),
+    ]);
+    const mine = new Set(records.map(r => String(r.version || '').replace(/^v/i, '')));
+    const changelog = [...records, ...releases.filter(r => !mine.has(r.version))]
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+    res.json({ changelog });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch changelog' });
   }

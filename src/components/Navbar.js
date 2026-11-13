@@ -303,7 +303,7 @@ function ChangelogModal({ open, onClose, entries, tagColors }) {
           {entries.map(r => (
             <div key={r.id}>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                <span style={{ fontFamily: 'monospace', fontSize: '0.8rem', fontWeight: 700, color: 'var(--avg-green)' }}>v{r.version}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: '0.8rem', fontWeight: 700, color: 'var(--avg-green)' }}>v{String(r.version || '').replace(/^v/i, '')}</span>
                 <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>{r.title}</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginLeft: 'auto' }}>{r.date?.split('T')[0] || ''}</span>
               </div>
